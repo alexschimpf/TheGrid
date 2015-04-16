@@ -94,8 +94,9 @@ public class TheGrid implements IUpdate, IDraw {
 		grid = new Room[numRows][numCols];
 	}
 	
-	public void initPlayer(int row, int col) {
-		player = new Player(row, col);
+	public void initPlayer(int gridRow, int gridCol, int row, int col) {
+		Vector2 worldPos = Room.getWorldPosition(gridRow, gridCol, row, col);
+		player = new Player(worldPos);
 		player.setBodyData();
 	}
 	

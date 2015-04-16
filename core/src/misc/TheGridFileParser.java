@@ -44,7 +44,11 @@ public class TheGridFileParser {
 			initGrid(sizeElem);
 			
 			Element playerElem = root.getChildByName("player");
-			theGrid.initPlayer(playerElem.getInt("row"), playerElem.getInt("col"));
+			int playerGridRow = playerElem.getInt("grid_row");
+			int playerGridCol = playerElem.getInt("grid_col");
+			int playerRow = playerElem.getInt("row");
+			int playerCol = playerElem.getInt("col");
+			theGrid.initPlayer(playerGridRow, playerGridCol, playerRow, playerCol);
 			
 			Element roomsElem = root.getChildByName("rooms");
 			createRooms(roomsElem);

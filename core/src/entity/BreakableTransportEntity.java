@@ -53,6 +53,8 @@ public class BreakableTransportEntity extends TransportChainEntity {
 			if(health <= 0) {
 				sounds.playSound("explosion");
 				getBodyData().setNeedsRemoved();
+			} else {
+				sounds.playSound("drop_player_trigger");
 			}
 		}
 		

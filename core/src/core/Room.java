@@ -58,6 +58,13 @@ public class Room implements IUpdate, IDraw {
 		return getWorldPosition(topRow + row, leftCol + col);
 	}
 	
+	public static Vector2 getWorldPosition(int gridRow, int gridCol, int row, int col) {
+		Vector2 gridPos = new Vector2(gridRow, gridCol);
+		int topRow = (int)gridPos.x * TheGrid.ROOM_NUM_SQUARES_WIDE;
+		int leftCol = (int)gridPos.y * TheGrid.ROOM_NUM_SQUARES_WIDE;			
+		return getWorldPosition(topRow + row, leftCol + col);
+	}
+	
 	@Override
 	public void draw(SpriteBatch batch) {
 		for(Entity entity : entityMap.values()) {

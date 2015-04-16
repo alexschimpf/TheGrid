@@ -51,6 +51,7 @@ public class TransportChainEntity extends RectangleEntity {
 			Gdx.app.postRunnable(new Runnable() {
 			    @Override
 				public void run() {
+			    	sounds.playSound("drop_player_trigger");
 			    	updateChain(false);
 					entity.setPosition(transportPos.x, transportPos.y);
 				}

@@ -38,7 +38,7 @@ public class Game extends ApplicationAdapter {
 		
 		globals = Globals.getInstance();
 		globals.setGame(this);
-		globals.getCamera().zoom += 0.2f;
+		globals.getCamera().zoom += 0.1f;
 		
 		theGrid = new TheGrid();
 		globals.setTheGrid(theGrid);
@@ -81,7 +81,7 @@ public class Game extends ApplicationAdapter {
 			theGrid.draw(batch);
 		} batch.end();
 		
-		debugRenderer.render(theGrid.getWorld(), debugMatrix);
+		//debugRenderer.render(theGrid.getWorld(), debugMatrix);
 	}
 	
 	private void createBackground() {

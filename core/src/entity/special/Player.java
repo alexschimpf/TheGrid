@@ -31,8 +31,8 @@ public class Player extends RectangleEntity {
 	private Direction direction = Direction.Right;
 	private Animation animation;
 	
-	public Player(int row, int col) {
-		super(null, "player", Player.getEntityBodyDef(row, col));
+	public Player(Vector2 worldPos) {
+		super(null, "player", Player.getEntityBodyDef(worldPos));
 		
 		id = "player";
 		
@@ -42,11 +42,10 @@ public class Player extends RectangleEntity {
 		body.setBullet(true);
 	}
 	
-	private static EntityBodyDef getEntityBodyDef(int row, int col) {
+	private static EntityBodyDef getEntityBodyDef(Vector2 worldPos) {
 		float width = Room.SQUARE_SIZE / 2;
 		float height = Room.SQUARE_SIZE;
-		return new EntityBodyDef(Room.getWorldPosition(row, col), 
-				                 new Vector2(width, height), BodyType.DynamicBody);
+		return new EntityBodyDef(worldPos, new Vector2(width, height), BodyType.DynamicBody);
 	}
 	
 	@Override

@@ -1,0 +1,433 @@
+<the_grid>
+    <size num_rows="3" num_cols="3" />
+    <player row="6" col="6" />
+    <rooms>
+        <!--------------------------------------------------------------------------
+        <!-- Room 0, 0
+        <!-------------------------------------------------------------------------->
+        <room row="0" col="0">
+		    <openings>
+		        <opening row="11" col="8" />
+		    </openings>
+		    <entities>
+		       <entity type="player_drop" row="10" col="10" />
+		       <entity type="breakable" row="11" col="8">
+		           <custom>
+		               <friction_top>true</friction_top>
+		               <break_speed>50</break_speed>
+		           </custom>
+		       </entity>
+		    </entities>
+		</room>
+        <!--------------------------------------------------------------------------
+        <!-- Room 0, 1
+        <!-------------------------------------------------------------------------->
+		<room row="0" col="1">
+			<openings>
+		        <opening row="11" col="7" />
+		        <opening row="1" col="11" />
+		    </openings>
+		    <entities>
+		        <entity type="moving_rectangle" row="9" col="1">
+		           <custom>
+		               <texture_key>block</texture_key>
+		               <start_pos row="9" col="11" />
+		               <start_velocity x="14" y="0" />
+		               <end_pos row="9" col="1" />
+		               <end_velocity x="-14" y="0" />
+		           </custom>
+		        </entity>	
+		        <entity type="moving_rectangle" row="7" col="3">
+		           <custom>
+		               <texture_key>block</texture_key>
+		               <start_pos row="7" col="9" />
+		               <start_velocity x="16" y="0" />
+		               <end_pos row="7" col="1" />
+		               <end_velocity x="-16" y="0" />
+		           </custom>
+		        </entity>	
+		        <entity type="moving_rectangle" row="5" col="11">
+		           <custom>
+		               <texture_key>block</texture_key>
+		               <start_pos row="5" col="9" />
+		               <start_velocity x="5" y="0" />
+		               <end_pos row="5" col="5" />
+		               <end_velocity x="-5" y="0" />
+		           </custom>
+		        </entity>	
+		        <entity type="moving_rectangle" row="2" col="10">
+		           <custom>
+		               <texture_key>block</texture_key>
+		               <start_pos row="4" col="10" />
+		               <start_velocity x="0" y="8" />
+		               <end_pos row="2" col="10" />
+		               <end_velocity x="0" y="-8" />
+		           </custom>
+		        </entity>
+		    </entities>
+		</room>
+		<!--------------------------------------------------------------------------
+        <!-- Room 0, 2
+        <!-------------------------------------------------------------------------->
+		<room row="0" col="2">
+			<openings>
+		        <opening row="1" col="0" />
+		        <opening row="11" col="10" />
+		    </openings>
+		    <chain_pads>
+		        <chain_pad start_row="1" end_row="9" start_col="2" end_col="2" friction="false" correct="true" />
+		        <chain_pad start_row="1" end_row="9" start_col="3" end_col="3" friction="false" />
+		        <chain_pad start_row="3" end_row="10" start_col="9" end_col="10" friction="false" correct="true" /> 
+		        <chain_pad start_row="3" end_row="12" start_col="10" end_col="10" friction="false" />
+		    </chain_pads>
+		    <entities>
+		        <entity type="visible_touched">
+		           <custom>
+		               <texture_key>block</texture_key>
+		           </custom>
+		           <locations>
+		               <location row="1" col="9" />
+		               <location row="3" col="9" />
+		               <location row="4" col="9" />
+		               <location row="5" col="9" />
+		               <location row="6" col="9" />
+		               <location row="7" col="9" />
+		               <location row="8" col="9" />
+		               <location row="9" col="9" />
+		               <location row="10" col="9" />
+		               <location row="1" col="2" />
+		               <location row="2" col="2" />
+		               <location row="3" col="2" />
+		               <location row="4" col="2" />
+		               <location row="5" col="2" />
+		               <location row="6" col="2" />
+		               <location row="7" col="2" />
+		               <location row="8" col="2" />
+		               <location row="9" col="2" />
+		               <location row="9" col="3" />
+		               <location row="7" col="4" />
+		               <location row="5" col="3" />
+		               <location row="1" col="5" />
+		               <location row="2" col="5" />
+		               <location row="4" col="6" />
+		               <location row="1" col="6" />
+		               <location row="1" col="7" />
+		           </locations>
+		        </entity>
+		        <entity type="breakable" row="2" col="9">
+		           <custom>
+		               <num_shots>1</num_shots>
+		           </custom>
+		       </entity>
+		    </entities>
+		</room>
+        <!--------------------------------------------------------------------------
+        <!-- Room 1, 0
+        <!-------------------------------------------------------------------------->
+		<room row="1" col="0">
+		    <openings>
+		        <opening row="0" col="8" />
+		        <opening row="1" col="11" />
+		    </openings>
+		    <entities>
+		        <entity type="player_drop" row="6" col="1" />
+		        <entity type="rectangle" row="1" col="9">
+		           <custom>
+		               <texture_key>white</texture_key>
+		               <width_scale>1</width_scale>
+		               <height_scale>4</height_scale>
+		           </custom>
+		        </entity>	
+		        <entity type="rectangle">
+		           <custom>
+		               <texture_key>block</texture_key>
+		           </custom>
+		           <locations>
+		               <location row="7" col="10" />
+		               <location row="5" col="1" />
+		               <location row="7" col="1" />
+		           </locations>
+		        </entity>		        
+				<entity type="circle" row="10" col="5">
+		           <custom>
+		               <texture_key>circle</texture_key>
+		               <radius_scale>0.5</radius_scale>
+		           </custom>
+		       </entity>
+		    </entities>
+		</room>
+        <!--------------------------------------------------------------------------
+        <!-- Room 1, 1
+        <!-------------------------------------------------------------------------->
+		<room row="1" col="1">
+		    <openings>
+		        <opening row="0" col="7" />
+		        <opening row="1" col="0" />
+		    </openings>
+		    <chain_pads>
+		        <chain_pad start_row="10" end_row="10" start_col="1" end_col="4" />
+		        <chain_pad start_row="10" end_row="10" start_col="7" end_col="8" />
+		    </chain_pads>
+		    <entities>
+		        <entity type="block_chain" id="0" row="7" col="1">
+		            <custom>
+		                <start_block_id>1</start_block_id>
+		                <texture_key>block</texture_key>
+		                <state_map>
+		                    <event state="0" next="8" />
+		                </state_map>
+		            </custom>
+		        </entity>
+		        <entity type="block_chain" id="1" row="10" col="1">
+		            <custom>
+		                <start_block_id>1</start_block_id>
+		                <texture_key>block</texture_key>
+		                <state_map>
+		                    <event state="0" next="3" />
+		                    <event state="1" next="4" />
+		                </state_map>
+		            </custom>
+		        </entity>
+		        <entity type="block_chain" id="2" row="10" col="2">
+		            <custom>
+		                <start_block_id>1</start_block_id>
+		                <texture_key>block</texture_key>
+		                <state_map>
+		                    <event state="0" next="4" />
+		                </state_map>
+		            </custom>
+		        </entity>
+		        <entity type="block_chain" id="3" row="10" col="3">
+		            <custom>
+		                <start_block_id>1</start_block_id>
+		                <texture_key>block</texture_key>
+		                <state_map>
+		                    <event state="0" next="4" />
+		                </state_map>
+		            </custom>
+		        </entity>
+		        <entity type="block_chain" id="4" row="10" col="4">
+		            <custom>
+		                <start_block_id>1</start_block_id>
+		                <texture_key>block</texture_key>
+		                <state_map>
+		                    <event state="0" next="1" />
+		                    <event state="1" next="6" />
+		                    <event state="2" next="5" />
+		                </state_map>
+		            </custom>
+		        </entity>
+		        <entity type="block_chain" id="5" row="10" col="7" >
+		            <custom>
+		                <start_block_id>1</start_block_id>
+		                <texture_key>block</texture_key>
+		                <state_map>
+		                    <event state="0" next="7" />
+		                    <event state="1" next="0" />
+		                </state_map>
+		            </custom>
+		        </entity>
+		        <entity type="block_chain" id="6" row="10" col="8">
+		            <custom>
+		                <start_block_id>1</start_block_id>
+		                <texture_key>block</texture_key>
+		                <state_map>
+		                    <event state="0" next="2" />
+		                </state_map>
+		            </custom>
+		        </entity>
+		        <entity type="block_chain" id="7" row="10" col="10">
+		            <custom>
+		                <start_block_id>1</start_block_id>
+		                <texture_key>block</texture_key>
+		                <state_map>
+		                    <event state="0" next="5" />
+		                </state_map>
+		            </custom>
+		        </entity>
+		        <entity type="block_chain" id="8" row="7" col="10">
+		            <custom>
+		                <start_block_id>1</start_block_id>
+		                <texture_key>block</texture_key>
+		                <state_map>
+		                    <event state="0" next="9" />
+		                </state_map>
+		            </custom>
+		        </entity>
+		        <entity type="triggered_moving_rectangle" id="9" row="0" col="7">
+		       	    <custom>
+		                <texture_key>block</texture_key>
+		                <start_pos row="10" col="7" />
+		                <start_velocity x="0" y="8" />
+		                <end_pos row="1" col="7" />
+		                <end_velocity x="0" y="-8" />
+		            </custom>
+		        </entity>
+		    </entities>
+		</room>
+		<!--------------------------------------------------------------------------
+        <!-- Room 1, 2
+        <!-------------------------------------------------------------------------->
+		<room row="1" col="2">
+		    <openings>
+		        <opening row="0" col="10" />
+		        <opening row="11" col="5" />
+		    </openings>
+		    <entities>
+		        <entity type="programmable_movement" row="8" col="4" />
+		        <entity type="programmable_movement" row="3" col="4" />
+		        <entity type="programmable_movement" row="5" col="2" />
+		        <entity type="programmable_movement_trigger" row="10" col="1" />
+		        <entity type="breakable" row="11" col="5">
+		           <custom>
+		               <friction_top>true</friction_top>
+		               <num_shots>20</num_shots>
+		           </custom>
+		       </entity>
+		       <entity type="rectangle" row="1" col="9">
+		           <custom>
+		               <texture_key>white</texture_key>
+		               <width_scale>1</width_scale>
+		               <height_scale>4</height_scale>
+		           </custom>
+		       </entity>
+		       <entity type="rectangle">
+		           <custom>
+		               <texture_key>block</texture_key>
+		           </custom>
+		           <locations>
+		               <location row="1" col="1" />
+		               <location row="3" col="1" />
+		               <location row="1" col="4" />
+		               <location row="1" col="6" />
+		           </locations>
+		       </entity>
+		       <entity type="portal" id="1,2-1" row="2" col="1">
+		           <custom>
+				       <exit_id>1,2-2</exit_id>
+				       <exit_direction>right</exit_direction>
+		           </custom>
+		       </entity>
+		       <entity type="portal" id="1,2-2" row="1" col="5">
+		           <custom>
+				       <exit_direction>down</exit_direction>
+		           </custom>
+		       </entity>
+		    </entities>
+		</room>
+		<!--------------------------------------------------------------------------
+        <!-- Room 2, 0
+        <!-------------------------------------------------------------------------->
+		<room row="2" col="0">
+		</room>
+		<!--------------------------------------------------------------------------
+        <!-- Room 2, 1
+        <!-------------------------------------------------------------------------->
+		<room row="2" col="1">
+		    <openings>
+		        <opening row="10" col="11" />
+		    </openings>
+		</room>
+		<!--------------------------------------------------------------------------
+        <!-- Room 2, 2
+        <!-------------------------------------------------------------------------->
+		<room row="2" col="2">
+		    <openings>
+		        <opening row="0" col="5" />
+		        <opening row="10" col="0" />
+		    </openings>
+		    <chain_pads>
+		        <chain_pad start_row="3" end_row="3" start_col="5" end_col="9" friction="false" />
+		        <chain_pad start_row="4" end_row="4" start_col="5" end_col="9" friction="false" />
+		        <chain_pad start_row="6" end_row="6" start_col="2" end_col="10" friction="false" />
+		        <chain_pad start_row="7" end_row="7" start_col="2" end_col="10" friction="false" />
+		        <chain_pad start_row="9" end_row="9" start_col="1" end_col="9" friction="false" />
+		        <chain_pad start_row="10" end_row="10" start_col="1" end_col="9" friction="false" />
+		    </chain_pads>
+		    <scripts>
+		        <script type="update_transport_chain">
+		            <custom>
+		                <chain_ids>
+		                    <id>2,2-1</id>
+		                    <id>2,2-2</id>
+		                    <id>2,2-3</id>
+		                    <id>2,2-4</id>
+		                    <id>2,2-5</id>
+		                    <id>2,2-6</id>
+		                    <id>2,2-7</id>
+		                    <id>2,2-8</id>
+		                    <id>2,2-9</id>
+		                    <id>2,2-10</id>
+		                    <id>2,2-11</id>
+		                    <id>2,2-12</id>
+		                    <id>2,2-13</id>
+		                    <id>2,2-14</id>
+		                    <id>2,2-15</id>
+		                    <id>2,2-16</id>
+		                    <id>2,2-17</id>
+		                    <id>2,2-18</id>
+		                    <id>2,2-19</id>
+		                    <id>2,2-20</id>
+		                    <id>2,2-21</id>
+		                    <id>2,2-22</id>
+		                    <id>2,2-23</id>
+		                    <id>2,2-24</id>
+		                    <id>2,2-25</id>
+		                </chain_ids>
+		            </custom>
+		        </script>
+		    </scripts>
+		    <entities>
+		        <entity type="rectangle">
+		            <custom>
+		                <texture_key>red</texture_key>
+		                <height_scale>3</height_scale>
+		            </custom>
+		            <locations>
+		                <location row="1" col="4" />
+		            </locations>
+		        </entity>
+		        <entity type="breakable_transport" row="10" col="0">
+		            <custom>
+		                <num_shots>3</num_shots>
+		                <transport_row>0</transport_row>
+		                <transport_col>5</transport_col>
+		            </custom>
+		        </entity>
+		        <entity type="transport_chain">
+		            <custom>
+		                <transport_row>0</transport_row>
+		                <transport_col>5</transport_col>
+		            </custom>
+		            <locations>
+		                <location row="3" col="5" id="2,2-1" />
+		                <location row="3" col="6" id="2,2-2" />
+		                <location row="3" col="7" id="2,2-3" />
+		                <location row="3" col="8" id="2,2-4" />
+		                <location row="3" col="9" id="2,2-5" />
+		                <location row="6" col="10" id="2,2-6" />
+		                <location row="6" col="9" id="2,2-7" />
+		                <location row="6" col="8" id="2,2-8" />
+		                <location row="6" col="7" id="2,2-9" />
+		                <location row="6" col="6" id="2,2-10" />
+		                <location row="6" col="5" id="2,2-11" />
+		                <location row="6" col="4" id="2,2-12" />
+		                <location row="6" col="3" id="2,2-13" />
+		                <location row="6" col="2" id="2,2-14" />
+		                <location row="5" col="2" id="2,2-15" />
+		                <location row="4" col="2" id="2,2-16" />
+		                <location row="9" col="1" id="2,2-17" />
+		                <location row="9" col="2" id="2,2-18" />
+		                <location row="9" col="3" id="2,2-19" />
+		                <location row="9" col="4" id="2,2-20" />
+		                <location row="9" col="5" id="2,2-21" />
+		                <location row="9" col="6" id="2,2-22" />
+		                <location row="9" col="7" id="2,2-23" />
+		                <location row="9" col="8" id="2,2-24" />
+		                <location row="9" col="9" id="2,2-25" />
+		            </locations>
+		        </entity>
+		    </entities>
+		</room>
+    </rooms>
+</the_grid>

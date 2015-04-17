@@ -382,6 +382,7 @@ public class TheGridFileParser {
 		entityTypeClassMap.put("programmable_movement_trigger", "ProgrammableMovementTriggerEntity");
 		entityTypeClassMap.put("transport_chain", "TransportChainEntity");
 		entityTypeClassMap.put("breakable_transport", "BreakableTransportEntity");
+		entityTypeClassMap.put("disappearing_rectangle", "DisappearingRectangleEntity");
 		entityTypeClassMap.put("sensor", "sensor.SensorEntity");
 	}
 	

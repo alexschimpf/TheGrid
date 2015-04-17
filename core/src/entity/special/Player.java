@@ -28,6 +28,7 @@ public class Player extends RectangleEntity {
 	public static final float JUMP_IMPULSE = -100;
 	
 	private boolean jumping = false;
+	private int numFootContacts = 0;
 	private Direction direction = Direction.Right;
 	private Animation animation;
 	
@@ -140,8 +141,22 @@ public class Player extends RectangleEntity {
 		return jumping;
 	}
 	
-	public void  setJumping(boolean jumping) {
+	public void setJumping(boolean jumping) {
 		this.jumping = jumping;
+	}
+	
+	public void incrementFootContacts() {
+		numFootContacts++;	
+		setJumping(numFootContacts < 1);
+	}
+	
+	public void decrementFootContacts() {
+		numFootContacts--;
+		if(numFootContacts < 0) {
+			numFootContacts = 0;
+		}
+		
+		setJumping(numFootContacts < 1);
 	}
 	
 	@Override

@@ -3,9 +3,12 @@ package entity.special;
 import misc.EntityBodyDef;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Fixture;
 
 import core.Room;
+import entity.Entity;
 import entity.RectangleEntity;
 import entity.special.Player.Direction;
 
@@ -44,6 +47,17 @@ public class PlayerShot extends RectangleEntity {
 	
 	public static EntityBodyDef getEntityBodyDef(Vector2 pos) {
 		return new EntityBodyDef(pos, new Vector2(SIZE, SIZE), BodyType.DynamicBody);
+	}
+	
+	@Override
+	public void onBeginContact(Entity entity) {
+		Body entityBody = entity.getBody();
+		Fixture fixture = entityBody.getFixtureList().get(0);
+		if(entityBody != null && fixture != null && fixture.isSensor()) {
+			return;
+		}
+		
+		getBodyData().setNeedsRemoved();
 	}
 	
 	@Override

@@ -2,6 +2,7 @@ package listener;
 
 import misc.BodyData;
 import misc.Globals;
+import assets.Sounds;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -10,13 +11,13 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
+import entity.DisappearingRectangleEntity;
 import entity.Entity;
 import entity.special.Player;
 import entity.special.PlayerShot;
 
 public class CollisionListener implements ContactListener {
 	
-	private int numFootContacts = 0;
 	private Globals globals = Globals.getInstance();
 	
 	public CollisionListener() {	
@@ -43,17 +44,10 @@ public class CollisionListener implements ContactListener {
 			return;
 		}
 		
-		boolean footContact = (fixA.isSensor() && a.getType().equals("player")) ||
-				              (fixB.isSensor() && b.getType().equals("player")); 
-		if(footContact) {
-			numFootContacts++;
-			globals.getTheGrid().getPlayer().setJumping(numFootContacts < 1);
-		}
+		checkFootContacts(fixA, fixB, a, b, true);
 		
 		a.onBeginContact(b);
 		b.onBeginContact(a);
-		
-		checkShotCollision(a, b);
 	}
 
 	@Override
@@ -77,12 +71,7 @@ public class CollisionListener implements ContactListener {
 			return;
 		}
 		
-		boolean footContact = (fixA.isSensor() && a.getType().equals("player")) ||
-                              (fixB.isSensor() && b.getType().equals("player")); 
-        if(footContact) {
-        	numFootContacts--;
-        	globals.getTheGrid().getPlayer().setJumping(numFootContacts < 1);
-        }
+		checkFootContacts(fixA, fixB, a, b, false);
 		
 		a.onEndContact(b);
 		b.onEndContact(a);
@@ -90,25 +79,26 @@ public class CollisionListener implements ContactListener {
 
 	@Override
 	public void preSolve(Contact contact, Manifold oldManifold) {
-
 	}
 
 	@Override
 	public void postSolve(Contact contact, ContactImpulse impulse) {
 	}
-	
-	public void checkShotCollision(Entity a, Entity b) {
-		if(!a.getType().equals("shot") && !b.getType().equals("shot")) {
+
+	protected void checkFootContacts(Fixture fixA, Fixture fixB, Entity a, Entity b, boolean beginContact) {
+		if(fixA.isSensor() && fixB.isSensor()) {
 			return;
 		}
 		
-		PlayerShot shot = (PlayerShot)(a.getType().equals("shot") ? a : b);
-		Entity other = a.getType().equals("shot") ? b : a;
-		
-		shot.getBodyData().setNeedsRemoved();	
-
-		if(other.getType().equals("shot")) {
-			((PlayerShot)other).getBodyData().setNeedsRemoved();
-		}
+		boolean footContact = (fixA.isSensor() && a.getType().equals("player")) ||
+	                          (fixB.isSensor() && b.getType().equals("player")); 
+        if(footContact) {
+        	Player player = globals.getTheGrid().getPlayer();        	
+        	if(beginContact) {
+        		player.incrementFootContacts();
+        	} else {
+        		player.decrementFootContacts();
+        	}
+        }
 	}
 }

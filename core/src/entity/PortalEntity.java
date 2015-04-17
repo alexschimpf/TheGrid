@@ -110,7 +110,7 @@ public class PortalEntity extends RectangleEntity {
 	        			top = getTop() + (entity.getHeight() / 2) + 0.1f;
 	    				break;
 	    			case Left:
-	    				left = getLeft() - entity.getWidth();
+	    				left = getLeft() - entity.getWidth() - 0.1f;
 	        			top = getTop() + (entity.getHeight() / 2) - 0.1f;
 	    				break;
 	    		}

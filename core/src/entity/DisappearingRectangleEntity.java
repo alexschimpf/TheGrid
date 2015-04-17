@@ -10,7 +10,6 @@ import com.badlogic.gdx.utils.XmlReader.Element;
 
 import misc.EntityBodyDef;
 import core.Room;
-import entity.special.Player;
 
 public class DisappearingRectangleEntity extends RectangleEntity {
 
@@ -18,11 +17,12 @@ public class DisappearingRectangleEntity extends RectangleEntity {
 	
 	protected long startTime;
 	protected boolean disappearing = false;
-	protected boolean waitingToAppear = false;
-	protected boolean test = false;
+	protected String textureKey;
 	
 	protected DisappearingRectangleEntity(Room room, String textureKey, EntityBodyDef bodyDef) {
 		super(room, textureKey, bodyDef);
+		
+		this.textureKey = textureKey;
 	}
 
 	public static Entity build(String id, Room room, Vector2 pos, Element elem) {
@@ -56,54 +56,41 @@ public class DisappearingRectangleEntity extends RectangleEntity {
 			
 			if(timeSinceStart > DURATION) {
 				disappearing = false;
-				waitingToAppear = true;
 				startTime = TimeUtils.millis();
-				setActive(false);
+				getBodyData().setNeedsRemoved();
 			}
-		}
-		
-		timeSinceStart = TimeUtils.timeSinceMillis(startTime);
-		if(waitingToAppear && timeSinceStart > DURATION) {
-			waitingToAppear = false;
-			Color color = sprite.getColor();
-			sprite.setColor(color.r, color.g, color.b, 1);
-			body.getFixtureList().get(0).setSensor(false);
-			setActive(true);
 		}
 		
 		return super.update();
 	}
 	
 	@Override
-	public void onBeginContact(Entity entity) {
-		if(waitingToAppear) {
-			return;
-		}
+	public void done() {
+		final Vector2 size = new Vector2(getWidth(), getHeight());
+		final Vector2 pos = new Vector2(getLeft(), getTop());
+		final EntityBodyDef bodyDef = new EntityBodyDef(pos, size, BodyType.StaticBody);
 		
+		Timer timer = new Timer();
+		timer.scheduleTask(new Task() {
+			@Override
+			public void run() {
+				DisappearingRectangleEntity entity = new DisappearingRectangleEntity(room, textureKey, bodyDef);
+				entity.setId(id);
+				entity.setBodyData();
+				room.addEntity(entity);
+			}			
+		}, DURATION / 1000);							
+		
+		super.done();
+	}
+	
+	@Override
+	public void onBeginContact(Entity entity) {
 		super.onBeginContact(entity);	
 		
 		if(isPlayer(entity) && !disappearing) {
 			disappearing = true;
 			startTime = TimeUtils.millis();
-		}
-	}
-	
-	@Override
-	public void onEndContact(Entity entity) {
-		if(waitingToAppear) {
-			return;
-		}
-		
-		super.onBeginContact(entity);	
-	}
-	
-	protected void setActive(boolean active) {
-		body.getFixtureList().get(0).setSensor(!active);
-		
-		if(!active) {
-			Player player = theGrid.getPlayer();
-			Vector2 pc = player.getBody().getWorldCenter();
-			player.getBody().applyForce(0, 0.001f, pc.x, pc.y, true);
 		}
 	}
 }

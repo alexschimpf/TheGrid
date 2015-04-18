@@ -56,7 +56,9 @@ public class TheGrid implements IUpdate, IDraw {
 		for(int row = 0; row < getNumRows(); row++) {
 			for(int col = 0; col < getNumCols(); col++) {
 				Room room = getRoomAt(row, col);
-				room.draw(batch);
+				if(room != null) {
+					room.draw(batch);
+				}
 			}
 		}
 		
@@ -72,7 +74,7 @@ public class TheGrid implements IUpdate, IDraw {
 		updateGlobals();
 
 		for(Room room : getRooms()) {
-			if(room.update()) {
+			if(room != null && room.update()) {
 				room.done();
 			}
 		}

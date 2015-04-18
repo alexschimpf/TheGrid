@@ -12,6 +12,8 @@ import core.Room;
 
 public class CircleEntity extends Entity {
 
+	protected boolean removeOnContact = false;
+	
 	protected CircleEntity(Room room, String textureKey, EntityBodyDef bodyDef) {
 		super(room);
 		
@@ -27,10 +29,12 @@ public class CircleEntity extends Entity {
 		Element custom = elem.getChildByName("custom");
 		String textureKey = custom.get("texture_key");
 		float radius = custom.getFloat("radius_scale") * Room.SQUARE_SIZE;
+		boolean removeOnContact = custom.getBoolean("remove_on_contact", false);
 		EntityBodyDef bodyDef = new EntityBodyDef(pos, new Vector2(radius * 2, radius * 2), BodyType.DynamicBody);
 		CircleEntity entity = new CircleEntity(room, textureKey, bodyDef);
 		entity.setId(id);
 		entity.setBodyData();
+		entity.setRemoveOnContact(removeOnContact);
 		
 		return entity;
 	}
@@ -38,6 +42,19 @@ public class CircleEntity extends Entity {
 	@Override
 	public String getType() {
 		return "circle";
+	}
+	
+	@Override
+	public void onBeginContact(Entity entity) {
+		super.onBeginContact(entity);
+		
+		if(removeOnContact && !isPlayer(entity)) {
+			getBodyData().setNeedsRemoved();
+		}
+	}
+	
+	public void setRemoveOnContact(boolean remove) {
+		removeOnContact = remove;
 	}
 	
 	@Override

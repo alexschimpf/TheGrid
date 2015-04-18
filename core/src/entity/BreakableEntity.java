@@ -14,21 +14,24 @@ public class BreakableEntity extends RectangleEntity {
 	protected float breakSpeed;
 	protected int startHealth;
 	protected int health;
+	protected String collisionEntity;
 	
-	protected BreakableEntity(Room room, float x, float y, float breakSpeed, int numShots) {
+	protected BreakableEntity(Room room, float x, float y, float breakSpeed, int numShots, String shotEntity) {
 		super(room, "breakable_block", BreakableEntity.getEntityBodyDef(x, y));
 		
 		this.breakSpeed = breakSpeed;
 		this.startHealth = numShots;
 		this.health = numShots;
+		this.collisionEntity = shotEntity;
 	}
 	
 	public static Entity build(String id, Room room, Vector2 pos, Element elem) {
 		Element custom = elem.getChildByName("custom");
 		float breakSpeed = custom.getFloat("break_speed", 0);
 		int numShots = custom.getInt("num_shots", -1);
+		String shotEntity = custom.get("shot_entity", null);
 		boolean frictionTop = custom.getBoolean("friction_top", false);
-		BreakableEntity entity = new BreakableEntity(room, pos.x, pos.y, breakSpeed, numShots);
+		BreakableEntity entity = new BreakableEntity(room, pos.x, pos.y, breakSpeed, numShots, shotEntity);
 		entity.setId(id);
 		entity.setBodyData();
 		
@@ -55,7 +58,9 @@ public class BreakableEntity extends RectangleEntity {
 		if((breakSpeed != 0 && theGrid.getPlayer().getLinearVelocity().y >= breakSpeed)) {
 			sounds.playSound("explosion");
 			getBodyData().setNeedsRemoved();	
-		} else if(isShot(entity) && startHealth > -1) {
+		} else if(((collisionEntity == null && isShot(entity)) || 
+				   (collisionEntity != null && entity.getType().equals(collisionEntity))) && 
+				   startHealth > -1) {
 			// TODO: This is getting called twice on each shot collision.
 			health--;
 			Color color = sprite.getColor();

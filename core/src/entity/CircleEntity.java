@@ -66,9 +66,9 @@ public class CircleEntity extends Entity {
 		
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
-		fixtureDef.density = 0.5f;
+		fixtureDef.density = 0.1f;
 		fixtureDef.friction = 0.2f;
-		fixtureDef.restitution = 0.7f;
+		fixtureDef.restitution = 0.45f;
 
 		return fixtureDef;
 	}

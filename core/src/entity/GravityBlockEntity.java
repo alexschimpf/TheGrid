@@ -19,7 +19,7 @@ public class GravityBlockEntity extends RectangleEntity {
 		float height = custom.getFloat("height_scale", 1) * Room.SQUARE_SIZE;
 		Vector2 size = new Vector2(width, height);
 		EntityBodyDef bodyDef = new EntityBodyDef(pos, size, BodyType.StaticBody);
-		GravityBlockEntity entity = new GravityBlockEntity(room, "green", bodyDef);
+		GravityBlockEntity entity = new GravityBlockEntity(room, "green_block", bodyDef);
 		entity.setId(id);
 		entity.setBodyData();
 		
@@ -34,7 +34,7 @@ public class GravityBlockEntity extends RectangleEntity {
 	@Override
 	public void onBeginContact(Entity entity) {
 		if(isShot(entity)) {
-			sounds.playSound("drop_player_trigger");
+			sounds.playSound("transport");
 			world.setGravity(world.getGravity().scl(-1));
 			theGrid.getPlayer().getBody().setAwake(true);
 		}

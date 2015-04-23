@@ -35,7 +35,7 @@ public class ProgrammableMovementEntity extends RectangleEntity {
         float height = Room.SQUARE_SIZE;
         EntityBodyDef bodyDef = new EntityBodyDef(pos, new Vector2(width, height), BodyType.KinematicBody);
         
-        ProgrammableMovementEntity entity = new ProgrammableMovementEntity(room, "white", bodyDef);
+        ProgrammableMovementEntity entity = new ProgrammableMovementEntity(room, "gray_block", bodyDef);
         entity.setId(id);
         entity.setBodyData();
         

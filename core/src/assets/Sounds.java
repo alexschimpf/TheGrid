@@ -12,11 +12,11 @@ public class Sounds {
 	private HashMap<String, Sound> soundMap = new HashMap<String, Sound>();
 
 	private Sounds() {
-		createSound("jump.wav", "jump");
+		createSound("jump_low.wav", "jump");
 		createSound("land.wav", "land");
 		createSound("shoot.wav", "shoot");
-		createSound("explosion.wav", "explosion");
-		createSound("drop_player_trigger.wav", "drop_player_trigger");
+		createSound("explode.wav", "explode");
+		createSound("transport.wav", "transport");
 	}
 
 	public static Sounds getInstance() {

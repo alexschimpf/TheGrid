@@ -19,7 +19,6 @@ public class CircleCreatorEntity extends MovingRectangleEntity {
 
 	public static Entity build(String id, Room room, Vector2 pos, Element elem) {
 		Element custom = elem.getChildByName("custom");
-		String textureKey = custom.get("texture_key");
 		
 		float width = custom.getFloat("width_scale", 1) * Room.SQUARE_SIZE;
 		float height = custom.getFloat("height_scale", 1) * Room.SQUARE_SIZE;
@@ -30,7 +29,7 @@ public class CircleCreatorEntity extends MovingRectangleEntity {
 		Vector2 startVelocity = extractVelocity(custom, "start_velocity");
 		Vector2 endVelocity = extractVelocity(custom, "end_velocity");
 		
-		CircleCreatorEntity entity = new CircleCreatorEntity(room, textureKey, bodyDef, startPos, endPos, startVelocity, endVelocity);
+		CircleCreatorEntity entity = new CircleCreatorEntity(room, "question_mark_block", bodyDef, startPos, endPos, startVelocity, endVelocity);
 		entity.setId(id);
 		entity.setBodyData();
 		entity.getBody().setLinearVelocity(startVelocity);
@@ -59,7 +58,7 @@ public class CircleCreatorEntity extends MovingRectangleEntity {
 				Vector2 pos = getRandomPos();
 				Vector2 size = new Vector2(Room.SQUARE_SIZE * 0.75f, Room.SQUARE_SIZE * 0.75f);
 				EntityBodyDef bodyDef = new EntityBodyDef(pos, size, BodyType.DynamicBody);
-				CircleEntity circle = new CircleEntity(room, "circle", bodyDef);
+				CircleEntity circle = new CircleEntity(room, "ball", bodyDef);
 				circle.setId(null);
 				circle.setBodyData();
 				circle.setRemoveOnContact(true);

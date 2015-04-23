@@ -7,11 +7,15 @@ import java.util.Iterator;
 import script.Script;
 import misc.BodyData;
 import misc.Globals;
+import assets.Textures;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 
 import entity.Entity;
 
@@ -22,12 +26,14 @@ public class Room implements IUpdate, IDraw {
 	protected Vector2 gridPos;
 	protected HashMap<String, Script> scriptMap = new HashMap<String, Script>();
 	protected HashMap<String, Entity> entityMap = new HashMap<String, Entity>();
+	protected Array<Sprite> borderLines = new Array<Sprite>();
 	protected Globals globals = Globals.getInstance();
 	protected TheGrid theGrid = globals.getTheGrid();
-	protected World world = theGrid.getWorld();
+	protected World world = theGrid.getWorld();	
 	
 	public Room(Vector2 gridPos) {
 		this.gridPos = gridPos;
+		initBorderLines();
 	}
 	
 	public static Vector2 getGridPosition(float x, float y) {
@@ -70,6 +76,8 @@ public class Room implements IUpdate, IDraw {
 		for(Entity entity : entityMap.values()) {
 			entity.draw(batch);
 		}
+		
+		drawBorderLines(batch);
 	}
 
 	@Override
@@ -196,6 +204,45 @@ public class Room implements IUpdate, IDraw {
 				script.done();
 				scriptsItr.remove();
 			}
+		}
+	}
+	
+	protected void initBorderLines() {
+		createHorLines(0, TheGrid.ROOM_NUM_SQUARES_WIDE, 0);
+		createHorLines(1, TheGrid.ROOM_NUM_SQUARES_WIDE - 1, 1);
+		createHorLines(0, TheGrid.ROOM_NUM_SQUARES_WIDE, TheGrid.ROOM_NUM_SQUARES_WIDE);
+		createHorLines(1, TheGrid.ROOM_NUM_SQUARES_WIDE - 1, TheGrid.ROOM_NUM_SQUARES_WIDE - 1);
+		createVertLines(0, TheGrid.ROOM_NUM_SQUARES_WIDE, 0);
+		createVertLines(1, TheGrid.ROOM_NUM_SQUARES_WIDE - 1, 1);
+		createVertLines(0, TheGrid.ROOM_NUM_SQUARES_WIDE, TheGrid.ROOM_NUM_SQUARES_WIDE);
+		createVertLines(1, TheGrid.ROOM_NUM_SQUARES_WIDE - 1, TheGrid.ROOM_NUM_SQUARES_WIDE - 1);
+	}
+	
+	protected void createHorLines(int startCol, int endCol, int row) {
+		TextureRegion horLine = Textures.getInstance().getTextureRegion("hor_line");
+		for(int col = startCol; col < endCol; col++) {
+			Vector2 pos = Room.getWorldPosition(this, row, col);
+			Sprite sprite = new Sprite(horLine);
+			sprite.setSize(Room.SQUARE_SIZE, Room.SQUARE_SIZE / 10);
+			sprite.setPosition(pos.x, pos.y);
+			borderLines.add(sprite);
+		}
+	}
+	
+	protected void createVertLines(int startRow, int endRow, int col) {
+		TextureRegion vertLine = Textures.getInstance().getTextureRegion("vert_line");
+		for(int row = startRow; row < endRow; row++) {
+			Vector2 pos = Room.getWorldPosition(this, row, col);
+			Sprite sprite = new Sprite(vertLine);
+			sprite.setSize(Room.SQUARE_SIZE / 10, Room.SQUARE_SIZE);
+			sprite.setPosition(pos.x, pos.y);
+			borderLines.add(sprite);
+		}
+	}
+	
+	protected void drawBorderLines(SpriteBatch batch) {
+		for(Sprite sprite : borderLines) {
+			sprite.draw(batch);
 		}
 	}
 }

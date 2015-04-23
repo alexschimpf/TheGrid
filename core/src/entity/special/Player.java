@@ -1,16 +1,13 @@
 package entity.special;
 
 import misc.Animation;
-import misc.BodyData;
 import misc.EntityBodyDef;
 
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
@@ -41,10 +38,13 @@ public class Player extends RectangleEntity {
 		
 		body.setAwake(true);
 		body.setBullet(true);
+		MassData md = body.getMassData();
+		md.mass = 5.6953125f;
+		body.setMassData(md);
 	}
 	
 	private static EntityBodyDef getEntityBodyDef(Vector2 worldPos) {
-		float width = Room.SQUARE_SIZE / 2;
+		float width = Room.SQUARE_SIZE * 0.75f;
 		float height = Room.SQUARE_SIZE;
 		return new EntityBodyDef(worldPos, new Vector2(width, height), BodyType.DynamicBody);
 	}
@@ -59,7 +59,7 @@ public class Player extends RectangleEntity {
 		if(!isJumping() && getLinearVelocity().x != 0) {
 			animation.play();
 		} else {
-			animation.stop();
+			//animation.stop();
 		}
 		
 		animation.update();
@@ -161,7 +161,7 @@ public class Player extends RectangleEntity {
 	
 	@Override
 	protected void createSprite(String textureKey, float x, float y, float width, float height) {
-		animation = new Animation("player.png", 1, 7, 0.09f, true);
+		animation = new Animation("player.png", 1, 4, 0.09f, true);
 		sprite = animation.getSprite();
 		sprite.setPosition(x, y);
 		sprite.setSize(width, height);
@@ -184,6 +184,8 @@ public class Player extends RectangleEntity {
 		fixtureDef.density = 1;
 		fixtureDef.friction = 0.1f;
 		fixtureDef.restitution = 0;
+		fixtureDef.filter.categoryBits = 0x0001;
+		fixtureDef.filter.maskBits = ~0x0002;
 
 		return fixtureDef;
 	}

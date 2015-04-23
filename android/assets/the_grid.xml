@@ -1,6 +1,6 @@
 <the_grid>
     <size num_rows="4" num_cols="4" />
-    <player grid_row="2" grid_col="0" row="1" col="11" />
+    <player grid_row="0" grid_col="0" row="10" col="8" />
     <rooms>
         <!--------------------------------------------------------------------------
         <!-- Room 0, 0
@@ -30,7 +30,7 @@
 		    <entities>
 		        <entity type="moving_rectangle" row="9" col="1">
 		           <custom>
-		               <texture_key>block</texture_key>
+		               <texture_key>gray_block</texture_key>
 		               <start_pos row="9" col="11" />
 		               <start_velocity x="14" y="0" />
 		               <end_pos row="9" col="1" />
@@ -39,7 +39,7 @@
 		        </entity>	
 		        <entity type="moving_rectangle" row="7" col="3">
 		           <custom>
-		               <texture_key>block</texture_key>
+		               <texture_key>gray_block</texture_key>
 		               <start_pos row="7" col="9" />
 		               <start_velocity x="16" y="0" />
 		               <end_pos row="7" col="1" />
@@ -48,7 +48,7 @@
 		        </entity>	
 		        <entity type="moving_rectangle" row="5" col="11">
 		           <custom>
-		               <texture_key>block</texture_key>
+		               <texture_key>gray_block</texture_key>
 		               <start_pos row="5" col="9" />
 		               <start_velocity x="5" y="0" />
 		               <end_pos row="5" col="5" />
@@ -57,7 +57,7 @@
 		        </entity>	
 		        <entity type="moving_rectangle" row="2" col="10">
 		           <custom>
-		               <texture_key>block</texture_key>
+		               <texture_key>gray_block</texture_key>
 		               <start_pos row="4" col="10" />
 		               <start_velocity x="0" y="8" />
 		               <end_pos row="2" col="10" />
@@ -83,7 +83,7 @@
 		    <entities>
 		        <entity type="visible_touched">
 		           <custom>
-		               <texture_key>block</texture_key>
+		               <texture_key>gray_block</texture_key>
 		           </custom>
 		           <locations>
 		               <location row="1" col="9" />
@@ -136,16 +136,20 @@
 		    </openings>
 		    <entities>
 		        <entity type="player_drop" row="6" col="1" />
-		        <entity type="rectangle" row="1" col="9">
+		        <entity type="rectangle">
 		           <custom>
-		               <texture_key>white</texture_key>
-		               <width_scale>1</width_scale>
-		               <height_scale>4</height_scale>
+		               <texture_key>gray_block</texture_key>
 		           </custom>
+		           <locations>
+		               <location row="1" col="9" />
+		               <location row="2" col="9" />
+		               <location row="3" col="9" />
+		               <location row="4" col="9" />
+		           </locations>
 		        </entity>	
 		        <entity type="rectangle">
 		           <custom>
-		               <texture_key>block</texture_key>
+		               <texture_key>gray_block</texture_key>
 		           </custom>
 		           <locations>
 		               <location row="7" col="10" />
@@ -155,7 +159,7 @@
 		        </entity>		        
                <entity type="circle" row="10" col="5">
 		           <custom>
-		               <texture_key>circle</texture_key>
+		               <texture_key>ball</texture_key>
 		               <radius_scale>0.5</radius_scale>
 		           </custom>
 		       </entity>
@@ -177,7 +181,7 @@
 		        <entity type="block_chain" id="0" row="7" col="1">
 		            <custom>
 		                <start_block_id>1</start_block_id>
-		                <texture_key>block</texture_key>
+		                <texture_key>gray_block</texture_key>
 		                <state_map>
 		                    <event state="0" next="8" />
 		                </state_map>
@@ -186,7 +190,7 @@
 		        <entity type="block_chain" id="1" row="10" col="1">
 		            <custom>
 		                <start_block_id>1</start_block_id>
-		                <texture_key>block</texture_key>
+		                <texture_key>gray_block</texture_key>
 		                <state_map>
 		                    <event state="0" next="3" />
 		                    <event state="1" next="4" />
@@ -196,7 +200,7 @@
 		        <entity type="block_chain" id="2" row="10" col="2">
 		            <custom>
 		                <start_block_id>1</start_block_id>
-		                <texture_key>block</texture_key>
+		                <texture_key>gray_block</texture_key>
 		                <state_map>
 		                    <event state="0" next="4" />
 		                </state_map>
@@ -205,7 +209,7 @@
 		        <entity type="block_chain" id="3" row="10" col="3">
 		            <custom>
 		                <start_block_id>1</start_block_id>
-		                <texture_key>block</texture_key>
+		                <texture_key>gray_block</texture_key>
 		                <state_map>
 		                    <event state="0" next="4" />
 		                </state_map>
@@ -214,7 +218,7 @@
 		        <entity type="block_chain" id="4" row="10" col="4">
 		            <custom>
 		                <start_block_id>1</start_block_id>
-		                <texture_key>block</texture_key>
+		                <texture_key>gray_block</texture_key>
 		                <state_map>
 		                    <event state="0" next="1" />
 		                    <event state="1" next="6" />
@@ -225,7 +229,7 @@
 		        <entity type="block_chain" id="5" row="10" col="7" >
 		            <custom>
 		                <start_block_id>1</start_block_id>
-		                <texture_key>block</texture_key>
+		                <texture_key>gray_block</texture_key>
 		                <state_map>
 		                    <event state="0" next="7" />
 		                    <event state="1" next="0" />
@@ -235,7 +239,7 @@
 		        <entity type="block_chain" id="6" row="10" col="8">
 		            <custom>
 		                <start_block_id>1</start_block_id>
-		                <texture_key>block</texture_key>
+		                <texture_key>gray_block</texture_key>
 		                <state_map>
 		                    <event state="0" next="2" />
 		                </state_map>
@@ -244,7 +248,7 @@
 		        <entity type="block_chain" id="7" row="10" col="10">
 		            <custom>
 		                <start_block_id>1</start_block_id>
-		                <texture_key>block</texture_key>
+		                <texture_key>gray_block</texture_key>
 		                <state_map>
 		                    <event state="0" next="5" />
 		                </state_map>
@@ -253,7 +257,7 @@
 		        <entity type="block_chain" id="8" row="7" col="10">
 		            <custom>
 		                <start_block_id>1</start_block_id>
-		                <texture_key>block</texture_key>
+		                <texture_key>gray_block</texture_key>
 		                <state_map>
 		                    <event state="0" next="9" />
 		                </state_map>
@@ -261,7 +265,7 @@
 		        </entity>
 		        <entity type="triggered_moving_rectangle" id="9" row="0" col="7">
 		       	    <custom>
-		                <texture_key>block</texture_key>
+		                <texture_key>gray_block</texture_key>
 		                <start_pos row="10" col="7" />
 		                <start_velocity x="0" y="8" />
 		                <end_pos row="1" col="7" />
@@ -289,16 +293,20 @@
 		               <num_shots>20</num_shots>
 		           </custom>
 		       </entity>
-		       <entity type="rectangle" row="1" col="9">
+		       <entity type="rectangle">
 		           <custom>
-		               <texture_key>white</texture_key>
-		               <width_scale>1</width_scale>
-		               <height_scale>4</height_scale>
+		               <texture_key>gray_block</texture_key>
 		           </custom>
+		           <locations>
+		               <location row="1" col="9" />
+		               <location row="2" col="9" />
+		               <location row="3" col="9" />
+		               <location row="4" col="9" />
+		           </locations>
 		       </entity>
 		       <entity type="rectangle">
 		           <custom>
-		               <texture_key>block</texture_key>
+		               <texture_key>gray_block</texture_key>
 		           </custom>
 		           <locations>
 		               <location row="1" col="1" />
@@ -337,24 +345,40 @@
 		        <entity type="gravity_block">
 		            <custom>
 		                <width_scale>1</width_scale>
-		                <height_scale>9</height_scale>
+		                <height_scale>1</height_scale>
 		            </custom>
 		            <locations>
 		                <location row="2" col="10" />
+		                <location row="3" col="10" />
+		                <location row="4" col="10" />
+		                <location row="5" col="10" />
+		                <location row="6" col="10" />
+		                <location row="7" col="10" />
+		                <location row="8" col="10" />
+		                <location row="9" col="10" />
+		                <location row="10" col="10" />
 		            </locations>
 		        </entity>
 		        <entity type="gravity_block">
 		            <custom>
 		                <width_scale>1</width_scale>
-		                <height_scale>10</height_scale>
+		                <height_scale>1</height_scale>
 		            </custom>
 		            <locations>
 		                <location row="1" col="1" />
+		                <location row="2" col="1" />
+		                <location row="3" col="1" />
+		                <location row="4" col="1" />
+		                <location row="5" col="1" />
+		                <location row="6" col="1" />
+		                <location row="7" col="1" />
+		                <location row="8" col="1" />
+		                <location row="9" col="1" />
+		                <location row="10" col="1" />
 		            </locations>
 		        </entity>
 		        <entity type="circle_creator" row="3" col="2">
 		           <custom>
-		               <texture_key>blue</texture_key>
 		               <start_pos row="3" col="2" />
 		               <start_velocity x="0" y="-10" />
 		               <end_pos row="8" col="2" />
@@ -378,10 +402,18 @@
 		        <opening row="10" col="11" />
 		        <opening row="1" col="0" />
 		    </openings>
+		    <scripts>
+		        <script type="show_message" id="2,1-s1" />
+		    </scripts>
 		    <entities>
+		        <entity type="sensor" row="1" col="0">
+		            <custom>
+		                <script_id>2,1-s1</script_id>
+		            </custom>
+		        </entity>
 		        <entity type="rectangle">
 		            <custom>
-		                <texture_key>white</texture_key>
+		                <texture_key>gray_block</texture_key>
 		                <width_scale>1</width_scale>
 		                <height_scale>1</height_scale>
 		            </custom>
@@ -394,7 +426,7 @@
 		        </entity>
 		        <entity type="disappearing_rectangle">
 		            <custom>
-		                <texture_key>block</texture_key>
+		                <texture_key>gray_block</texture_key>
 		                <width_scale>1</width_scale>
 		                <height_scale>1</height_scale>
 		            </custom>
@@ -475,11 +507,12 @@
 		    <entities>
 		        <entity type="rectangle">
 		            <custom>
-		                <texture_key>red</texture_key>
-		                <height_scale>3</height_scale>
+		                <texture_key>gray_block</texture_key>
 		            </custom>
 		            <locations>
 		                <location row="1" col="4" />
+		                <location row="2" col="4" />
+		                <location row="3" col="4" />
 		            </locations>
 		        </entity>
 		        <entity type="breakable_transport" row="10" col="0">

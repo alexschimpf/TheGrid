@@ -17,7 +17,7 @@ public class ProgrammableMovementTriggerEntity extends RectangleEntity {
         float size = Room.SQUARE_SIZE;
         EntityBodyDef bodyDef = new EntityBodyDef(pos, new Vector2(size, size), BodyType.StaticBody);
         
-        ProgrammableMovementTriggerEntity entity = new ProgrammableMovementTriggerEntity(room, "blue", bodyDef);
+        ProgrammableMovementTriggerEntity entity = new ProgrammableMovementTriggerEntity(room, "question_mark_block", bodyDef);
         entity.setId(id);
         entity.setBodyData();
         

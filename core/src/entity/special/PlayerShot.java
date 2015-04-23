@@ -1,9 +1,13 @@
 package entity.special;
 
+import particle.ParticleEffect;
 import misc.EntityBodyDef;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
@@ -35,11 +39,11 @@ public class PlayerShot extends RectangleEntity {
 	}
 	
 	public static EntityBodyDef getEntityBodyDef(Player player) {
-		float x = player.getFrontX() - SIZE;
+		float x = player.getCenterX();
 		float y = player.getCenterY() - (SIZE / 2);
 		
-		if(player.getDirection() == Direction.Right) {
-			x += SIZE;
+		if(player.getDirection() == Direction.Left) {
+			x -= SIZE;
 		}
 		
 		return new EntityBodyDef(new Vector2(x, y), new Vector2(SIZE, SIZE), BodyType.DynamicBody);
@@ -50,13 +54,26 @@ public class PlayerShot extends RectangleEntity {
 	}
 	
 	@Override
+	public boolean update() {
+		float scale = sprite.getScaleX();
+		sprite.setScale(Math.min(SIZE, scale + (40 * Gdx.graphics.getDeltaTime())));
+		
+		return super.update();
+	}
+	
+	@Override
 	public void onBeginContact(Entity entity) {
+		if(entity instanceof Player) {
+			return;
+		}
+		
 		Body entityBody = entity.getBody();
 		Fixture fixture = entityBody.getFixtureList().get(0);
 		if(entityBody != null && fixture != null && fixture.isSensor()) {
 			return;
 		}
 		
+		ParticleEffect.startParticleEffect(new Vector2(getCenterX(), getCenterY()));
 		getBodyData().setNeedsRemoved();
 	}
 	
@@ -80,6 +97,8 @@ public class PlayerShot extends RectangleEntity {
 		if(player.getDirection() == Direction.Left) {
 			vx = 0 - vx;
 		}
+		
+		sprite.setScale(0);
 				
 		setLinearVelocity(vx, vy);
 	}
@@ -90,5 +109,23 @@ public class PlayerShot extends RectangleEntity {
 		theGrid.addGlobalEntity(this);
 		
 		setLinearVelocity(vx, vy);
+	}
+	
+	@Override
+	protected FixtureDef createFixtureDef() {
+		PolygonShape shape = new PolygonShape();
+		
+		float width = (getWidth() / 2); //* 0.95f;
+		float height = (getHeight() / 2); //* 0.90f;
+		shape.setAsBox(width, height);
+		
+		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.shape = shape;
+		fixtureDef.density = 1;
+		fixtureDef.friction = 0;
+		fixtureDef.restitution = 0;
+		fixtureDef.filter.categoryBits = 0x0002;
+
+		return fixtureDef;
 	}
 }

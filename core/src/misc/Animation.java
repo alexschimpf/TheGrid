@@ -27,6 +27,7 @@ public class Animation implements IUpdate {
 	public Animation(String filename, int numRows, int numCols, float frameDuration, boolean loop) {
 		FileHandle file = Gdx.files.internal("textures/" + filename);
 		Texture sheet = new Texture(file);
+		sheet.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 		
 		int frameWidth = sheet.getWidth() / numCols;
 		int frameHeight = sheet.getHeight() / numRows;

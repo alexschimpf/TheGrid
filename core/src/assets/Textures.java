@@ -7,6 +7,7 @@ import misc.BodyEditorLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Textures {
@@ -17,13 +18,20 @@ public class Textures {
 	private BodyEditorLoader loader;
 
 	private Textures() {
-		createTextureRegion("player.png", "player");
-		createTextureRegion("block.png", "block");
-		createTextureRegion("circle.png", "circle");
-		createTextureRegion("breakable_block.png", "breakable_block");
-		createTextureRegion("drop_player_trigger.png", "player_drop");
-		createTextureRegion("background.jpg", "background");
+		createTextureRegion("player.png", "player");	
+		createTextureRegion("background.png", "background");
+		createTextureRegion("ball.png", "ball");
+		createTextureRegion("gray_block.png", "gray_block");
+		createTextureRegion("red_block.png", "red_block");
+		createTextureRegion("green_block.png", "green_block");
+		createTextureRegion("blue_block.png", "blue_block");
+		createTextureRegion("question_mark_block.png", "question_mark_block");
+		createTextureRegion("up_arrow_block.png", "up_arrow_block");
+		createTextureRegion("hor_line.png", "hor_line");
+		createTextureRegion("vert_line.png", "vert_line");
+		
 		createColorTextureRegion(1, 1, 1, 1, "white");
+		createColorTextureRegion(0.8f, 0.8f, 0.8f, 1, "light_gray");
 		createColorTextureRegion(1, 0, 0, 1, "red");
 		createColorTextureRegion(0, 1, 0, 1, "green");
 		createColorTextureRegion(0, 0, 1, 1, "blue");
@@ -51,6 +59,7 @@ public class Textures {
 	
 	private void createTextureRegion(String filename, String key) {
 		Texture texture = new Texture(Gdx.files.internal("textures/" + filename));
+		texture.setFilter(TextureFilter.Linear, TextureFilter.MipMapNearestLinear);
 		TextureRegion textureRegion = new TextureRegion(texture);
 		textureMap.put(key, textureRegion);
 		textureRegion.flip(false, true);

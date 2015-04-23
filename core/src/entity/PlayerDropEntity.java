@@ -14,7 +14,7 @@ import entity.special.Player;
 public class PlayerDropEntity extends RectangleEntity {
 
 	protected PlayerDropEntity(Room room, float x, float y) {
-		super(room, "player_drop", PlayerDropEntity.getEntityBodyDef(x, y));
+		super(room, "up_arrow_block", PlayerDropEntity.getEntityBodyDef(x, y));
 	}
 	
 	public static Entity build(String id, Room room, Vector2 pos, Element elem) {
@@ -37,7 +37,7 @@ public class PlayerDropEntity extends RectangleEntity {
 	@Override
 	public void onBeginContact(Entity entity) {
 		if(isShot(entity)) {
-			sounds.playSound("drop_player_trigger");
+			sounds.playSound("transport");
 			Gdx.app.postRunnable(new Runnable() {
 		        @Override
 		        public void run() {

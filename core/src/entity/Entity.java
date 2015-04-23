@@ -84,6 +84,10 @@ public abstract class Entity implements IUpdate, IDraw, ICollide {
 	}
 	
 	public BodyData getBodyData() {
+		if(body == null) {
+			return null;
+		}
+		
 		return (BodyData)body.getUserData();
 	}
 	

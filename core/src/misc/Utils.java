@@ -17,6 +17,22 @@ public class Utils {
 		return globals.getCameraTop() + (pixels * Globals.VIEWPORT_HEIGHT) / Gdx.graphics.getHeight();
 	}
 	
+	public static float getCameraTop() {
+		return globals.getCamera().position.y - (Globals.VIEWPORT_HEIGHT / 2);
+	}
+	
+	public static float getCameraBottom() {
+		return globals.getCamera().position.y + (Globals.VIEWPORT_HEIGHT / 2);
+	}
+	
+	public static float getCameraLeft() {
+		return globals.getCamera().position.x - (Globals.VIEWPORT_WIDTH / 2);
+	}
+	
+	public static float getCameraRight() {
+		return globals.getCamera().position.x + (Globals.VIEWPORT_WIDTH / 2);
+	}
+	
 	public static float[] getLocalVertices(PolygonShape shape) {
 		return Utils.getVertices(null, shape);
 	}

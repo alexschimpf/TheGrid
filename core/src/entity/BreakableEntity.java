@@ -17,7 +17,7 @@ public class BreakableEntity extends RectangleEntity {
 	protected String collisionEntity;
 	
 	protected BreakableEntity(Room room, float x, float y, float breakSpeed, int numShots, String shotEntity) {
-		super(room, "breakable_block", BreakableEntity.getEntityBodyDef(x, y));
+		super(room, "blue_block", BreakableEntity.getEntityBodyDef(x, y));
 		
 		this.breakSpeed = breakSpeed;
 		this.startHealth = numShots;
@@ -56,7 +56,7 @@ public class BreakableEntity extends RectangleEntity {
 		super.onBeginContact(entity);
 		
 		if((breakSpeed != 0 && theGrid.getPlayer().getLinearVelocity().y >= breakSpeed)) {
-			sounds.playSound("explosion");
+			sounds.playSound("explode");
 			getBodyData().setNeedsRemoved();	
 		} else if(((collisionEntity == null && isShot(entity)) || 
 				   (collisionEntity != null && entity.getType().equals(collisionEntity))) && 
@@ -67,7 +67,7 @@ public class BreakableEntity extends RectangleEntity {
 			sprite.setColor(color.r, color.g, color.b, color.a - (1.0f / startHealth));
 			
 			if(health <= 0) {
-				sounds.playSound("explosion");
+				sounds.playSound("explode");
 				getBodyData().setNeedsRemoved();
 			}
 		}

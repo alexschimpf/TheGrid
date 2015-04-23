@@ -30,6 +30,7 @@ public class Globals {
 	}
 	
 	public void updateCamera() {
+		
 		if(theGrid.getPlayer() != null) {
 			camera.position.x = theGrid.getPlayer().getCenterX();
 			camera.position.y = theGrid.getPlayer().getCenterY();

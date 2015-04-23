@@ -31,7 +31,7 @@ public class BreakableTransportEntity extends TransportChainEntity {
 		Vector2 transportPos = Room.getWorldPosition(room, transportRow, transportCol);
 		Vector2 size = new Vector2(Room.SQUARE_SIZE, Room.SQUARE_SIZE);
 		EntityBodyDef bodyDef = new EntityBodyDef(pos, size, BodyType.StaticBody);
-		BreakableTransportEntity entity = new BreakableTransportEntity(room, "block", bodyDef, transportPos, numShots);
+		BreakableTransportEntity entity = new BreakableTransportEntity(room, "blue_block", bodyDef, transportPos, numShots);
 		entity.setId(id);
 		entity.setBodyData();
 		
@@ -51,10 +51,10 @@ public class BreakableTransportEntity extends TransportChainEntity {
 			sprite.setColor(color.r, color.g, color.b, color.a - (1.0f / startHealth));
 			
 			if(health <= 0) {
-				sounds.playSound("explosion");
+				sounds.playSound("explode");
 				getBodyData().setNeedsRemoved();
 			} else {
-				sounds.playSound("drop_player_trigger");
+				sounds.playSound("transport");
 			}
 		}
 		

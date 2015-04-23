@@ -31,7 +31,7 @@ public class TransportChainEntity extends RectangleEntity {
 		Vector2 transportPos = Room.getWorldPosition(room, transportRow, transportCol);
 		Vector2 size = new Vector2(Room.SQUARE_SIZE, Room.SQUARE_SIZE);
 		EntityBodyDef bodyDef = new EntityBodyDef(pos, size, BodyType.StaticBody);
-		TransportChainEntity entity = new TransportChainEntity(room, "blue", bodyDef, transportPos);
+		TransportChainEntity entity = new TransportChainEntity(room, "", bodyDef, transportPos);
 		entity.setId(id);
 		entity.setBodyData();
 		
@@ -51,7 +51,7 @@ public class TransportChainEntity extends RectangleEntity {
 			Gdx.app.postRunnable(new Runnable() {
 			    @Override
 				public void run() {
-			    	sounds.playSound("drop_player_trigger");
+			    	sounds.playSound("transport");
 			    	updateChain(false);
 					entity.setPosition(transportPos.x, transportPos.y);
 				}
@@ -70,11 +70,11 @@ public class TransportChainEntity extends RectangleEntity {
 	}
 	
 	public void setColor(Color color) {
-		String textureKey = "white";
+		String textureKey = "gray_block";
 		if(color.equals(Color.BLUE)) {
-			textureKey = "blue";
+			textureKey = "blue_block";
 		} else if(color.equals(Color.RED)) {
-			textureKey = "red";
+			textureKey = "red_block";
 		}
 
 		TextureRegion tr = textures.getTextureRegion(textureKey);

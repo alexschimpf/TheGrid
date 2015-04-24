@@ -1,17 +1,22 @@
 <the_grid>
     <size num_rows="4" num_cols="4" />
-    <player grid_row="0" grid_col="0" row="10" col="8" />
+    <player grid_row="0" grid_col="0" row="10" col="5" />
     <rooms>
         <!--------------------------------------------------------------------------
         <!-- Room 0, 0
         <!-------------------------------------------------------------------------->
         <room row="0" col="0">
 		    <openings>
-		        <opening row="11" col="8" />
+		        <opening row="11" col="7" />
 		    </openings>
 		    <entities>
-		       <entity type="player_drop" row="10" col="10" />
-		       <entity type="breakable" row="11" col="8">
+		       <entity type="rectangle" row="10" col="10">
+		           <custom>
+		               <texture_key>gray_block</texture_key>
+		           </custom>
+		       </entity>
+		       <entity type="player_drop" row="10" col="9" />
+		       <entity type="breakable" row="11" col="7">
 		           <custom>
 		               <friction_top>true</friction_top>
 		               <break_speed>50</break_speed>
@@ -131,9 +136,13 @@
         <!-------------------------------------------------------------------------->
 		<room row="1" col="0">
 		    <openings>
-		        <opening row="0" col="8" />
+		        <opening row="0" col="7" />
 		        <opening row="1" col="11" />
 		    </openings>
+		    <chain_pads>
+		        <chain_pad start_row="0" end_row="3" start_col="8" end_col="8" friction="false" correct="true" />
+		        <chain_pad start_row="0" end_row="2" start_col="9" end_col="9" friction="false" />
+		    </chain_pads>
 		    <entities>
 		        <entity type="player_drop" row="6" col="1" />
 		        <entity type="rectangle">
@@ -141,18 +150,10 @@
 		               <texture_key>gray_block</texture_key>
 		           </custom>
 		           <locations>
-		               <location row="1" col="9" />
-		               <location row="2" col="9" />
+		               <location row="1" col="8" />
+		               <location row="2" col="8" />
+		               <location row="3" col="8" />
 		               <location row="3" col="9" />
-		               <location row="4" col="9" />
-		           </locations>
-		        </entity>	
-		        <entity type="rectangle">
-		           <custom>
-		               <texture_key>gray_block</texture_key>
-		           </custom>
-		           <locations>
-		               <location row="7" col="10" />
 		               <location row="5" col="1" />
 		               <location row="7" col="1" />
 		           </locations>

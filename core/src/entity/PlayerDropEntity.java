@@ -44,9 +44,14 @@ public class PlayerDropEntity extends RectangleEntity {
 		            float roomTop = room.getTop();
 		     		Player player = Globals.getInstance().getTheGrid().getPlayer();
 		     		float newTop = roomTop + Room.SQUARE_SIZE;
+		     		Vector2 worldPos = new Vector2(player.getLeft(), newTop);
+		     		
+		     		while(room.entityExistsInArea(worldPos, player.getWidth() * 0.75f, player.getHeight())) {
+		     			worldPos.y += Room.SQUARE_SIZE;
+		     		}
 		     		
 		     		Vector2 playerVelocity = player.getBody().getLinearVelocity();
-		     		player.setPosition(player.getLeft(), newTop);
+		     		player.setPosition(worldPos.x, worldPos.y);
 		     		player.getBody().setLinearVelocity(playerVelocity.x, playerVelocity.y + 0.01f);
 		         }
 		     });

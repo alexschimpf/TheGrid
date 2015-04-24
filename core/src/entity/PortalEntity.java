@@ -1,11 +1,14 @@
 package entity;
 
+import particle.ParticleEffect;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.XmlReader.Element;
 
+import misc.Animation;
 import misc.EntityBodyDef;
 import core.Room;
 import entity.special.PlayerShot;
@@ -15,10 +18,10 @@ public class PortalEntity extends RectangleEntity {
 	protected enum Direction {
 		Left, Right, Up, Down
 	}
-	
-	protected float blue = 0;
+
 	protected String exitId;
 	protected Direction exitDirection;
+	protected Animation animation;
 	
 	protected PortalEntity(Room room, String textureKey, EntityBodyDef bodyDef, String exitId, String exitDirection) {
 		super(room, textureKey, bodyDef);
@@ -33,6 +36,11 @@ public class PortalEntity extends RectangleEntity {
 				}
 			}
 		}
+		
+		if(this.exitDirection == Direction.Up || this.exitDirection == Direction.Down) {
+			Vector2 pos = body.getPosition();
+			body.setTransform(pos.x + (getHeight() / 4), pos.y - (getWidth() / 2), body.getAngle() + (MathUtils.degreesToRadians * 90));
+		}
 	}
 
 	public static Entity build(String id, Room room, Vector2 pos, Element elem) {
@@ -40,33 +48,22 @@ public class PortalEntity extends RectangleEntity {
 		String exitId = custom.get("exit_id", null);
 		String exitDirection = custom.get("exit_direction");
 		
-		Vector2 size = determineSize(exitDirection);
+		Vector2 size = new Vector2(Room.SQUARE_SIZE / 2, Room.SQUARE_SIZE);
 		EntityBodyDef bodyDef = new EntityBodyDef(pos, size, BodyType.StaticBody);
-		PortalEntity entity = new PortalEntity(room, "blue", bodyDef, exitId, exitDirection);
+		PortalEntity entity = new PortalEntity(room, "portal", bodyDef, exitId, exitDirection);
 		entity.setId(id);
 		entity.setBodyData();
 		
 		return entity;
 	}
 	
-	protected static Vector2 determineSize(String exitDirection) {
-		float width, height;
-		
-		if(exitDirection.equals("left") || exitDirection.equals("right")) {
-			width = Room.SQUARE_SIZE / 2;
-			height = Room.SQUARE_SIZE;
-		} else {
-			width = Room.SQUARE_SIZE;
-			height = Room.SQUARE_SIZE / 2;
-		}
-		
-		return new Vector2(width, height);
-	}
-	
 	@Override
 	public boolean update() {
-		blue += 0.1;
-		sprite.setColor(0, 0, Math.abs(MathUtils.sin(blue)), 1);
+		animation.update();
+		sprite = animation.getSprite();
+		if(exitDirection == Direction.Up || exitDirection == Direction.Down) {
+			sprite.setRotation(90);
+		}
 		
 		return super.update();
 	}
@@ -122,8 +119,21 @@ public class PortalEntity extends RectangleEntity {
 	    			entity.setPosition(left, top);
 	    			entity.setLinearVelocity(vx, vy);	
 	    		}
+        		
+        		ParticleEffect.startParticleEffect("light_gray", new Vector2(entity.getCenterX(), entity.getCenterY()));
 	        }
 		});
+	}
+	
+	@Override
+	protected void createSprite(String textureKey, float x, float y, float width, float height) {
+		animation = new Animation("portal.png", 1, 4, 0.1f, true);
+		sprite = animation.getSprite();
+		sprite.setPosition(x, y);
+		sprite.setSize(width, height);
+		sprite.setOrigin(width / 2, height / 2);
+		sprite.setFlip(false, true);
+		animation.play();
 	}
 	
 	protected Vector2 determineExitVelocity() {

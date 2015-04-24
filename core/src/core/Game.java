@@ -125,9 +125,8 @@ public class Game extends ApplicationAdapter {
 		batch.enableBlending();
 		batch.begin(); {
 			//background.draw(globals.getCamera(), batch);
-			theGrid.draw(batch);
-			
 			drawParticleEffects(batch);
+			theGrid.draw(batch);		
 		} batch.end();
 		
 		//debugRenderer.render(theGrid.getWorld(), debugMatrix);

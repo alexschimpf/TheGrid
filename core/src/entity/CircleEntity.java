@@ -1,5 +1,6 @@
 package entity;
 
+import particle.ParticleEffect;
 import misc.EntityBodyDef;
 
 import com.badlogic.gdx.math.Vector2;
@@ -49,6 +50,7 @@ public class CircleEntity extends Entity {
 		super.onBeginContact(entity);
 		
 		if(removeOnContact && !isPlayer(entity)) {
+			ParticleEffect.startParticleEffect("ball", new Vector2(getCenterX(), getCenterY()));
 			getBodyData().setNeedsRemoved();
 		}
 	}
@@ -68,7 +70,7 @@ public class CircleEntity extends Entity {
 		fixtureDef.shape = shape;
 		fixtureDef.density = 0.1f;
 		fixtureDef.friction = 0.2f;
-		fixtureDef.restitution = 0.45f;
+		fixtureDef.restitution = 0.5f;
 
 		return fixtureDef;
 	}

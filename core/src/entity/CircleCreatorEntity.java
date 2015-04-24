@@ -1,5 +1,6 @@
 package entity;
 
+import misc.Animation;
 import misc.EntityBodyDef;
 
 import com.badlogic.gdx.Gdx;
@@ -12,6 +13,8 @@ import core.Room;
 
 public class CircleCreatorEntity extends MovingRectangleEntity {
 
+	private Animation animation;
+	
 	protected CircleCreatorEntity(Room room, String textureKey, EntityBodyDef bodyDef, Vector2 startPos, Vector2 endPos,
 			                      Vector2 startVelocity, Vector2 endVelocity) {
 		super(room, textureKey, bodyDef, startPos, endPos, startVelocity, endVelocity);
@@ -43,12 +46,33 @@ public class CircleCreatorEntity extends MovingRectangleEntity {
 	}
 	
 	@Override
+	public boolean update() {
+		animation.update();
+		sprite = animation.getSprite();
+		
+		return super.update();
+	}
+	
+	@Override
 	public void onBeginContact(Entity entity) {
 		super.onBeginContact(entity);
 		
-		if(isShot(entity) && !circleExists()) {
-			createRandomCircle();
+		if(isShot(entity)) {
+			animation.play();
+			if(!circleExists()) {
+				createRandomCircle();
+			}
 		}
+	}
+	
+	@Override
+	protected void createSprite(String textureKey, float x, float y, float width, float height) {
+		animation = new Animation("question_mark_block.png", 1, 5, 0.075f, false);
+		sprite = animation.getSprite();
+		sprite.setPosition(x, y);
+		sprite.setSize(width, height);
+		sprite.setOrigin(width / 2, height / 2);
+		sprite.setFlip(false, true);
 	}
 	
 	protected void createRandomCircle() {

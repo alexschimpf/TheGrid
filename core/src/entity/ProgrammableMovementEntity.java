@@ -26,7 +26,7 @@ public class ProgrammableMovementEntity extends RectangleEntity {
         super(room, textureKey, bodyDef);
         
         directionSprite = new Sprite(textures.getTextureRegion("red"));
-        directionSprite.setSize(getWidth() / 4, getHeight());
+        directionSprite.setSize(getWidth() / 4, getHeight() * 0.9f);
 		directionSprite.setFlip(false, true);
     }
         
@@ -61,7 +61,7 @@ public class ProgrammableMovementEntity extends RectangleEntity {
     		return false;
     	}
     	
-    	float top = getTop();
+    	float top = getTop() + ((getHeight() - directionSprite.getHeight()) / 2);
 		float left = getLeft();
 		float width = getWidth();
     	

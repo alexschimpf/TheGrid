@@ -27,6 +27,7 @@ public class TheGrid implements IUpdate, IDraw {
 	private Room[][] grid;
 	
 	private Array<Entity> globalEntities = new Array<Entity>();
+	private Array<Vector2> roomOpenings = new Array<Vector2>();
 	
 	public TheGrid() {
 		world = new World(new Vector2(0, DEFAULT_GRAVITY), true);
@@ -90,6 +91,10 @@ public class TheGrid implements IUpdate, IDraw {
 	public void build() {
 		TheGridFileParser parser = new TheGridFileParser(this);
 		parser.parseFile("the_grid.xml");
+		
+		for(Room room : getRooms()) {
+			room.createBorderLines();
+		}
 	}
 	
 	public void initGrid(int numRows, int numCols) {
@@ -109,6 +114,8 @@ public class TheGrid implements IUpdate, IDraw {
 	public void addRoom(Room room) {
 		Vector2 roomPos = room.getGridPosition();
 		grid[(int)roomPos.x][(int)roomPos.y] = room;
+		
+		roomOpenings.addAll(room.getOpenings());
 	}
 	
 	public Array<Room> getRooms() {
@@ -146,6 +153,10 @@ public class TheGrid implements IUpdate, IDraw {
 	
 	public Player getPlayer() {
 		return player;
+	}
+	
+	public Array<Vector2> getRoomOpenings() {
+		return roomOpenings;
 	}
 	
 	protected void updateGlobals() {

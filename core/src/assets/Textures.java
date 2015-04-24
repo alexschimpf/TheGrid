@@ -27,6 +27,7 @@ public class Textures {
 		createTextureRegion("blue_block.png", "blue_block");
 		createTextureRegion("question_mark_block.png", "question_mark_block");
 		createTextureRegion("up_arrow_block.png", "up_arrow_block");
+		createTextureRegion("portal.png", "portal");
 		createTextureRegion("hor_line.png", "hor_line");
 		createTextureRegion("vert_line.png", "vert_line");
 		

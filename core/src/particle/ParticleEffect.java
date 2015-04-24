@@ -23,8 +23,7 @@ public class ParticleEffect implements IUpdate, IDraw {
 	
 	protected Array<Particle> particles = new Array<Particle>();
 	
-	public ParticleEffect(Vector2 position) {
-		int numParticles = MathUtils.random(MIN_NUM_PARTICLES, MAX_NUM_PARTICLES);
+	public ParticleEffect(String textureKey, Vector2 position, int numParticles) {
 		for(int i = 0; i < numParticles; i++) {
 			float squareSize = Room.SQUARE_SIZE;
 			float vx = MathUtils.random(squareSize / 6, squareSize);
@@ -41,13 +40,22 @@ public class ParticleEffect implements IUpdate, IDraw {
 			
 			float duration = MathUtils.random(MIN_PARTICLE_DURATION, MAX_PARTICLE_DURATION);
 			
-			Particle particle = new Particle(position, velocity, duration);
+			Particle particle = new Particle(textureKey, position, velocity, duration);
 			particles.add(particle);
 		}
 	}
 	
-	public static void startParticleEffect(Vector2 position) {
-		ParticleEffect effect = new ParticleEffect(position);
+	public ParticleEffect(String textureKey, Vector2 position) {
+		this(textureKey, position, MathUtils.random(MIN_NUM_PARTICLES, MAX_NUM_PARTICLES));
+	}
+	
+	public static void startParticleEffect(String textureKey, Vector2 position, int numParticles) {
+		ParticleEffect effect = new ParticleEffect(textureKey, position, numParticles);
+		Globals.getInstance().getGame().addParticleEffect(effect);
+	}
+	
+	public static void startParticleEffect(String textureKey, Vector2 position) {
+		ParticleEffect effect = new ParticleEffect(textureKey, position);
 		Globals.getInstance().getGame().addParticleEffect(effect);
 	}
 	

@@ -4,11 +4,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.XmlReader.Element;
 
+import misc.Animation;
 import misc.EntityBodyDef;
 import core.Room;
 
 public class ProgrammableMovementTriggerEntity extends RectangleEntity {
 
+	private Animation animation;
+	
 	protected ProgrammableMovementTriggerEntity(Room room, String textureKey, EntityBodyDef bodyDef) {
 		super(room, textureKey, bodyDef);
 	}
@@ -25,12 +28,36 @@ public class ProgrammableMovementTriggerEntity extends RectangleEntity {
     }
 	
 	@Override
+	public String getType() {
+		return "programmable_movement_trigger";
+	}
+	
+	@Override
+	public boolean update() {
+		animation.update();
+		sprite = animation.getSprite();
+		
+		return super.update();
+	}
+	
+	@Override
 	public void onBeginContact(Entity entity) {
 		super.onBeginContact(entity);
 		
 		if(isShot(entity)) {
+			animation.play();
 			trigger();
 		}
+	}
+	
+	@Override
+	protected void createSprite(String textureKey, float x, float y, float width, float height) {
+		animation = new Animation("question_mark_block.png", 1, 5, 0.075f, false);
+		sprite = animation.getSprite();
+		sprite.setPosition(x, y);
+		sprite.setSize(width, height);
+		sprite.setOrigin(width / 2, height / 2);
+		sprite.setFlip(false, true);
 	}
 	
 	protected void trigger() {

@@ -20,7 +20,7 @@ public class Animation implements IUpdate {
 	
 	private float stateTime;
 	private boolean loop;
-	private State state = State.Playing;
+	private State state = State.Stopped;
 	private Sprite sprite;
 	private com.badlogic.gdx.graphics.g2d.Animation animation;
 	
@@ -69,6 +69,7 @@ public class Animation implements IUpdate {
 		TextureRegion textureRegion = animation.getKeyFrame(stateTime, loop);
 		textureRegion.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		sprite.setRegion(textureRegion);
+		sprite.setFlip(false, true);
 		return sprite;
 	}
 	
@@ -77,6 +78,7 @@ public class Animation implements IUpdate {
 	}
 	
 	public void play() {
+		stateTime = 0;
 		state = State.Playing;
 	}
 	

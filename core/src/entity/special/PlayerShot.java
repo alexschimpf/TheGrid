@@ -73,7 +73,7 @@ public class PlayerShot extends RectangleEntity {
 			return;
 		}
 		
-		ParticleEffect.startParticleEffect(new Vector2(getCenterX(), getCenterY()));
+		ParticleEffect.startParticleEffect("light_gray", new Vector2(getCenterX(), getCenterY()));
 		getBodyData().setNeedsRemoved();
 	}
 	
@@ -93,7 +93,7 @@ public class PlayerShot extends RectangleEntity {
 		theGrid.addGlobalEntity(this);
 		
 		float vy = player.getLinearVelocity().y * 0.75f;
-		float vx = PlayerShot.SPEED;
+		float vx = PlayerShot.SPEED * 1.25f;
 		if(player.getDirection() == Direction.Left) {
 			vx = 0 - vx;
 		}

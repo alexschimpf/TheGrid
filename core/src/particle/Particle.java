@@ -21,12 +21,12 @@ public class Particle implements IUpdate, IDraw {
 	protected Vector2 velocity;
 	protected Textures textures = Textures.getInstance();
 	
-	public Particle(Vector2 position, Vector2 velocity, float duration) {
+	public Particle(String textureKey, Vector2 position, Vector2 velocity, float duration) {
 		this.startTime = TimeUtils.millis();
 		this.velocity = velocity;
 		this.duration = duration;
 		
-		sprite = new Sprite(textures.getTextureRegion("light_gray"));
+		sprite = new Sprite(textures.getTextureRegion(textureKey));
 		sprite.setSize(Room.SQUARE_SIZE / 10, Room.SQUARE_SIZE / 10);
 		sprite.setPosition(position.x, position.y);
 	}

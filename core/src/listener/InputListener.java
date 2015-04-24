@@ -56,7 +56,11 @@ public class InputListener implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		if(screenY < Gdx.graphics.getHeight() / 2) {
+		boolean right = screenX > Gdx.graphics.getWidth() / 2;
+		boolean top = screenY < Gdx.graphics.getHeight() / 2;
+		if(right && top) {
+			player.shoot();
+		} else if(!right && top) {
 			player.jump();
 		}
 
@@ -65,7 +69,9 @@ public class InputListener implements InputProcessor {
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		if(screenY < Gdx.graphics.getHeight() / 2) {
+		boolean left = screenX < Gdx.graphics.getWidth() / 2;
+		boolean top = screenY < Gdx.graphics.getHeight() / 2;
+		if(left && top) {
 			player.stopJump();
 		}
 		return true;
@@ -97,7 +103,7 @@ public class InputListener implements InputProcessor {
 		
 		if(Gdx.input.isKeyPressed(Keys.RIGHT) || right) {
 			player.moveRight();
-		} else if(Gdx.input.isKeyPressed(Keys.LEFT) || left) {
+		}if(Gdx.input.isKeyPressed(Keys.LEFT) || left) {
 			player.moveLeft();
 		} else {
 			player.stopMove();

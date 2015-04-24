@@ -1,5 +1,6 @@
 package entity.special;
 
+import particle.ParticleEffect;
 import misc.Animation;
 import misc.EntityBodyDef;
 
@@ -98,6 +99,7 @@ public class Player extends RectangleEntity {
 			float x = body.getWorldCenter().x;
 			float y = body.getWorldCenter().y;
 			body.applyLinearImpulse(0, JUMP_IMPULSE, x, y, true);
+			ParticleEffect.startParticleEffect("light_gray", new Vector2(getCenterX(), getBottom()), 7);
 		}
 	}
 	
@@ -166,7 +168,6 @@ public class Player extends RectangleEntity {
 		sprite.setPosition(x, y);
 		sprite.setSize(width, height);
 		sprite.setOrigin(width / 2, height / 2);
-		sprite.setFlip(false, true);
 		
 		animation.play();
 	}

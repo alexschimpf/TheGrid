@@ -11,6 +11,7 @@ import listener.InputListener;
 import misc.Globals;
 import assets.Textures;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -27,12 +28,15 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
@@ -56,6 +60,8 @@ public class Game extends ApplicationAdapter {
 	private Music music;
 	private Stage stage;
 	private InputListener inputListener;
+	private Button moveLeftButton;
+	private Button moveRightButton;
 	private Array<ParticleEffect> particleEffects = new Array<ParticleEffect>();
 	
 	@Override
@@ -83,6 +89,10 @@ public class Game extends ApplicationAdapter {
 		music.setPosition(5);
 		
 		createBackground();
+		
+		if(Gdx.app.getType() == ApplicationType.Android) {
+			createUI();
+		}
 	}
 
 	@Override
@@ -142,6 +152,11 @@ public class Game extends ApplicationAdapter {
 		
 		inputListener.update();
 		
+		// TODO:: Get this check outta here.
+		if(Gdx.app.getType() == ApplicationType.Android) {
+			checkPressedButtons();
+		}
+		
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 	}
 	
@@ -175,6 +190,18 @@ public class Game extends ApplicationAdapter {
 		background.addLayers(layer);
 	}
 	
+	private void createUI() {
+		float width = Gdx.graphics.getWidth();
+		float height = Gdx.graphics.getHeight();
+		Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+		Player player = theGrid.getPlayer();
+		createMoveButton(true, width, height, skin, player);
+		createMoveButton(false, width, height, skin, player);
+		createJumpButton(width, height, skin, player);
+		createShootButton(width, height, skin, player);
+		
+	}
+	
 	private void updateParticleEffects() {
 		Iterator<ParticleEffect> particleEffectsItr = particleEffects.iterator();
 		while(particleEffectsItr.hasNext()) {
@@ -190,6 +217,107 @@ public class Game extends ApplicationAdapter {
 	private void drawParticleEffects(SpriteBatch batch) {
 		for(ParticleEffect effect : particleEffects) {
 			effect.draw(batch);
+		}
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	// TODO: This shouldn't be in this class.
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	private void createMoveButton(boolean left, float screenWidth, float screenHeight, Skin skin, final Player player) {
+		Button button = new Button(skin);
+		button.setColor(1, 1, 1, 0.3f);
+		button.setSize(screenWidth / 7.5f, screenHeight / 5);
+		float width = button.getWidth();
+		float height = button.getHeight();
+		
+		if(left) {
+			button.setPosition(width / 4, height * 0.25f);
+		} else {
+			button.setPosition(width * 1.6f, height * 0.25f);
+		}
+		
+		com.badlogic.gdx.scenes.scene2d.InputListener inputListener;
+		if(left) {
+			inputListener = new com.badlogic.gdx.scenes.scene2d.InputListener() {
+				@Override
+				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+					player.moveLeft();
+					return true;
+				}
+			};
+		} else {
+			inputListener = new com.badlogic.gdx.scenes.scene2d.InputListener() {
+				@Override
+				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+					player.moveRight();
+					return true;
+				}
+			};
+		}
+		
+		if(left) {
+			moveLeftButton = button;
+		} else {
+			moveRightButton = button;
+		}
+		
+		button.addListener(inputListener);
+		stage.addActor(button);
+	}
+	
+	private void createJumpButton(float screenWidth, float screenHeight, Skin skin, final Player player) {
+		Button button = new Button(skin);
+		button.setColor(1, 1, 1, 0.3f);
+		button.setSize(screenWidth / 7.5f, screenHeight / 5);
+		float width = button.getWidth();
+		float height = button.getHeight();
+		
+		button.setPosition(screenWidth - (width * 2.6f), height * 0.25f);
+
+		button.addListener(new com.badlogic.gdx.scenes.scene2d.InputListener() {
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				player.jump();
+				return true;
+			}
+			
+			@Override
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				player.stopJump();
+			}
+		});
+		stage.addActor(button);
+	}
+	
+	private void createShootButton(float screenWidth, float screenHeight, Skin skin, final Player player) {
+		Button button = new Button(skin);
+		button.setColor(1, 1, 1, 0.3f);
+		button.setSize(screenWidth / 7.5f, screenHeight / 5);
+		float width = button.getWidth();
+		float height = button.getHeight();
+		
+		button.setPosition(screenWidth - (width * 1.25f), height);
+
+		button.addListener(new com.badlogic.gdx.scenes.scene2d.InputListener() {
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				player.shoot();
+				return true;  
+			}
+		});
+		stage.addActor(button);
+	}
+	
+	private void checkPressedButtons() {
+		Player player = theGrid.getPlayer();
+		
+		if(moveLeftButton.isPressed()) {
+			player.moveLeft();
+		}
+		
+		if(moveRightButton.isPressed()) {
+			player.moveRight();
 		}
 	}
 }

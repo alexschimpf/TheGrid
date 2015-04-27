@@ -68,17 +68,10 @@ public class InputListener extends com.badlogic.gdx.scenes.scene2d.InputListener
 	
 	public void update() {
 		Player player = theGrid.getPlayer();
-		
-		boolean touched = Gdx.input.isTouched();
-		float x = Gdx.input.getX();
-		float y = Gdx.input.getY();
-		boolean lowerScreenHalf = y > Gdx.graphics.getHeight() / 2;
-		boolean right = lowerScreenHalf && touched && x > Gdx.graphics.getWidth() / 2;
-		boolean left = lowerScreenHalf && touched && x <= Gdx.graphics.getWidth() / 2;
-				
-		if(Gdx.input.isKeyPressed(Keys.RIGHT) || right) {
+
+		if(Gdx.input.isKeyPressed(Keys.RIGHT)) {
 			player.moveRight();
-		} else if(Gdx.input.isKeyPressed(Keys.LEFT) || left) {
+		} else if(Gdx.input.isKeyPressed(Keys.LEFT)) {
 			player.moveLeft();
 		} else {
 			player.stopMove();

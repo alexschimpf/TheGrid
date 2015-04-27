@@ -60,25 +60,12 @@ public class InputListenerOld implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		boolean right = screenX > Gdx.graphics.getWidth() / 2;
-		boolean top = screenY < Gdx.graphics.getHeight() / 2;
-		if(right && top) {
-			player.shoot();
-		} else if(!right && top) {
-			player.jump();
-		}
-
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		boolean left = screenX < Gdx.graphics.getWidth() / 2;
-		boolean top = screenY < Gdx.graphics.getHeight() / 2;
-		if(left && top) {
-			player.stopJump();
-		}
-		return true;
+		return false;
 	}
 
 	@Override
@@ -96,17 +83,10 @@ public class InputListenerOld implements InputProcessor {
 		return false;
 	}
 	
-	public void update() {
-		boolean touched = Gdx.input.isTouched();
-		float x = Gdx.input.getX();
-		float y = Gdx.input.getY();
-		boolean lowerScreenHalf = y > Gdx.graphics.getHeight() / 2;
-		boolean right = lowerScreenHalf && touched && x > Gdx.graphics.getWidth() / 2;
-		boolean left = lowerScreenHalf && touched && x <= Gdx.graphics.getWidth() / 2;
-				
-		if(Gdx.input.isKeyPressed(Keys.RIGHT) || right) {
+	public void update() {		
+		if(Gdx.input.isKeyPressed(Keys.RIGHT)) {
 			player.moveRight();
-		} else if(Gdx.input.isKeyPressed(Keys.LEFT) || left) {
+		} else if(Gdx.input.isKeyPressed(Keys.LEFT)) {
 			player.moveLeft();
 		} else {
 			player.stopMove();

@@ -50,7 +50,7 @@ public class CircleEntity extends Entity {
 		super.onBeginContact(entity);
 		
 		if(removeOnContact && !isPlayer(entity)) {
-			ParticleEffect.startParticleEffect("ball", new Vector2(getCenterX(), getCenterY()));
+			ParticleEffect.startParticleEffect("ball", getCenter());
 			getBodyData().setNeedsRemoved();
 		}
 	}

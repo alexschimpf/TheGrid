@@ -67,7 +67,7 @@ public class DisappearingRectangleEntity extends RectangleEntity {
 	@Override
 	public void done() {
 		final Vector2 size = new Vector2(getWidth(), getHeight());
-		final Vector2 pos = new Vector2(getLeft(), getTop());
+		final Vector2 pos = getLeftTop();
 		final EntityBodyDef bodyDef = new EntityBodyDef(pos, size, BodyType.StaticBody);
 		
 		Timer timer = new Timer();

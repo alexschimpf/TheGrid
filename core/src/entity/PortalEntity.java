@@ -120,7 +120,7 @@ public class PortalEntity extends RectangleEntity {
 	    			entity.setLinearVelocity(vx, vy);	
 	    		}
         		
-        		ParticleEffect.startParticleEffect("light_gray", new Vector2(entity.getCenterX(), entity.getCenterY()));
+        		ParticleEffect.startParticleEffect("light_gray", entity.getCenter());
 	        }
 		});
 	}

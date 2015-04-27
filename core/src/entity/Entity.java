@@ -150,6 +150,14 @@ public abstract class Entity implements IUpdate, IDraw, ICollide {
 		return body.getPosition().y;
 	}
 	
+	public Vector2 getCenter() {
+		return body.getPosition();
+	}
+	
+	public Vector2 getLeftTop() {
+		return new Vector2(getLeft(), getTop());
+	}
+	
 	public void setId(String id) {
 		if(id == null) {
 			id = Integer.toString(hashCode());

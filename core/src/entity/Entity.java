@@ -45,12 +45,12 @@ public abstract class Entity implements IUpdate, IDraw, ICollide {
 		sprite.setPosition(getLeft(), getTop());
 		sprite.setRotation(MathUtils.radiansToDegrees * body.getAngle());
 
-//		if(body.getType() != BodyType.StaticBody) {
-//			Room currRoom = theGrid.getRoomAt(getCenterX(), getCenterY());
-//			if(currRoom != room) {
-//				setRoom(currRoom);
-//			}
-//		}
+		if(body.getType() != BodyType.StaticBody) {
+			Room currRoom = theGrid.getRoomAt(getCenterX(), getCenterY());
+			if(currRoom != null && currRoom != room) {
+				setRoom(currRoom);
+			}
+		}
 		
 		return false;
 	}
@@ -188,7 +188,7 @@ public abstract class Entity implements IUpdate, IDraw, ICollide {
 
 		body = world.createBody(bodyDef);		
 		body.setFixedRotation(true);
-		body.setAwake(false);
+//		body.setAwake(false);
 		
 		attachFixture(fixtureDef);		
 	}

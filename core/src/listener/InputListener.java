@@ -1,28 +1,30 @@
 package listener;
 
 import misc.Globals;
-import misc.Utils;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 
 import core.TheGrid;
 import entity.special.Player;
 
-public class InputListener implements InputProcessor {
+public class InputListener extends com.badlogic.gdx.scenes.scene2d.InputListener {
+
 	private Player player;
 	private TheGrid theGrid;
+	private Globals globals = Globals.getInstance();
 	private Camera camera = Globals.getInstance().getCamera();
 	
 	public InputListener() {
-		theGrid = Globals.getInstance().getTheGrid();
+		theGrid = globals.getTheGrid();
 		player = theGrid.getPlayer();
 	}
-
+	
 	@Override
-	public boolean keyDown(int keyCode) {
+	public boolean keyDown(InputEvent event, int keyCode) {
+		Player player = theGrid.getPlayer();
 		switch(keyCode) {
 			case Keys.ESCAPE:
 				Gdx.app.exit();
@@ -34,12 +36,12 @@ public class InputListener implements InputProcessor {
 				player.shoot();
 				break;
 		}
-		
 		return true;
 	}
-
+	
 	@Override
-	public boolean keyUp(int keyCode) {
+	public boolean keyUp(InputEvent event, int keyCode) {
+		Player player = theGrid.getPlayer();
 		switch(keyCode) {
 			case Keys.SPACE:
 				player.stopJump();
@@ -48,62 +50,20 @@ public class InputListener implements InputProcessor {
 		
 		return true;
 	}
-
-	@Override
-	public boolean keyTyped(char character) {
-		return false;
-	}
-
-	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		boolean right = screenX > Gdx.graphics.getWidth() / 2;
-		boolean top = screenY < Gdx.graphics.getHeight() / 2;
-		if(right && top) {
-			player.shoot();
-		} else if(!right && top) {
-			player.jump();
-		}
-
-		return true;
-	}
-
-	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		boolean left = screenX < Gdx.graphics.getWidth() / 2;
-		boolean top = screenY < Gdx.graphics.getHeight() / 2;
-		if(left && top) {
-			player.stopJump();
-		}
-		return true;
-	}
-
-	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		return true;
-	}
-
-	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
-		return false;
-	}
-
-	@Override
-	public boolean scrolled(int amount) {
-		return false;
-	}
 	
 	public void update() {
+		Player player = theGrid.getPlayer();
+		
 		boolean touched = Gdx.input.isTouched();
 		float x = Gdx.input.getX();
 		float y = Gdx.input.getY();
 		boolean lowerScreenHalf = y > Gdx.graphics.getHeight() / 2;
 		boolean right = lowerScreenHalf && touched && x > Gdx.graphics.getWidth() / 2;
 		boolean left = lowerScreenHalf && touched && x <= Gdx.graphics.getWidth() / 2;
-		
-		
+				
 		if(Gdx.input.isKeyPressed(Keys.RIGHT) || right) {
 			player.moveRight();
-		}if(Gdx.input.isKeyPressed(Keys.LEFT) || left) {
+		} else if(Gdx.input.isKeyPressed(Keys.LEFT) || left) {
 			player.moveLeft();
 		} else {
 			player.stopMove();

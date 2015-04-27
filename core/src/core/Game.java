@@ -8,13 +8,12 @@ import parallax.ParallaxUtils.WH;
 import parallax.TextureRegionParallaxLayer;
 import particle.ParticleEffect;
 import listener.InputListener;
-import misc.BodyData;
 import misc.Globals;
-import misc.Utils;
 import assets.Textures;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -27,9 +26,22 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
-import entity.Entity;
+import entity.special.Player;
 
 public class Game extends ApplicationAdapter {
 	
@@ -42,6 +54,8 @@ public class Game extends ApplicationAdapter {
 	private String text;
 	private BitmapFont font;
 	private Music music;
+	private Stage stage;
+	private InputListener inputListener;
 	private Array<ParticleEffect> particleEffects = new Array<ParticleEffect>();
 	
 	@Override
@@ -56,13 +70,21 @@ public class Game extends ApplicationAdapter {
 		theGrid = new TheGrid();
 		globals.setTheGrid(theGrid);
 		theGrid.build();
-		Gdx.input.setInputProcessor(new InputListener());
+		
+		//Gdx.input.setInputProcessor(new InputListener());
+		stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+		inputListener = new InputListener();
+		stage.addListener(inputListener);
+		Gdx.input.setInputProcessor(stage);
+		
 		music = Gdx.audio.newMusic(Gdx.files.internal("music/song1.mp3"));	
 		music.play();
 		music.setLooping(true);
 		music.setPosition(5);
 		
 		createBackground();
+		
+		createUI();
 	}
 
 	@Override
@@ -79,6 +101,8 @@ public class Game extends ApplicationAdapter {
 	public void resize(int width, int height) {
         globals.getCamera().viewportHeight = (Globals.VIEWPORT_WIDTH / width) * height;
         globals.updateCamera();
+        
+        stage.getViewport().update(width, height, true);
 	}
 	
 	public void setText(String text) {
@@ -114,13 +138,15 @@ public class Game extends ApplicationAdapter {
 		
 		updateParticleEffects();
 		
-		((InputListener)Gdx.input.getInputProcessor()).update();
+		inputListener.update();
+		
+		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 	}
 	
 	private void draw() {
 		Gdx.gl.glClearColor((201.0f / 255), (238.0f / 255), (255.0f / 255), 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
+
 		batch.setProjectionMatrix(globals.getCamera().combined);
 		batch.enableBlending();
 		batch.begin(); {
@@ -130,6 +156,8 @@ public class Game extends ApplicationAdapter {
 		} batch.end();
 		
 		//debugRenderer.render(theGrid.getWorld(), debugMatrix);
+		
+		stage.draw();
 	}
 	
 	private void createBackground() {
@@ -161,5 +189,10 @@ public class Game extends ApplicationAdapter {
 		for(ParticleEffect effect : particleEffects) {
 			effect.draw(batch);
 		}
+	}
+	
+	private void createUI() {
+		Player player = theGrid.getPlayer();
+		Textures textures = Textures.getInstance();
 	}
 }

@@ -34,6 +34,15 @@ public class CollisionListener implements ContactListener {
 		BodyData dataA = (BodyData)bodyA.getUserData();
 		BodyData dataB = (BodyData)bodyB.getUserData();
 		if(dataA == null || dataB == null) {
+			// Shot may have hit a non-entity body.
+			// Probably need to refactor this.
+			if(dataA != null || dataB != null) {
+				Entity entity = dataA != null ? dataA.getEntity() : dataB.getEntity();
+				if(entity.getType().equals("shot")) {
+					entity.onBeginContact(null);
+				}
+			}
+			
 			return;
 		}
 		

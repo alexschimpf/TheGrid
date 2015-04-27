@@ -4,6 +4,7 @@ import particle.ParticleEffect;
 import misc.EntityBodyDef;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -34,6 +35,7 @@ public class PlayerShot extends RectangleEntity {
 	public PlayerShot(Vector2 pos) {
 		super(null, "white", PlayerShot.getEntityBodyDef(pos));
 
+		this.room = theGrid.getPlayer().getRoom();
 		body.setBullet(true);
 		body.setGravityScale(0);
 	}
@@ -57,12 +59,21 @@ public class PlayerShot extends RectangleEntity {
 	public boolean update() {
 		float scale = sprite.getScaleX();
 		sprite.setScale(Math.min(SIZE, scale + (40 * Gdx.graphics.getDeltaTime())));
+		sprite.setPosition(getLeft(), getTop());
+		sprite.setRotation(MathUtils.radiansToDegrees * body.getAngle());
 		
-		return super.update();
+		return false;
 	}
 	
 	@Override
 	public void onBeginContact(Entity entity) {
+		// May have hit a chain pad, for example.
+		if(entity == null) {
+			ParticleEffect.startParticleEffect("light_gray", new Vector2(getCenterX(), getCenterY()));
+			getBodyData().setNeedsRemoved();
+			return;
+		}
+		
 		if(entity instanceof Player) {
 			return;
 		}

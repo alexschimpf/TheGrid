@@ -29,7 +29,7 @@ public class Room implements IUpdate, IDraw {
 	protected HashMap<String, Script> scriptMap = new HashMap<String, Script>();
 	protected HashMap<String, Entity> entityMap = new HashMap<String, Entity>();
 	protected Array<Sprite> borderLines = new Array<Sprite>();
-	protected Array<Vector2> openings = new Array<Vector2>();
+	protected Array<Vector2> openings = new Array<Vector2>(); // these are NOT in local coords
 	protected Globals globals = Globals.getInstance();
 	protected TheGrid theGrid = globals.getTheGrid();
 	protected World world = theGrid.getWorld();	
@@ -131,6 +131,7 @@ public class Room implements IUpdate, IDraw {
 		createVertLines(1, TheGrid.ROOM_NUM_SQUARES_WIDE - 1, 1);
 		createVertLines(0, TheGrid.ROOM_NUM_SQUARES_WIDE, TheGrid.ROOM_NUM_SQUARES_WIDE);
 		createVertLines(1, TheGrid.ROOM_NUM_SQUARES_WIDE - 1, TheGrid.ROOM_NUM_SQUARES_WIDE - 1);
+		createOpeningLines();
 	}
 	
 	public void addScript(Script script) {
@@ -270,6 +271,55 @@ public class Room implements IUpdate, IDraw {
     			borderLines.add(sprite);
 			}
 		}
+	}
+	
+	protected void createOpeningLines() {
+		Array<Vector2> allOpenings = theGrid.getRoomOpenings();
+		for(Vector2 opening : openings) {
+			int row = (int)opening.x;
+			int col = (int)opening.y;
+			Vector2 below = new Vector2(row + 1, col);
+			Vector2 above = new Vector2(row - 1, col);
+			boolean vert = allOpenings.contains(below, false) || allOpenings.contains(above, false);
+			if(vert) {
+				createOpeningVertLines(row, col);
+			} else {
+				createOpeningHorLines(row, col);
+			}
+			
+		}
+	}
+	
+	protected void createOpeningVertLines(int row, int col) {
+		TextureRegion vertLine = Textures.getInstance().getTextureRegion("vert_line");
+		
+		Vector2 pos = Room.getWorldPosition(row, col);
+		Sprite sprite = new Sprite(vertLine);
+		sprite.setSize(Room.SQUARE_SIZE / 10, Room.SQUARE_SIZE);
+		sprite.setPosition(pos.x - 0.3f, pos.y + 0.15f);		
+		borderLines.add(sprite);
+		
+		pos = Room.getWorldPosition(row, col + 1);
+		sprite = new Sprite(vertLine);
+		sprite.setSize(Room.SQUARE_SIZE / 10, Room.SQUARE_SIZE);
+		sprite.setPosition(pos.x - 0.05f, pos.y + 0.15f);		
+		borderLines.add(sprite);
+	}
+	
+	protected void createOpeningHorLines(int row, int col) {
+		TextureRegion horLine = Textures.getInstance().getTextureRegion("hor_line");
+		
+		Vector2 pos = Room.getWorldPosition(row, col);
+		Sprite sprite = new Sprite(horLine);
+		sprite.setSize(Room.SQUARE_SIZE, Room.SQUARE_SIZE / 10);
+		sprite.setPosition(pos.x, pos.y);		
+		borderLines.add(sprite);
+		
+		pos = Room.getWorldPosition(row + 1, col);
+		sprite = new Sprite(horLine);
+		sprite.setSize(Room.SQUARE_SIZE, Room.SQUARE_SIZE / 10);
+		sprite.setPosition(pos.x, pos.y);		
+		borderLines.add(sprite);
 	}
 	
 	protected void drawBorderLines(SpriteBatch batch) {

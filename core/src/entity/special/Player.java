@@ -58,7 +58,7 @@ public class Player extends RectangleEntity {
 	@Override
 	public boolean update() {
 		if(!isJumping() && getLinearVelocity().x != 0) {
-			animation.play();
+			//animation.play();
 		} else {
 			//animation.stop();
 		}

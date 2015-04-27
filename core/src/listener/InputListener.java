@@ -76,6 +76,12 @@ public class InputListener extends com.badlogic.gdx.scenes.scene2d.InputListener
 		} else {
 			player.stopMove();
 		}
+		
+		if(Gdx.input.isKeyPressed(Keys.Z)) {
+			globals.getCamera().zoom += 0.05f;
+		} else if(Gdx.input.isKeyPressed(Keys.X)) {
+			globals.getCamera().zoom -= 0.05f;
+		}
 	}
 	
 	private void showRoomSelectDialog() {

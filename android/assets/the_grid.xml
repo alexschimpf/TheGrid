@@ -10,12 +10,17 @@
 		        <opening row="11" col="7" />
 		    </openings>
 		    <entities>
-		       <entity type="rectangle" row="10" col="10">
+		       <entity type="rectangle">
 		           <custom>
 		               <texture_key>gray_block</texture_key>
 		           </custom>
+		           <locations>
+		               <location row="9" col="10" />
+		               <location row="10" col="10" />
+		               <location row="10" col="9" />
+		           </locations>
 		       </entity>
-		       <entity type="player_drop" row="10" col="9" />
+		       <entity type="player_drop" row="9" col="9" />
 		       <entity type="breakable" row="11" col="7">
 		           <custom>
 		               <friction_top>true</friction_top>

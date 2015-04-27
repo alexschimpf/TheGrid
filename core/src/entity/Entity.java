@@ -5,6 +5,7 @@ import misc.Globals;
 import assets.Sounds;
 import assets.Textures;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -91,11 +92,16 @@ public abstract class Entity implements IUpdate, IDraw, ICollide {
 		return (BodyData)body.getUserData();
 	}
 	
-	public void setPosition(float left, float top) {
-		float centerX = left + (getWidth() / 2);
-		float centerY = top + (getHeight() / 2);
-		body.setTransform(centerX, centerY, body.getAngle());
-		update();
+	public void setPosition(final float left, final float top) {
+		Gdx.app.postRunnable(new Runnable() {
+			@Override
+			public void run() {
+				float centerX = left + (getWidth() / 2);
+				float centerY = top + (getHeight() / 2);
+				body.setTransform(centerX, centerY, body.getAngle());
+				update();
+			}		
+		});
 	}
 	
 	public Body getBody() {

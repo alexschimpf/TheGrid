@@ -83,8 +83,6 @@ public class Game extends ApplicationAdapter {
 		music.setPosition(5);
 		
 		createBackground();
-		
-		createUI();
 	}
 
 	@Override
@@ -127,6 +125,10 @@ public class Game extends ApplicationAdapter {
 		return batch;
 	}
 	
+	public Stage getStage() {
+		return stage;
+	}
+	
 	public void addParticleEffect(ParticleEffect effect) {
 		particleEffects.add(effect);
 	}
@@ -150,7 +152,7 @@ public class Game extends ApplicationAdapter {
 		batch.setProjectionMatrix(globals.getCamera().combined);
 		batch.enableBlending();
 		batch.begin(); {
-			//background.draw(globals.getCamera(), batch);
+			background.draw(globals.getCamera(), batch);
 			drawParticleEffects(batch);
 			theGrid.draw(batch);		
 		} batch.end();
@@ -189,10 +191,5 @@ public class Game extends ApplicationAdapter {
 		for(ParticleEffect effect : particleEffects) {
 			effect.draw(batch);
 		}
-	}
-	
-	private void createUI() {
-		Player player = theGrid.getPlayer();
-		Textures textures = Textures.getInstance();
 	}
 }

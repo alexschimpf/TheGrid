@@ -428,6 +428,7 @@
 		                <location row="4" col="5" />
 		                <location row="3" col="8" />
 		                <location row="1" col="2" />
+		                <location row="4" col="4" />
 		            </locations>
 		        </entity>
 		        <entity type="disappearing_rectangle">

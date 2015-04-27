@@ -44,6 +44,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.sun.deploy.uitoolkit.impl.fx.Utils;
 
 import entity.special.Player;
 
@@ -60,8 +61,9 @@ public class Game extends ApplicationAdapter {
 	private Music music;
 	private Stage stage;
 	private InputListener inputListener;
-	private Button moveLeftButton;
-	private Button moveRightButton;
+	private Button moveButton;
+	private Button actionButton;
+	private Integer movePointer;
 	private Array<ParticleEffect> particleEffects = new Array<ParticleEffect>();
 	
 	@Override
@@ -152,7 +154,7 @@ public class Game extends ApplicationAdapter {
 		
 		inputListener.update();
 		
-		// TODO:: Get this check outta here.
+		// TODO:: Get this outta here.
 		if(Gdx.app.getType() == ApplicationType.Android) {
 			checkPressedButtons();
 		}
@@ -195,10 +197,8 @@ public class Game extends ApplicationAdapter {
 		float height = Gdx.graphics.getHeight();
 		Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 		Player player = theGrid.getPlayer();
-		createMoveButton(true, width, height, skin, player);
-		createMoveButton(false, width, height, skin, player);
-		createJumpButton(width, height, skin, player);
-		createShootButton(width, height, skin, player);
+		createMoveButton(width, height, skin, player);
+		createActionButton(width, height, skin, player);
 		
 	}
 	
@@ -224,61 +224,42 @@ public class Game extends ApplicationAdapter {
 	// TODO: This shouldn't be in this class.
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	private void createMoveButton(boolean left, float screenWidth, float screenHeight, Skin skin, final Player player) {
-		Button button = new Button(skin);
-		button.setColor(1, 1, 1, 0.3f);
-		button.setSize(screenWidth / 7.5f, screenHeight / 5);
-		float width = button.getWidth();
-		float height = button.getHeight();
+	private void createMoveButton(float screenWidth, float screenHeight, Skin skin, final Player player) {
+		moveButton = new Button(skin);
+		moveButton.setColor(1, 1, 1, 0.3f);
+		moveButton.setSize(screenWidth / 2.75f, screenHeight / 5f);
+		moveButton.setPosition(0, screenWidth / 30f);
 		
-		if(left) {
-			button.setPosition(width / 4, height * 0.25f);
-		} else {
-			button.setPosition(width * 1.6f, height * 0.25f);
-		}
-		
-		com.badlogic.gdx.scenes.scene2d.InputListener inputListener;
-		if(left) {
-			inputListener = new com.badlogic.gdx.scenes.scene2d.InputListener() {
-				@Override
-				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-					player.moveLeft();
-					return true;
-				}
-			};
-		} else {
-			inputListener = new com.badlogic.gdx.scenes.scene2d.InputListener() {
-				@Override
-				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-					player.moveRight();
-					return true;
-				}
-			};
-		}
-		
-		if(left) {
-			moveLeftButton = button;
-		} else {
-			moveRightButton = button;
-		}
-		
-		button.addListener(inputListener);
-		stage.addActor(button);
-	}
-	
-	private void createJumpButton(float screenWidth, float screenHeight, Skin skin, final Player player) {
-		Button button = new Button(skin);
-		button.setColor(1, 1, 1, 0.3f);
-		button.setSize(screenWidth / 7.5f, screenHeight / 5);
-		float width = button.getWidth();
-		float height = button.getHeight();
-		
-		button.setPosition(screenWidth - (width * 2.6f), height * 0.25f);
-
-		button.addListener(new com.badlogic.gdx.scenes.scene2d.InputListener() {
+		moveButton.addListener(new com.badlogic.gdx.scenes.scene2d.InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				player.jump();
+				movePointer = pointer;
+				 
+				return true;
+			}
+		});
+		
+		stage.addActor(moveButton);
+	}
+	
+	private void createActionButton(float screenWidth, float screenHeight, Skin skin, final Player player) {
+		actionButton = new Button(skin);
+		actionButton.setColor(1, 1, 1, 0.3f);
+		actionButton.setSize(screenWidth / 2.75f, screenHeight / 5f);
+		float width = actionButton.getWidth();
+		
+		actionButton.setPosition(screenWidth - width, screenHeight / 30f);
+
+		actionButton.addListener(new com.badlogic.gdx.scenes.scene2d.InputListener() {
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				float centerX = actionButton.getWidth() / 2;
+				if(x < centerX) {
+					player.jump();
+				} else {
+					player.shoot();
+				}
+				 
 				return true;
 			}
 			
@@ -286,38 +267,34 @@ public class Game extends ApplicationAdapter {
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 				player.stopJump();
 			}
-		});
-		stage.addActor(button);
-	}
-	
-	private void createShootButton(float screenWidth, float screenHeight, Skin skin, final Player player) {
-		Button button = new Button(skin);
-		button.setColor(1, 1, 1, 0.3f);
-		button.setSize(screenWidth / 7.5f, screenHeight / 5);
-		float width = button.getWidth();
-		float height = button.getHeight();
-		
-		button.setPosition(screenWidth - (width * 1.25f), height);
-
-		button.addListener(new com.badlogic.gdx.scenes.scene2d.InputListener() {
+			
 			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				player.shoot();
-				return true;  
+			public void touchDragged(InputEvent event, float x, float y, int pointer) {
+				float centerX = actionButton.getWidth() / 2;
+				if(x < centerX) {
+					player.jump();
+				} else {
+					player.shoot();
+				}
 			}
 		});
-		stage.addActor(button);
+		stage.addActor(actionButton);
 	}
 	
 	private void checkPressedButtons() {
-		Player player = theGrid.getPlayer();
-		
-		if(moveLeftButton.isPressed()) {
-			player.moveLeft();
+		if(movePointer == null) {
+			return;
 		}
 		
-		if(moveRightButton.isPressed()) {
-			player.moveRight();
+		float moveCenterX = moveButton.getX() + (moveButton.getWidth() / 2);
+		float x = Gdx.input.getX(movePointer);		
+		if(moveButton.isPressed()) {
+			Player player = theGrid.getPlayer();
+			if(x < moveCenterX) {
+				player.moveLeft();
+			} else {
+				player.moveRight();
+			}
 		}
 	}
 }

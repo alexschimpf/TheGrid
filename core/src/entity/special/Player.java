@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import core.Room;
 import entity.RectangleEntity;
@@ -24,9 +25,13 @@ public class Player extends RectangleEntity {
 	
 	public static final float MOVE_SPEED = 18;
 	public static final float JUMP_IMPULSE = -100;
+	public static final float SHOOT_COOLDOWN = 200;
+	public static final float JUMP_COOLDOWN = 100;
 	
 	private boolean jumping = false;
 	private int numFootContacts = 0;
+	private long lastShotTime = 0;
+	private long lastJumpTime = 0;
 	private Direction direction = Direction.Right;
 	private Animation animation;
 	
@@ -94,12 +99,13 @@ public class Player extends RectangleEntity {
 	}
 	
 	public void jump() {
-		if(!isJumping()) {
+		if(!isJumping() && TimeUtils.timeSinceMillis(lastJumpTime) > JUMP_COOLDOWN) {
+			lastJumpTime = TimeUtils.millis();
 			sounds.playSound("jump");
 			float x = body.getWorldCenter().x;
 			float y = body.getWorldCenter().y;
 			body.applyLinearImpulse(0, JUMP_IMPULSE, x, y, true);
-			ParticleEffect.startParticleEffect("light_gray", new Vector2(getCenterX(), getBottom()), 7);
+			ParticleEffect.startParticleEffect("light_gray", new Vector2(getCenterX(), getBottom()), 6);
 		}
 	}
 	
@@ -114,9 +120,12 @@ public class Player extends RectangleEntity {
 	}
 	
 	public void shoot() {
-		sounds.playSound("shoot");
-		PlayerShot shot = new PlayerShot(this);
-		shot.shoot();
+		if(TimeUtils.timeSinceMillis(lastShotTime) > SHOOT_COOLDOWN) {
+			lastShotTime = TimeUtils.millis();
+			sounds.playSound("shoot");
+			PlayerShot shot = new PlayerShot(this);
+			shot.shoot();
+		}		
 	}
 	
 	public float getFrontX() {

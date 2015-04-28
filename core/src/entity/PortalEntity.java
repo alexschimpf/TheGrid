@@ -1,10 +1,10 @@
 package entity;
 
-import particle.ParticleEffect;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.XmlReader.Element;
 
@@ -39,8 +39,10 @@ public class PortalEntity extends RectangleEntity {
 		
 		if(this.exitDirection == Direction.Up || this.exitDirection == Direction.Down) {
 			Vector2 pos = body.getPosition();
-			body.setTransform(pos.x + (getHeight() / 4), pos.y - (getWidth() / 2), body.getAngle() + (MathUtils.degreesToRadians * 90));
+			body.setTransform(pos.x, pos.y, body.getAngle() + (MathUtils.degreesToRadians * 90));
 		}
+		
+		sprite.setColor(0.7f, 0, 0, 0.5f);
 	}
 
 	public static Entity build(String id, Room room, Vector2 pos, Element elem) {
@@ -48,7 +50,7 @@ public class PortalEntity extends RectangleEntity {
 		String exitId = custom.get("exit_id", null);
 		String exitDirection = custom.get("exit_direction");
 		
-		Vector2 size = new Vector2(Room.SQUARE_SIZE / 2, Room.SQUARE_SIZE);
+		Vector2 size = new Vector2(Room.SQUARE_SIZE, Room.SQUARE_SIZE);
 		EntityBodyDef bodyDef = new EntityBodyDef(pos, size, BodyType.StaticBody);
 		PortalEntity entity = new PortalEntity(room, "portal", bodyDef, exitId, exitDirection);
 		entity.setId(id);
@@ -119,8 +121,6 @@ public class PortalEntity extends RectangleEntity {
 	    			entity.setPosition(left, top);
 	    			entity.setLinearVelocity(vx, vy);	
 	    		}
-        		
-        		ParticleEffect.startParticleEffect("light_gray", entity.getCenter());
 	        }
 		});
 	}
@@ -128,12 +128,28 @@ public class PortalEntity extends RectangleEntity {
 	@Override
 	protected void createSprite(String textureKey, float x, float y, float width, float height) {
 		animation = new Animation("portal.png", 1, 4, 0.1f, true);
+		animation.setSprite(new Vector2(x, y), new Vector2(width, height));
 		sprite = animation.getSprite();
-		sprite.setPosition(x, y);
-		sprite.setSize(width, height);
-		sprite.setOrigin(width / 2, height / 2);
 		sprite.setFlip(false, true);
 		animation.play();
+	}
+	
+	@Override
+	protected FixtureDef createFixtureDef() {
+		PolygonShape shape = new PolygonShape();
+		
+		float width = (getWidth() / 4);
+		float height = (getHeight() / 4);
+		shape.setAsBox(width, height);
+		
+		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.shape = shape;
+		fixtureDef.density = 1;
+		fixtureDef.friction = 0;
+		fixtureDef.restitution = 0;
+		fixtureDef.filter.categoryBits = 0x0002;
+
+		return fixtureDef;
 	}
 	
 	protected Vector2 determineExitVelocity() {

@@ -19,13 +19,18 @@ import entity.special.Player.Direction;
 
 public class PlayerShot extends RectangleEntity {
 
+	private static final String[] NO_PARTICLE_EFFECT_TYPES = new String[] {
+		"portal",
+		"breakable",
+		"breakable_transport"
+	};	
 	public static final float SPEED = Player.MOVE_SPEED * 7;
 	private static final float SIZE = Room.SQUARE_SIZE / 3;
 	
 	private Player player;
 	
 	public PlayerShot(Player player) {
-		super(player.getRoom(), "white", PlayerShot.getEntityBodyDef(player));
+		super(player.getRoom(), "light_gray", PlayerShot.getEntityBodyDef(player));
 
 		this.player = player;
 		body.setBullet(true);
@@ -33,7 +38,7 @@ public class PlayerShot extends RectangleEntity {
 	}
 	
 	public PlayerShot(Vector2 pos) {
-		super(null, "white", PlayerShot.getEntityBodyDef(pos));
+		super(null, "light_gray", PlayerShot.getEntityBodyDef(pos));
 
 		this.room = theGrid.getPlayer().getRoom();
 		body.setBullet(true);
@@ -53,6 +58,16 @@ public class PlayerShot extends RectangleEntity {
 	
 	public static EntityBodyDef getEntityBodyDef(Vector2 pos) {
 		return new EntityBodyDef(pos, new Vector2(SIZE, SIZE), BodyType.DynamicBody);
+	}
+	
+	protected static boolean doParticleEffect(String type) {
+		for(String dont : NO_PARTICLE_EFFECT_TYPES) {
+			if(type.equals(dont)) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
 	@Override
@@ -84,7 +99,10 @@ public class PlayerShot extends RectangleEntity {
 			return;
 		}
 		
-		ParticleEffect.startParticleEffect("light_gray", new Vector2(getCenterX(), getCenterY()));
+		if(PlayerShot.doParticleEffect(entity.getType())) {
+			ParticleEffect.startParticleEffect("light_gray", new Vector2(getCenterX(), getCenterY()));
+		}
+		
 		getBodyData().setNeedsRemoved();
 	}
 	

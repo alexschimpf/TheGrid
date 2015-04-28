@@ -25,15 +25,18 @@ public class Player extends RectangleEntity {
 	
 	public static final float MOVE_SPEED = 18;
 	public static final float JUMP_IMPULSE = -100;
-	public static final float SHOOT_COOLDOWN = 200;
+	public static final float SHOOT_COOLDOWN = 100;
 	public static final float JUMP_COOLDOWN = 100;
-	
+	public static final float BLINK_COOLDOWN = 3500;
+
 	private boolean jumping = false;
 	private int numFootContacts = 0;
 	private long lastShotTime = 0;
 	private long lastJumpTime = 0;
+	private long lastBlinkTime = TimeUtils.millis();
 	private Direction direction = Direction.Right;
 	private Animation animation;
+	private Animation blinkAnimation;
 	
 	public Player(Vector2 worldPos) {
 		super(null, "player", Player.getEntityBodyDef(worldPos));
@@ -62,14 +65,23 @@ public class Player extends RectangleEntity {
 	
 	@Override
 	public boolean update() {
-		if(!isJumping() && getLinearVelocity().x != 0) {
-			//animation.play();
-		} else {
-			//animation.stop();
+		if(TimeUtils.timeSinceMillis(lastBlinkTime) > BLINK_COOLDOWN) {
+			lastBlinkTime = TimeUtils.millis();
+			blinkAnimation.play();
+			animation.stop();
 		}
 		
-		animation.update();
-		sprite = animation.getSprite();
+		if(blinkAnimation.getState() == Animation.State.Playing) {
+			blinkAnimation.update();
+			sprite = blinkAnimation.getSprite();
+		} else {
+			if(animation.getState() == Animation.State.Stopped) {
+				animation.play();
+			}
+			
+			animation.update();
+			sprite = animation.getSprite();
+		}
 		
 		Room currRoom = theGrid.getRoomAt(getCenterX(), getCenterY());
 		if(room != currRoom) {
@@ -173,12 +185,12 @@ public class Player extends RectangleEntity {
 	@Override
 	protected void createSprite(String textureKey, float x, float y, float width, float height) {
 		animation = new Animation("player.png", 1, 4, 0.09f, true);
-		sprite = animation.getSprite();
-		sprite.setPosition(x, y);
-		sprite.setSize(width, height);
-		sprite.setOrigin(width / 2, height / 2);
-		
+		animation.setSprite(new Vector2(x, y), new Vector2(width, height));
+		sprite = animation.getSprite();		
 		animation.play();
+		
+		blinkAnimation = new Animation("player_blink.png", 1, 6, 0.09f, false);
+		blinkAnimation.setSprite(new Vector2(x, y), new Vector2(width, height));
 	}
 	
 	@Override

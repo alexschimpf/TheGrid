@@ -19,6 +19,7 @@ public class Textures {
 
 	private Textures() {
 		createTextureRegion("player.png", "player");	
+		createTextureRegion("player_blink.png", "player_blink");	
 		createTextureRegion("background.png", "background");
 		createTextureRegion("ball.png", "ball");
 		createTextureRegion("gray_block.png", "gray_block");
@@ -28,6 +29,11 @@ public class Textures {
 		createTextureRegion("question_mark_block.png", "question_mark_block");
 		createTextureRegion("up_arrow_block.png", "up_arrow_block");
 		createTextureRegion("portal.png", "portal");
+		createTextureRegion("programmable_block.png", "programmable_block");
+		createTextureRegion("programmable_block_1.png", "programmable_block_1");
+		createTextureRegion("programmable_block_2.png", "programmable_block_2");
+		createTextureRegion("programmable_block_3.png", "programmable_block_3");
+		createTextureRegion("programmable_block_4.png", "programmable_block_4");
 		createTextureRegion("hor_line.png", "hor_line");
 		createTextureRegion("vert_line.png", "vert_line");
 		

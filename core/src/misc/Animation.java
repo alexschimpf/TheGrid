@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 
 import core.IUpdate;
 
@@ -53,16 +54,21 @@ public class Animation implements IUpdate {
 			stateTime += Gdx.graphics.getDeltaTime();
 		}
 		
-		if(animation.isAnimationFinished(stateTime)) {
-			return true;
+		if(!loop && animation.isAnimationFinished(stateTime)) {
+			state = State.Done;
 		}
 		
 		return false;
 	}
 
 	@Override
-	public void done() {
-		state = State.Done;
+	public void done() {	
+	}
+	
+	public void setSprite(Vector2 position, Vector2 size) {
+		sprite.setPosition(position.x, position.y);
+		sprite.setSize(size.x, size.y);
+		sprite.setOrigin(size.x / 2, size.y / 2);
 	}
 	
 	public Sprite getSprite() {

@@ -3,6 +3,7 @@ package entity;
 import misc.EntityBodyDef;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -16,18 +17,13 @@ import entity.special.Player;
 public class ProgrammableMovementEntity extends RectangleEntity {
 
 	protected enum Direction {
-		Left, Right, Up, Down
+		Left, Right, Up, Down, None
 	}
 	
-	protected Sprite directionSprite;
-	protected Direction direction = null;
+	protected Direction direction = Direction.None;
 	
 	protected ProgrammableMovementEntity(Room room, String textureKey, EntityBodyDef bodyDef) {
         super(room, textureKey, bodyDef);
-        
-        directionSprite = new Sprite(textures.getTextureRegion("red"));
-        directionSprite.setSize(getWidth() / 4, getHeight() * 0.9f);
-		directionSprite.setFlip(false, true);
     }
         
     public static Entity build(String id, Room room, Vector2 pos, Element elem) {
@@ -35,51 +31,19 @@ public class ProgrammableMovementEntity extends RectangleEntity {
         float height = Room.SQUARE_SIZE;
         EntityBodyDef bodyDef = new EntityBodyDef(pos, new Vector2(width, height), BodyType.KinematicBody);
         
-        ProgrammableMovementEntity entity = new ProgrammableMovementEntity(room, "gray_block", bodyDef);
+        ProgrammableMovementEntity entity = new ProgrammableMovementEntity(room, "programmable_block", bodyDef);
         entity.setId(id);
         entity.setBodyData();
         
         return entity;
     }
-    
-    @Override
-    public void draw(SpriteBatch batch) {
-    	super.draw(batch);
-    	
-    	if(direction != null) {
-    		directionSprite.draw(batch);
-    	}  	
-    }
-    
+
     @Override
     public boolean update() {
     	if(isPlayerInContact()) {
     		onBeginContact(theGrid.getPlayer());
     	}
-    	
-    	if(direction == null) {
-    		return false;
-    	}
-    	
-    	float top = getTop() + ((getHeight() - directionSprite.getHeight()) / 2);
-		float left = getLeft();
-		float width = getWidth();
-    	
-    	switch(direction) {
-			case Left:
-				directionSprite.setPosition(left, top);
-				break;
-			case Down:
-				directionSprite.setPosition(left + (width / 4), top);
-				break;
-			case Up:
-				directionSprite.setPosition(left + (width / 2), top);
-				break;
-			case Right:
-				directionSprite.setPosition(left + ((3.0f / 4.0f) * width), top);
-				break;
-    	}
-    	
+
     	return super.update();
     }
     
@@ -106,12 +70,13 @@ public class ProgrammableMovementEntity extends RectangleEntity {
 				direction = Direction.Right;
 			}
 			
+			changeSprite();			
 			deactivateOthers();
 		}
 	}
     
     public void onMovementTrigger() {
-    	if(direction == null) {
+    	if(direction == Direction.None) {
     		return;
     	}
     	
@@ -147,17 +112,20 @@ public class ProgrammableMovementEntity extends RectangleEntity {
 							setPosition(getLeft() + (getWidth() / 2), getTop());
 						}
 						break;
+					default:
+						break;
 		    	}
 			}  		
     	});
     }
     
     public boolean isActivated() {
-    	return direction != null;
+    	return direction != Direction.None;
     }
     
     public void deactivate() {
-    	direction = null;
+    	direction = Direction.None;
+    	changeSprite();
     }
     
     protected void deactivateOthers() {
@@ -175,5 +143,31 @@ public class ProgrammableMovementEntity extends RectangleEntity {
     	Player player = theGrid.getPlayer();
     	Fixture fixture = getBody().getFixtureList().get(0);
     	return fixture.testPoint(player.getCenterX(), player.getBottom());
+    }
+    
+    protected void changeSprite() {
+    	int num = 0;
+    	switch(direction) {
+    		case Left:
+				num = 1;
+				break;
+			case Down:
+				num = 2;
+				break;
+			case Up:
+				num = 3;
+				break;
+			case Right:
+				num = 4;
+				break;
+			case None:
+				break;
+    	}
+    	
+    	String key = "programmable_block";
+    	if(num > 0) {
+    		key += "_" + num;
+    	}
+    	sprite.setRegion(textures.getTextureRegion(key));
     }
 }

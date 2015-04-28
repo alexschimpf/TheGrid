@@ -78,8 +78,7 @@ public class Game extends ApplicationAdapter {
 		theGrid = new TheGrid();
 		globals.setTheGrid(theGrid);
 		theGrid.build();
-		
-		//Gdx.input.setInputProcessor(new InputListener());
+
 		stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 		inputListener = new InputListener();
 		stage.addListener(inputListener);
@@ -87,6 +86,7 @@ public class Game extends ApplicationAdapter {
 		
 		music = Gdx.audio.newMusic(Gdx.files.internal("music/song1.mp3"));	
 		music.play();
+		music.setVolume(0.5f);
 		music.setLooping(true);
 		music.setPosition(5);
 		
@@ -184,7 +184,7 @@ public class Game extends ApplicationAdapter {
 		Textures textures = Textures.getInstance();
 		TextureRegion texture = textures.getTextureRegion("background");
 		TextureRegionParallaxLayer layer = 
-				new TextureRegionParallaxLayer(texture, Globals.VIEWPORT_WIDTH * 2, new Vector2(0.1f, 0), WH.width);	
+				new TextureRegionParallaxLayer(texture, Globals.VIEWPORT_WIDTH * 2, new Vector2(0.1f, 0), WH.width);
 		layer.setPadBottom(-0.6f * Globals.VIEWPORT_WIDTH * 2);
 		layer.setPadLeft(-0.6f * Globals.VIEWPORT_WIDTH * 2);
 		layer.setTileModeX(TileMode.repeat);

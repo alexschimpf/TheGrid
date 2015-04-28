@@ -1,5 +1,6 @@
 package entity;
 
+import misc.Animation;
 import misc.EntityBodyDef;
 import misc.Globals;
 
@@ -13,6 +14,8 @@ import entity.special.Player;
 
 public class PlayerDropEntity extends RectangleEntity {
 
+	private Animation animation;
+	
 	protected PlayerDropEntity(Room room, float x, float y) {
 		super(room, "up_arrow_block", PlayerDropEntity.getEntityBodyDef(x, y));
 	}
@@ -35,9 +38,18 @@ public class PlayerDropEntity extends RectangleEntity {
 	}
 	
 	@Override
+	public boolean update() {
+		animation.update();
+		sprite = animation.getSprite();
+		
+		return super.update();
+	}
+	
+	@Override
 	public void onBeginContact(Entity entity) {
 		if(isShot(entity)) {
 			sounds.playSound("transport");
+			animation.play();
 			Gdx.app.postRunnable(new Runnable() {
 		        @Override
 		        public void run() {
@@ -56,5 +68,15 @@ public class PlayerDropEntity extends RectangleEntity {
 		         }
 		     });
 		}
+	}
+	
+	@Override
+	protected void createSprite(String textureKey, float x, float y, float width, float height) {
+		animation = new Animation("up_arrow_block.png", 1, 5, 0.075f, false);
+		sprite = animation.getSprite();
+		sprite.setPosition(x, y);
+		sprite.setSize(width, height);
+		sprite.setOrigin(width / 2, height / 2);
+		sprite.setFlip(false, true);
 	}
 }

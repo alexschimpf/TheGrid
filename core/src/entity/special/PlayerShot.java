@@ -82,9 +82,16 @@ public class PlayerShot extends RectangleEntity {
 	
 	@Override
 	public void onBeginContact(Entity entity) {
+		Vector2 velocity = getLinearVelocity();
+		float y = getCenterY();
+		float x = velocity.x > 0 ? getRight() : getLeft();
+		if(velocity.y != 0) {
+			y = velocity.y > 0 ? getBottom() : getTop();
+		}
+		
 		// May have hit a chain pad, for example.
 		if(entity == null) {
-			ParticleEffect.startParticleEffect("light_gray", new Vector2(getCenterX(), getCenterY()));
+			ParticleEffect.startParticleEffect("light_gray", new Vector2(x, y));
 			getBodyData().setNeedsRemoved();
 			return;
 		}
@@ -100,7 +107,7 @@ public class PlayerShot extends RectangleEntity {
 		}
 		
 		if(PlayerShot.doParticleEffect(entity.getType())) {
-			ParticleEffect.startParticleEffect("light_gray", new Vector2(getCenterX(), getCenterY()));
+			ParticleEffect.startParticleEffect("light_gray", new Vector2(x, y));
 		}
 		
 		getBodyData().setNeedsRemoved();

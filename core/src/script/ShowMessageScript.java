@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.XmlReader.Element;
 
-import core.Game;
+import core.TheGame;
 import core.Room;
 
 public class ShowMessageScript extends Script {
@@ -38,13 +38,13 @@ public class ShowMessageScript extends Script {
 	
 	@Override
 	public boolean update() {
-		Game game = globals.getGame();
-		if(started && TimeUtils.timeSinceMillis(startTime) < 10000) {
-			game.setText("You have entered room " + room.getGridPosition().x + ", " + room.getGridPosition().y);
-		} else {
-			started = false;
-			game.setText(null);
-		}
+//		TheGame game = globals.getGame();
+//		if(started && TimeUtils.timeSinceMillis(startTime) < 10000) {
+//			game.setText("You have entered room " + room.getGridPosition().x + ", " + room.getGridPosition().y);
+//		} else {
+//			started = false;
+//			game.setText(null);
+//		}
 		
 		return super.update();
 	}

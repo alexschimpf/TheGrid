@@ -7,14 +7,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.XmlReader.Element;
 
 import core.Room;
 
 public class BreakableTransportEntity extends TransportChainEntity {
 
+	protected static final float TRANSPORT_COOLDOWN = 4000;
+	
 	protected int startHealth;
 	protected int health;
+	protected long lastTransportTime = 0;
 	
 	protected BreakableTransportEntity(Room room, String textureKey, EntityBodyDef bodyDef, Vector2 transportPos, int numShots) {
 		super(room, textureKey, bodyDef, transportPos);
@@ -60,7 +64,9 @@ public class BreakableTransportEntity extends TransportChainEntity {
 			}
 		}
 		
-		if(health > 0 && isShot(entity)) {
+		if(TimeUtils.timeSinceMillis(lastTransportTime) > BreakableTransportEntity.TRANSPORT_COOLDOWN && 
+		   health > 0 && isShot(entity)) {
+			lastTransportTime = TimeUtils.millis();
 			Gdx.app.postRunnable(new Runnable() {
 			    @Override
 				public void run() {

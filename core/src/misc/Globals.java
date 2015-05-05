@@ -2,7 +2,8 @@ package misc;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
-import core.Game;
+import core.GameScreen;
+import core.TheGame;
 import core.TheGrid;
 
 public class Globals {
@@ -10,7 +11,7 @@ public class Globals {
 	public static final float VIEWPORT_WIDTH = 60.0f;
 	public static final float VIEWPORT_HEIGHT = 100.0f;
 	
-	private Game game;
+	private GameScreen game;
 	private TheGrid theGrid;
 	private OrthographicCamera camera;
 
@@ -59,7 +60,7 @@ public class Globals {
 		this.theGrid = theGrid;
 	}
 	
-	public void setGame(Game game) {
+	public void setGame(GameScreen game) {
 		this.game = game;
 	}
 	
@@ -67,7 +68,7 @@ public class Globals {
 		return camera;
 	}
 	
-	public Game getGame() {
+	public GameScreen getGame() {
 		return game;
 	}
 	

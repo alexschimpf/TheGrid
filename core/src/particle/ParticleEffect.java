@@ -23,7 +23,8 @@ public class ParticleEffect implements IUpdate, IDraw {
 	
 	protected Array<Particle> particles = new Array<Particle>();
 	
-	public ParticleEffect(String textureKey, Vector2 position, int numParticles) {
+	// TODO: Use Builder Pattern!!!
+	protected ParticleEffect(String textureKey, Vector2 position, int numParticles, Boolean moveLeft, Boolean moveUp, Float maxDuration) {
 		for(int i = 0; i < numParticles; i++) {
 			float squareSize = Room.SQUARE_SIZE;
 			float vx = MathUtils.random(squareSize / 6, squareSize);
@@ -34,11 +35,31 @@ public class ParticleEffect implements IUpdate, IDraw {
 				velocity.x = 0 - velocity.x;
 			}
 			
+			if(moveLeft != null) {
+				if(moveLeft) {
+					velocity.x = -Math.abs(velocity.x);
+				} else {
+					velocity.x = Math.abs(velocity.x);
+				}
+			}
+			
+			if(moveUp != null) {
+				if(moveUp) {
+					velocity.y = -Math.abs(velocity.y);
+				} else {
+					velocity.y = Math.abs(velocity.y);
+				}
+			}
+			
 			if(MathUtils.random() < 0.5) {
 				velocity.y = 0 - velocity.y;
 			}
 			
-			float duration = MathUtils.random(MIN_PARTICLE_DURATION, MAX_PARTICLE_DURATION);
+			if(maxDuration == null) {
+				maxDuration = MAX_PARTICLE_DURATION;
+			}
+			
+			float duration = MathUtils.random(MIN_PARTICLE_DURATION, maxDuration);
 			
 			Particle particle = new Particle(textureKey, position, velocity, duration);
 			particles.add(particle);
@@ -46,11 +67,16 @@ public class ParticleEffect implements IUpdate, IDraw {
 	}
 	
 	public ParticleEffect(String textureKey, Vector2 position) {
-		this(textureKey, position, MathUtils.random(MIN_NUM_PARTICLES, MAX_NUM_PARTICLES));
+		this(textureKey, position, MathUtils.random(MIN_NUM_PARTICLES, MAX_NUM_PARTICLES), null, null, null);
+	}
+	
+	public static void startParticleEffect(String textureKey, Vector2 position, int numParticles, boolean moveLeft, float maxDuration) {
+		ParticleEffect effect = new ParticleEffect(textureKey, position, numParticles, moveLeft, true, maxDuration);
+		Globals.getInstance().getGame().addParticleEffect(effect);
 	}
 	
 	public static void startParticleEffect(String textureKey, Vector2 position, int numParticles) {
-		ParticleEffect effect = new ParticleEffect(textureKey, position, numParticles);
+		ParticleEffect effect = new ParticleEffect(textureKey, position, numParticles, null, null, null);
 		Globals.getInstance().getGame().addParticleEffect(effect);
 	}
 	

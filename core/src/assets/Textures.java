@@ -20,6 +20,7 @@ public class Textures {
 	private Textures() {
 		createTextureRegion("player.png", "player");	
 		createTextureRegion("player_blink.png", "player_blink");	
+		createTextureRegion("player_jump.png", "player_jump");
 		createTextureRegion("background.png", "background");
 		createTextureRegion("ball.png", "ball");
 		createTextureRegion("gray_block.png", "gray_block");
@@ -38,7 +39,7 @@ public class Textures {
 		createTextureRegion("vert_line.png", "vert_line");
 		
 		createColorTextureRegion(1, 1, 1, 1, "white");
-		createColorTextureRegion(0.8f, 0.8f, 0.8f, 1, "light_gray");
+		createColorTextureRegion(0.9f, 0.9f, 0.9f, 1, "light_gray");
 		createColorTextureRegion(1, 0, 0, 1, "red");
 		createColorTextureRegion(0, 1, 0, 1, "green");
 		createColorTextureRegion(0, 0, 1, 1, "blue");

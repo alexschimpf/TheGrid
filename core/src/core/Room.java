@@ -3,6 +3,7 @@ package core;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import script.Script;
 import misc.BodyData;
@@ -24,6 +25,7 @@ import entity.Entity;
 public class Room implements IUpdate, IDraw {
 
 	public static final float SQUARE_SIZE = Globals.VIEWPORT_WIDTH / 16;
+	protected static final float BORDER_LINE_THICKNESS = SQUARE_SIZE / 20;
 	
 	protected Vector2 gridPos;
 	protected HashMap<String, Script> scriptMap = new HashMap<String, Script>();
@@ -94,8 +96,15 @@ public class Room implements IUpdate, IDraw {
 	public void done() {
 	}
 	
-	public boolean entityExistsInArea(Vector2 topLeft, float width, float height) {
-		for(Entity entity : getEntities()) {
+	public boolean entityExistsInArea(Vector2 topLeft, float width, float height, Entity ignoreEntity) {
+		LinkedList<Entity> entities = new LinkedList<Entity>();
+		entities.addAll(getEntities());
+		entities.add(theGrid.getPlayer());
+		for(Entity entity : entities) {
+			if(ignoreEntity != null && entity.equals(ignoreEntity)) {
+				continue;
+			}
+			
 			Rectangle checkRect = new Rectangle(topLeft.x, topLeft.y, width, height);
 			Rectangle entityRect = new Rectangle(entity.getLeft(), entity.getTop(), entity.getWidth(), entity.getHeight());
 			if(checkRect.overlaps(entityRect)) {
@@ -249,10 +258,7 @@ public class Room implements IUpdate, IDraw {
 			if(!theGrid.getRoomOpenings().contains(currSquarePos, false) && 
 			   !theGrid.getRoomOpenings().contains(upCurrSquarePos, false)) {
 				Vector2 pos = Room.getWorldPosition(this, row, col);
-				Sprite sprite = new Sprite(horLine);
-				sprite.setSize(Room.SQUARE_SIZE, Room.SQUARE_SIZE / 10);
-				sprite.setPosition(pos.x, pos.y);
-				borderLines.add(sprite);
+				addBorderLine(horLine, pos.x, pos.y, Room.SQUARE_SIZE, Room.BORDER_LINE_THICKNESS);
 			}
 		}
 	}
@@ -265,10 +271,8 @@ public class Room implements IUpdate, IDraw {
 			if(!theGrid.getRoomOpenings().contains(currSquarePos, false) &&
 			   !theGrid.getRoomOpenings().contains(leftCurrSquarePos, false)) {
     			Vector2 pos = Room.getWorldPosition(this, row, col);
-    			Sprite sprite = new Sprite(vertLine);
-    			sprite.setSize(Room.SQUARE_SIZE / 10, Room.SQUARE_SIZE);
-    			sprite.setPosition(pos.x - 0.15f, pos.y);
-    			borderLines.add(sprite);
+    			pos.x -= 0.15f;
+    			addBorderLine(vertLine, pos.x, pos.y, Room.BORDER_LINE_THICKNESS, Room.SQUARE_SIZE);
 			}
 		}
 	}
@@ -294,31 +298,31 @@ public class Room implements IUpdate, IDraw {
 		TextureRegion vertLine = Textures.getInstance().getTextureRegion("vert_line");
 		
 		Vector2 pos = Room.getWorldPosition(row, col);
-		Sprite sprite = new Sprite(vertLine);
-		sprite.setSize(Room.SQUARE_SIZE / 10, Room.SQUARE_SIZE);
-		sprite.setPosition(pos.x - 0.3f, pos.y + 0.15f);		
-		borderLines.add(sprite);
+		pos.x -= 0.15f;
+		pos.y += 0.15f;
+		addBorderLine(vertLine, pos.x, pos.y, Room.BORDER_LINE_THICKNESS, Room.SQUARE_SIZE);
 		
 		pos = Room.getWorldPosition(row, col + 1);
-		sprite = new Sprite(vertLine);
-		sprite.setSize(Room.SQUARE_SIZE / 10, Room.SQUARE_SIZE);
-		sprite.setPosition(pos.x - 0.05f, pos.y + 0.15f);		
-		borderLines.add(sprite);
+		pos.x -= 0.05f;
+		pos.y += 0.15f;
+		addBorderLine(vertLine, pos.x, pos.y, Room.BORDER_LINE_THICKNESS, Room.SQUARE_SIZE);
 	}
 	
 	protected void createOpeningHorLines(int row, int col) {
 		TextureRegion horLine = Textures.getInstance().getTextureRegion("hor_line");
 		
 		Vector2 pos = Room.getWorldPosition(row, col);
-		Sprite sprite = new Sprite(horLine);
-		sprite.setSize(Room.SQUARE_SIZE, Room.SQUARE_SIZE / 10);
-		sprite.setPosition(pos.x, pos.y);		
-		borderLines.add(sprite);
-		
+		addBorderLine(horLine, pos.x, pos.y, Room.SQUARE_SIZE, Room.BORDER_LINE_THICKNESS);
+
 		pos = Room.getWorldPosition(row + 1, col);
-		sprite = new Sprite(horLine);
-		sprite.setSize(Room.SQUARE_SIZE, Room.SQUARE_SIZE / 10);
-		sprite.setPosition(pos.x, pos.y);		
+		addBorderLine(horLine, pos.x, pos.y, Room.SQUARE_SIZE, Room.BORDER_LINE_THICKNESS);
+		
+	}
+	
+	protected void addBorderLine(TextureRegion texture, float x, float y, float width, float height) {
+		Sprite sprite = new Sprite(texture);
+		sprite.setSize(width, height);
+		sprite.setPosition(x, y);		
 		borderLines.add(sprite);
 	}
 	

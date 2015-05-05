@@ -53,6 +53,7 @@ public class TransportChainEntity extends RectangleEntity {
 				public void run() {
 			    	sounds.playSound("transport");
 			    	updateChain(false);
+			    	entity.setLinearVelocity(0, 0.01f);
 					entity.setPosition(transportPos.x, transportPos.y);
 				}
 			});	

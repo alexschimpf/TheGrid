@@ -33,7 +33,7 @@ public class Sounds {
 	
 	public void playSound(String key) {
 		Sound sound = soundMap.get(key);
-		sound.play();
+		sound.setVolume(sound.play(), 0.4f);
 	}
 	
 	private void createSound(String filename, String key) {

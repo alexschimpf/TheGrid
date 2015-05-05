@@ -91,30 +91,35 @@ public class ProgrammableMovementEntity extends RectangleEntity {
 		    	int roomLeftCol = room.getLeftCol(false);
 		    	int roomRightCol = room.getRightCol(false);
 		    	
+		    	Vector2 leftTop = getLeftTop();
 		    	switch(direction) {
 					case Left:
 						if(currCol - 1 >= roomLeftCol) {
-							setPosition(getLeft() - (getWidth() / 2), getTop());
+							leftTop.x -= (getWidth() / 2);
 						}
 						break;
 					case Down:
 						if(currRow + 1 <= roomBottomRow) {
-							setPosition(getLeft(), getTop() + getHeight());
+							leftTop.y += getHeight();
 						}
 						break;
 					case Up:
 						if(currRow - 1 >= roomTopRow) {
-							setPosition(getLeft(), getTop() - getHeight());
+							leftTop.y -= getHeight();
 						}
 						break;
 					case Right:
 						if(currCol + 1 < roomRightCol) {
-							setPosition(getLeft() + (getWidth() / 2), getTop());
+							leftTop.x += (getWidth() / 2);
 						}
 						break;
 					default:
 						break;
 		    	}
+		    	
+		    	if(!room.entityExistsInArea(leftTop, getWidth(), getHeight(), ProgrammableMovementEntity.this)) {
+					setPosition(leftTop.x, leftTop.y);
+				}
 			}  		
     	});
     }

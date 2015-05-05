@@ -58,7 +58,7 @@ public class PlayerDropEntity extends RectangleEntity {
 		     		float newTop = roomTop + Room.SQUARE_SIZE;
 		     		Vector2 worldPos = new Vector2(player.getLeft(), newTop);
 		     		
-		     		while(room.entityExistsInArea(worldPos, player.getWidth() * 0.75f, player.getHeight())) {
+		     		while(room.entityExistsInArea(worldPos, player.getWidth() * 0.75f, player.getHeight(), null)) {
 		     			worldPos.y += Room.SQUARE_SIZE;
 		     		}
 		     		

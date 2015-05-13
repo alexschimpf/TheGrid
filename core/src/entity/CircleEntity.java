@@ -3,10 +3,12 @@ package entity;
 import particle.ParticleEffect;
 import misc.EntityBodyDef;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.XmlReader.Element;
 
 import core.Room;
@@ -48,6 +50,10 @@ public class CircleEntity extends Entity {
 	@Override
 	public void onBeginContact(Entity entity) {
 		super.onBeginContact(entity);
+
+		if(isShot(entity)) {
+			body.setAngularVelocity(body.getAngularVelocity() + MathUtils.random(-0.5f, 0.5f));
+		}
 		
 		if(removeOnContact && !isPlayer(entity)) {
 			ParticleEffect.startParticleEffect("ball", getCenter());
@@ -68,9 +74,9 @@ public class CircleEntity extends Entity {
 		
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
-		fixtureDef.density = 0.1f;
-		fixtureDef.friction = 0.2f;
-		fixtureDef.restitution = 0.5f;
+		fixtureDef.density = 0.2f;
+		fixtureDef.friction = 0.3f;
+		fixtureDef.restitution = 0.6f;
 
 		return fixtureDef;
 	}

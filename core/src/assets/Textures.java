@@ -22,7 +22,9 @@ public class Textures {
 		createTextureRegion("player_blink.png", "player_blink");	
 		createTextureRegion("player_jump.png", "player_jump");
 		createTextureRegion("background.png", "background");
+		createTextureRegion("shot.png", "shot");
 		createTextureRegion("ball.png", "ball");
+		createTextureRegion("disappearing_gray_block.png", "disappearing_gray_block");
 		createTextureRegion("gray_block.png", "gray_block");
 		createTextureRegion("red_block.png", "red_block");
 		createTextureRegion("green_block.png", "green_block");
@@ -35,14 +37,13 @@ public class Textures {
 		createTextureRegion("programmable_block_2.png", "programmable_block_2");
 		createTextureRegion("programmable_block_3.png", "programmable_block_3");
 		createTextureRegion("programmable_block_4.png", "programmable_block_4");
-		createTextureRegion("hor_line.png", "hor_line");
-		createTextureRegion("vert_line.png", "vert_line");
 		
 		createColorTextureRegion(1, 1, 1, 1, "white");
 		createColorTextureRegion(0.9f, 0.9f, 0.9f, 1, "light_gray");
 		createColorTextureRegion(1, 0, 0, 1, "red");
 		createColorTextureRegion(0, 1, 0, 1, "green");
 		createColorTextureRegion(0, 0, 1, 1, "blue");
+		createColorTextureRegion(0, 0, 0, 1, "black");
 	}
 
 	public static Textures getInstance() {

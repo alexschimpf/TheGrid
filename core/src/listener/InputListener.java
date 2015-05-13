@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 
+import core.GameState;
 import core.Room;
 import core.TheGrid;
 import entity.special.Player;
@@ -36,11 +37,16 @@ public class InputListener extends com.badlogic.gdx.scenes.scene2d.InputListener
 	
 	@Override
 	public boolean keyDown(InputEvent event, int keyCode) {
+		if(keyCode == Keys.ESCAPE) {
+			Gdx.app.exit();
+		}
+		
+		if(globals.getGameState() != GameState.Running) {
+			return false;
+		}
+		
 		Player player = theGrid.getPlayer();
 		switch(keyCode) {
-			case Keys.ESCAPE:
-				Gdx.app.exit();
-				return true;
 			case Keys.SPACE:
 				player.jump();
 				break;
@@ -56,6 +62,10 @@ public class InputListener extends com.badlogic.gdx.scenes.scene2d.InputListener
 	
 	@Override
 	public boolean keyUp(InputEvent event, int keyCode) {
+		if(globals.getGameState() != GameState.Running) {
+			return false;
+		}
+		
 		Player player = theGrid.getPlayer();
 		switch(keyCode) {
 			case Keys.SPACE:
@@ -67,6 +77,10 @@ public class InputListener extends com.badlogic.gdx.scenes.scene2d.InputListener
 	}
 	
 	public void update() {
+		if(globals.getGameState() != GameState.Running) {
+			return;
+		}
+		
 		Player player = theGrid.getPlayer();
 
 		if(Gdx.input.isKeyPressed(Keys.RIGHT)) {
@@ -107,6 +121,6 @@ public class InputListener extends com.badlogic.gdx.scenes.scene2d.InputListener
            @Override
            public void canceled() {
            }
-        }, "Format: gridRow,gridCol,row,col", "0,0,10,1", "");
+        }, "Format: gridRow,gridCol,row,col", "0,0,10,4", "");
 	}
 }

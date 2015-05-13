@@ -115,9 +115,13 @@ public class MainMenuScreen implements Screen {
 			}
 		});
 		
-		table.add("Main Menu").padBottom(40).row();
-	    table.add(buttonPlay).size(150,60).padBottom(20).row();
-	    table.add(buttonQuit).size(150,60).padBottom(20).row();
+		float buttonWidth = Gdx.graphics.getWidth() / 2;
+		float buttonHeight = Gdx.graphics.getHeight() / 5;
+		buttonPlay.getStyle().font.setScale(5);
+		buttonQuit.getStyle().font.setScale(5);
+		table.add("Main Menu").size(buttonWidth / 2).row();
+	    table.add(buttonPlay).size(buttonWidth, buttonHeight).padBottom(20).row();
+	    table.add(buttonQuit).size(buttonWidth, buttonHeight).padBottom(20).row();
 
 	    table.setFillParent(true);
 	    stage.addActor(table);

@@ -73,10 +73,12 @@ public class Animation implements IUpdate {
 	
 	public Sprite getSprite() {
 		TextureRegion textureRegion = animation.getKeyFrame(stateTime, loop);
-		textureRegion.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		sprite.setRegion(textureRegion);
-		sprite.setFlip(false, true);
-		return sprite;
+		return getSprite(textureRegion);
+	}
+	
+	public Sprite getSprite(int frame) {
+		TextureRegion textureRegion = animation.getKeyFrames()[frame];
+		return getSprite(textureRegion);
 	}
 	
 	public void pause() {
@@ -103,5 +105,12 @@ public class Animation implements IUpdate {
 	
 	public boolean isLooping() {
 		return loop;
+	}
+	
+	private Sprite getSprite(TextureRegion textureRegion) {
+		textureRegion.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		sprite.setRegion(textureRegion);
+		sprite.setFlip(false, true);
+		return sprite;
 	}
 }

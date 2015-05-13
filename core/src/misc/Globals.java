@@ -3,6 +3,7 @@ package misc;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import core.GameScreen;
+import core.GameState;
 import core.TheGame;
 import core.TheGrid;
 
@@ -11,6 +12,7 @@ public class Globals {
 	public static final float VIEWPORT_WIDTH = 60.0f;
 	public static final float VIEWPORT_HEIGHT = 100.0f;
 	
+	private GameState state;
 	private GameScreen game;
 	private TheGrid theGrid;
 	private OrthographicCamera camera;
@@ -20,6 +22,8 @@ public class Globals {
 	private Globals() {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(true, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+		//state = GameState.CutScene;
+		state = GameState.Running;
 	}
 
 	public static Globals getInstance() {
@@ -74,5 +78,13 @@ public class Globals {
 	
 	public TheGrid getTheGrid() {
 		return theGrid;
+	}
+	
+	public GameState getGameState() {
+		return state;
+	}
+	
+	public void setGameState(GameState state) {
+		this.state = state;
 	}
 }

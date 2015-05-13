@@ -16,10 +16,10 @@ import entity.special.PlayerShot;
 
 public class ParticleEffect implements IUpdate, IDraw {
 
-	protected static final int MIN_NUM_PARTICLES = 7;
-	protected static final int MAX_NUM_PARTICLES = 15;
-	protected static final float MIN_PARTICLE_DURATION = 500;
-	protected static final float MAX_PARTICLE_DURATION = 1500;
+	protected static final int MIN_NUM_PARTICLES = 6;
+	protected static final int MAX_NUM_PARTICLES = 12;
+	protected static final float MIN_PARTICLE_DURATION = 400;
+	protected static final float MAX_PARTICLE_DURATION = 1300;
 	
 	protected Array<Particle> particles = new Array<Particle>();
 	

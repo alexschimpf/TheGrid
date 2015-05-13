@@ -232,6 +232,8 @@ public class TheGridFileParser {
 		if(!friction) {
 			fixture.setFriction(0);
 		}
+		
+		shape.dispose();
 	}
 	
 	private Entity createEntity(String type, String id, Room room, Vector2 pos, Element entityElem) {		

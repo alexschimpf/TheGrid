@@ -2,6 +2,7 @@ package entity;
 
 import java.util.HashMap;
 
+import misc.Animation;
 import misc.EntityBodyDef;
 
 import com.badlogic.gdx.graphics.Color;
@@ -15,12 +16,13 @@ import core.Room;
 
 public class BlockChainEntity extends RectangleEntity {
 
-	private static final float ACTIVATED_DURATION = 780;
+	private static final float ACTIVATED_DURATION = 880; //780;
 	
 	private long activationStartTime = 0;
 	private boolean activated = false;
 	private int state = 0;
 	private String chainStartId;
+	protected Animation animation;
 	private HashMap<Integer, String> stateMachine = new HashMap<Integer, String>();
 	
 	protected BlockChainEntity(Room room, String textureKey, float x, float y, String chainStartId, 
@@ -65,13 +67,16 @@ public class BlockChainEntity extends RectangleEntity {
 	
 	@Override
 	public boolean update() {	 
+		animation.update();
+		
+		if(!(id.equals(chainStartId) && state == 0)) {
+			sprite = animation.getSprite();
+		}
+
 		float timeSinceActivated = TimeUtils.timeSinceMillis(activationStartTime);
 		if(activated && !(id.equals(chainStartId) && state == 0) &&
 		   timeSinceActivated > ACTIVATED_DURATION) {
 			restartChain();
-		} else if(activated && !(id.equals(chainStartId) && state == 0)) {
-			float r = 1 - (timeSinceActivated / ACTIVATED_DURATION);
-			sprite.setColor(r, 0, 0, 1);
 		}
 		
 		return super.update();
@@ -106,9 +111,9 @@ public class BlockChainEntity extends RectangleEntity {
 	
 	public void activate() {
 		if(id.equals(chainStartId) && state == 0) {
-			sprite.setColor(Color.GREEN);
+			sprite = animation.getSprite(9);
 		} else {
-			sprite.setColor(Color.RED);
+			animation.play();
 		}
 		activationStartTime = TimeUtils.millis();
 		activated = true;
@@ -117,10 +122,21 @@ public class BlockChainEntity extends RectangleEntity {
 	public void setState(int state) {
 		this.state = state;
 	}
+	
+	@Override
+	protected void createSprite(String textureKey, float x, float y, float width, float height) {
+		Vector2 pos = new Vector2(x, y);
+		Vector2 size = new Vector2(width, height);
+		
+		animation = new Animation("filling_gray_block.png", 1, 10, (ACTIVATED_DURATION / 1000.0f) / 10, false);
+		animation.setSprite(pos, size);
+		sprite = animation.getSprite();		
+	}
 
 	private void deactivate() {
 		activated = false;
 		sprite.setColor(Color.WHITE);
+		animation.stop();
 	}
 
 	private void restartChain() {

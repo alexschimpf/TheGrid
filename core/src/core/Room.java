@@ -17,7 +17,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
 
 import entity.Entity;
@@ -25,7 +32,8 @@ import entity.Entity;
 public class Room implements IUpdate, IDraw {
 
 	public static final float SQUARE_SIZE = Globals.VIEWPORT_WIDTH / 16;
-	protected static final float BORDER_LINE_THICKNESS = SQUARE_SIZE / 20;
+	protected static final float BORDER_LINE_THICKNESS = SQUARE_SIZE / 32;
+	protected static final float BORDER_LINE_LENGTH = SQUARE_SIZE;
 	
 	protected Vector2 gridPos;
 	protected HashMap<String, Script> scriptMap = new HashMap<String, Script>();
@@ -251,28 +259,28 @@ public class Room implements IUpdate, IDraw {
 	}
 	
 	protected void createHorLines(int startCol, int endCol, int row) {
-		TextureRegion horLine = Textures.getInstance().getTextureRegion("hor_line");
+		TextureRegion horLine = Textures.getInstance().getTextureRegion("black");
 		for(int col = startCol; col < endCol; col++) {
 			Vector2 currSquarePos = Room.getGridPosition(this, row, col);
 			Vector2 upCurrSquarePos = Room.getGridPosition(this, row - 1, col);
 			if(!theGrid.getRoomOpenings().contains(currSquarePos, false) && 
 			   !theGrid.getRoomOpenings().contains(upCurrSquarePos, false)) {
 				Vector2 pos = Room.getWorldPosition(this, row, col);
-				addBorderLine(horLine, pos.x, pos.y, Room.SQUARE_SIZE, Room.BORDER_LINE_THICKNESS);
+				addBorderLine(horLine, pos.x, pos.y, Room.BORDER_LINE_LENGTH, Room.BORDER_LINE_THICKNESS);
 			}
 		}
 	}
 	
 	protected void createVertLines(int startRow, int endRow, int col) {
-		TextureRegion vertLine = Textures.getInstance().getTextureRegion("vert_line");
+		TextureRegion vertLine = Textures.getInstance().getTextureRegion("black");
 		for(int row = startRow; row < endRow; row++) {
 			Vector2 currSquarePos = Room.getGridPosition(this, row, col);
 			Vector2 leftCurrSquarePos = Room.getGridPosition(this, row, col - 1);
 			if(!theGrid.getRoomOpenings().contains(currSquarePos, false) &&
 			   !theGrid.getRoomOpenings().contains(leftCurrSquarePos, false)) {
     			Vector2 pos = Room.getWorldPosition(this, row, col);
-    			pos.x -= 0.15f;
-    			addBorderLine(vertLine, pos.x, pos.y, Room.BORDER_LINE_THICKNESS, Room.SQUARE_SIZE);
+    			pos.x -= 0.05f;
+    			addBorderLine(vertLine, pos.x, pos.y, Room.BORDER_LINE_THICKNESS, Room.BORDER_LINE_LENGTH);
 			}
 		}
 	}
@@ -295,27 +303,24 @@ public class Room implements IUpdate, IDraw {
 	}
 	
 	protected void createOpeningVertLines(int row, int col) {
-		TextureRegion vertLine = Textures.getInstance().getTextureRegion("vert_line");
+		TextureRegion vertLine = Textures.getInstance().getTextureRegion("black");
 		
 		Vector2 pos = Room.getWorldPosition(row, col);
-		pos.x -= 0.15f;
-		pos.y += 0.15f;
-		addBorderLine(vertLine, pos.x, pos.y, Room.BORDER_LINE_THICKNESS, Room.SQUARE_SIZE);
+		pos.x -= 0.1f;
+		addBorderLine(vertLine, pos.x, pos.y, Room.BORDER_LINE_THICKNESS, Room.BORDER_LINE_LENGTH);
 		
 		pos = Room.getWorldPosition(row, col + 1);
-		pos.x -= 0.05f;
-		pos.y += 0.15f;
-		addBorderLine(vertLine, pos.x, pos.y, Room.BORDER_LINE_THICKNESS, Room.SQUARE_SIZE);
+		addBorderLine(vertLine, pos.x, pos.y, Room.BORDER_LINE_THICKNESS, Room.BORDER_LINE_LENGTH);
 	}
 	
 	protected void createOpeningHorLines(int row, int col) {
-		TextureRegion horLine = Textures.getInstance().getTextureRegion("hor_line");
+		TextureRegion horLine = Textures.getInstance().getTextureRegion("black");
 		
 		Vector2 pos = Room.getWorldPosition(row, col);
-		addBorderLine(horLine, pos.x, pos.y, Room.SQUARE_SIZE, Room.BORDER_LINE_THICKNESS);
+		addBorderLine(horLine, pos.x, pos.y, Room.BORDER_LINE_LENGTH, Room.BORDER_LINE_THICKNESS);
 
 		pos = Room.getWorldPosition(row + 1, col);
-		addBorderLine(horLine, pos.x, pos.y, Room.SQUARE_SIZE, Room.BORDER_LINE_THICKNESS);
+		addBorderLine(horLine, pos.x, pos.y, Room.BORDER_LINE_LENGTH, Room.BORDER_LINE_THICKNESS);
 		
 	}
 	

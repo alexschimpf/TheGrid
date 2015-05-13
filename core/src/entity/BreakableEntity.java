@@ -58,7 +58,7 @@ public class BreakableEntity extends RectangleEntity {
 		
 		if((breakSpeed != 0 && theGrid.getPlayer().getLinearVelocity().y >= breakSpeed)) {
 			sounds.playSound("explode");
-			ParticleEffect.startParticleEffect("blue", getCenter(), 20);
+			ParticleEffect.startParticleEffect("blue_block", getCenter(), 20);
 			getBodyData().setNeedsRemoved();	
 		} else if(((collisionEntity == null && isShot(entity)) || 
 				   (collisionEntity != null && entity.getType().equals(collisionEntity))) && 
@@ -70,7 +70,7 @@ public class BreakableEntity extends RectangleEntity {
 			
 			if(health <= 0) {
 				sounds.playSound("explode");
-				ParticleEffect.startParticleEffect("blue", getCenter(), 20);
+				ParticleEffect.startParticleEffect("blue_block", getCenter(), 20);
 				getBodyData().setNeedsRemoved();
 			}
 		}

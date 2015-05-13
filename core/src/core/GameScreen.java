@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -29,6 +30,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
@@ -61,6 +63,7 @@ public class GameScreen implements Screen {
 		
 		globals = Globals.getInstance();
 		globals.setGame(this);
+		//globals.getCamera().zoom -= 0.4f;
 		globals.getCamera().zoom += 0.1f;
 		debugRenderer = new Box2DDebugRenderer();
 		
@@ -87,7 +90,7 @@ public class GameScreen implements Screen {
 		music.play();
 		music.setVolume(0.5f);
 		music.setLooping(true);
-		music.setPosition(5);
+		music.setPosition(0.5f);
 	}
 
 	@Override
@@ -137,15 +140,26 @@ public class GameScreen implements Screen {
 	private void update() {
 		debugMatrix = new Matrix4(globals.getCamera().combined);
 		
-		theGrid.update();
-		
-		updateParticleEffects();
-		
+		theGrid.update();		
+		updateParticleEffects();		
 		inputListener.update();
+		
+		GameState state = globals.getGameState();			
+		if(state == GameState.CutScene) {
+			updateOpeningScene();
+		}
 		
 		// TODO:: Get this outta here.
 		if(Gdx.app.getType() == ApplicationType.Android) {
-			checkPressedButtons();
+			if(state == GameState.Running) {
+				checkPressedButtons();
+			}
+			
+			if(state != GameState.Running) {
+				hideUI();
+			} else {
+				showUI();
+			}
 		}
 		
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
@@ -164,7 +178,7 @@ public class GameScreen implements Screen {
 		} batch.end();
 		
 		//debugRenderer.render(theGrid.getWorld(), debugMatrix);
-		
+
 		stage.draw();
 	}
 	
@@ -188,7 +202,7 @@ public class GameScreen implements Screen {
 		Player player = theGrid.getPlayer();
 		createMoveButton(width, height, skin, player);
 		createJumpButton(width, height, skin, player);
-		createShootButton(width, height, skin, player);
+		createShootButton(width, height, skin, player); 
 	}
 	
 	private void updateParticleEffects() {
@@ -209,6 +223,46 @@ public class GameScreen implements Screen {
 		}
 	}
 	
+	private long lastMoveTime = TimeUtils.millis() + 3000;
+	private long openingSceneStartTime = TimeUtils.millis();
+	private float moveDuration = MathUtils.random(100, 150);
+	private int moveNum = 0;
+	private boolean stopped = false;
+	private void updateOpeningScene() {
+		if(TimeUtils.timeSinceMillis(openingSceneStartTime) > 10000) {
+			globals.getCamera().zoom += (5.0f / 50.0f) * Gdx.graphics.getDeltaTime();
+			if(globals.getCamera().zoom >= 1.1f) {
+				globals.getCamera().zoom = 1.1f;
+				globals.setGameState(GameState.Running);
+				
+				if(Gdx.app.getType() == ApplicationType.Android) {
+					showUI();
+				}
+			}
+		} else if(TimeUtils.timeSinceMillis(lastMoveTime) > 1500f){
+			Player player = theGrid.getPlayer();
+			
+			if(TimeUtils.timeSinceMillis(lastMoveTime) > 1500f + moveDuration) {
+				lastMoveTime = TimeUtils.millis();
+				stopped = true;
+				player.stopMove();
+				return;
+			}
+			
+			if(stopped) {
+				moveDuration = MathUtils.random(100, 150);
+				moveNum++;
+				stopped = false;
+			}
+			
+			if(!stopped && moveNum % 2 == 0) {
+				player.moveLeft();
+			} else if(!stopped && moveNum % 2 == 1) {
+				player.moveRight();
+			}
+		}
+	}
+	
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO: This shouldn't be in this class.
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -222,7 +276,9 @@ public class GameScreen implements Screen {
 		moveButton.addListener(new com.badlogic.gdx.scenes.scene2d.InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				movePointer = pointer;
+				if(globals.getGameState() == GameState.Running) {
+					movePointer = pointer;
+				}
 				 
 				return true;
 			}
@@ -234,7 +290,7 @@ public class GameScreen implements Screen {
 	private void createJumpButton(float screenWidth, float screenHeight, Skin skin, final Player player) {
 		jumpButton = new Button(skin);
 		jumpButton.setColor(1, 1, 1, 0.3f);
-		jumpButton.setSize(screenWidth / 5.5f, screenHeight / 5f);
+		jumpButton.setSize(screenWidth / 7f, screenHeight / 5f);
 		float width = jumpButton.getWidth();
 		
 		jumpButton.setPosition(screenWidth - (width * 2.2f), screenHeight / 32f);
@@ -242,13 +298,18 @@ public class GameScreen implements Screen {
 		jumpButton.addListener(new com.badlogic.gdx.scenes.scene2d.InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				player.jump();
+				if(globals.getGameState() == GameState.Running) { 
+					player.jump();
+				}
+				
 				return true;
 			}
 			
 			@Override
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				player.stopJump();
+				if(globals.getGameState() == GameState.Running) { 
+					player.stopJump();
+				}
 			}
 		});
 
@@ -258,7 +319,7 @@ public class GameScreen implements Screen {
 	private void createShootButton(float screenWidth, float screenHeight, Skin skin, final Player player) {
 		shootButton = new Button(skin);
 		shootButton.setColor(1, 1, 1, 0.3f);
-		shootButton.setSize(screenWidth / 5.5f, screenHeight / 5f);
+		shootButton.setSize(screenWidth / 7f, screenHeight / 5f);
 		float width = shootButton.getWidth();
 		
 		shootButton.setPosition(screenWidth - (width * 1.1f), screenHeight / 32f);
@@ -266,7 +327,10 @@ public class GameScreen implements Screen {
 		shootButton.addListener(new com.badlogic.gdx.scenes.scene2d.InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				player.shoot();
+				if(globals.getGameState() == GameState.Running) { 
+					player.shoot();
+				}
+				
 				return true;
 			}
 		});
@@ -292,5 +356,17 @@ public class GameScreen implements Screen {
 			Player player = theGrid.getPlayer();
 			player.shoot(); 				
 		}
+	}
+	
+	private void hideUI() {
+		moveButton.setVisible(false);
+		jumpButton.setVisible(false);
+		shootButton.setVisible(false);
+	}
+	
+	private void showUI() {
+		moveButton.setVisible(true);
+		jumpButton.setVisible(true);
+		shootButton.setVisible(true);
 	}
 }

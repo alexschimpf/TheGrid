@@ -200,7 +200,7 @@ public class Player extends RectangleEntity {
 		sprite = animation.getSprite();		
 		animation.play();
 		
-		blinkAnimation = new Animation("player_blink.png", 1, 8, 0.08f, false);
+		blinkAnimation = new Animation("player_blink.png", 1, 7, 0.08f, false);
 		blinkAnimation.setSprite(pos, size);
 		
 		jumpAnimation = new Animation("player_jump.png", 1, 7, 0.04f, false);
@@ -254,7 +254,7 @@ public class Player extends RectangleEntity {
 
 		if(numContacts > 0 && !isJumping()) {
 			boolean particleMoveLeft = moveDirection == Direction.Right;
-			ParticleEffect.startParticleEffect("light_gray", pos, 2, particleMoveLeft, 700);
+			ParticleEffect.startParticleEffect("shot", pos, 1, particleMoveLeft, 500);
 		}
 		
 		body.setLinearVelocity(vx, body.getLinearVelocity().y);

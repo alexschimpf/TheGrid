@@ -1,6 +1,6 @@
 <the_grid>
     <size num_rows="4" num_cols="4" />
-    <player grid_row="0" grid_col="0" row="10" col="4" />
+    <player grid_row="0" grid_col="0" row="10" col="5" />
     <rooms>
         <!--------------------------------------------------------------------------
         <!-- Room 0, 0
@@ -421,9 +421,9 @@
 		        </entity>
 		        <entity type="rectangle">
 		            <custom>
-		                <texture_key>gray_block</texture_key>
 		                <width_scale>1</width_scale>
 		                <height_scale>1</height_scale>
+		                <texture_key>gray_block</texture_key>
 		            </custom>
 		            <locations>
 		                <location row="4" col="9" />
@@ -437,7 +437,6 @@
 		        </entity>
 		        <entity type="disappearing_rectangle">
 		            <custom>
-		                <texture_key>gray_block</texture_key>
 		                <width_scale>1</width_scale>
 		                <height_scale>1</height_scale>
 		            </custom>

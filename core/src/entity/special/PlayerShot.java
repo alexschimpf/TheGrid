@@ -30,7 +30,7 @@ public class PlayerShot extends RectangleEntity {
 	private Player player;
 	
 	public PlayerShot(Player player) {
-		super(player.getRoom(), "light_gray", PlayerShot.getEntityBodyDef(player));
+		super(player.getRoom(), "shot", PlayerShot.getEntityBodyDef(player));
 
 		this.player = player;
 		body.setBullet(true);
@@ -91,7 +91,7 @@ public class PlayerShot extends RectangleEntity {
 		
 		// May have hit a chain pad, for example.
 		if(entity == null) {
-			ParticleEffect.startParticleEffect("light_gray", new Vector2(x, y));
+			ParticleEffect.startParticleEffect("shot", new Vector2(x, y));
 			getBodyData().setNeedsRemoved();
 			return;
 		}
@@ -107,7 +107,7 @@ public class PlayerShot extends RectangleEntity {
 		}
 		
 		if(PlayerShot.doParticleEffect(entity.getType())) {
-			ParticleEffect.startParticleEffect("light_gray", new Vector2(x, y));
+			ParticleEffect.startParticleEffect("shot", new Vector2(x, y));
 		}
 		
 		getBodyData().setNeedsRemoved();
@@ -136,6 +136,7 @@ public class PlayerShot extends RectangleEntity {
 		
 		sprite.setScale(0);
 				
+		body.setAngularVelocity(0.2f * (vx < 0 ? 1 : -1));
 		setLinearVelocity(vx, vy);
 	}
 	
@@ -157,9 +158,9 @@ public class PlayerShot extends RectangleEntity {
 		
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
-		fixtureDef.density = 1;
-		fixtureDef.friction = 0;
-		fixtureDef.restitution = 0;
+		fixtureDef.density = 0.8f;
+		fixtureDef.friction = 0.2f;
+		fixtureDef.restitution = 0.2f;
 		fixtureDef.filter.categoryBits = 0x0002;
 
 		return fixtureDef;

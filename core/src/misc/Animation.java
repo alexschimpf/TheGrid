@@ -1,7 +1,10 @@
 package misc;
 
+import assets.Textures;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -24,8 +27,9 @@ public class Animation implements IUpdate {
 	private State state = State.Stopped;
 	private Sprite sprite;
 	private com.badlogic.gdx.graphics.g2d.Animation animation;
+	private Color color;
 	
-	public Animation(String filename, int numRows, int numCols, float frameDuration, boolean loop) {
+	public Animation(String filename, int numRows, int numCols, float frameDuration, boolean loop, boolean tint) {
 		FileHandle file = Gdx.files.internal("textures/" + filename);
 		Texture sheet = new Texture(file);
 		sheet.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
@@ -46,6 +50,10 @@ public class Animation implements IUpdate {
         sprite = new Sprite();
         animation = new com.badlogic.gdx.graphics.g2d.Animation(frameDuration, frames);
         stateTime = 0;   
+        
+        if(tint) {
+        	color = Textures.getInstance().getRandomSchemeColor();
+        }
 	}
 
 	@Override
@@ -99,6 +107,10 @@ public class Animation implements IUpdate {
 		return state;
 	}
 	
+	public boolean isPlaying() {
+		return state == State.Playing;
+	}
+	
 	public void setLooping(boolean loop) {
 		this.loop = loop;
 	}
@@ -111,6 +123,11 @@ public class Animation implements IUpdate {
 		textureRegion.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		sprite.setRegion(textureRegion);
 		sprite.setFlip(false, true);
+		
+		if(color != null) {
+			sprite.setColor(color);
+		}
+
 		return sprite;
 	}
 }

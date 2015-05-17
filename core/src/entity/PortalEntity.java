@@ -41,8 +41,6 @@ public class PortalEntity extends RectangleEntity {
 			Vector2 pos = body.getPosition();
 			body.setTransform(pos.x, pos.y, body.getAngle() + (MathUtils.degreesToRadians * 90));
 		}
-		
-		sprite.setColor(0.7f, 0, 0, 0.5f);
 	}
 
 	public static Entity build(String id, Room room, Vector2 pos, Element elem) {
@@ -63,6 +61,7 @@ public class PortalEntity extends RectangleEntity {
 	public boolean update() {
 		animation.update();
 		sprite = animation.getSprite();
+		sprite.setAlpha(0.5f);
 		if(exitDirection == Direction.Up || exitDirection == Direction.Down) {
 			sprite.setRotation(90);
 		}
@@ -84,7 +83,7 @@ public class PortalEntity extends RectangleEntity {
 			exit.onExit(entity);	
 		}
 	}
-	
+
 	public void onExit(final Entity entity) {
 		Gdx.app.postRunnable(new Runnable() {
 	        @Override
@@ -127,7 +126,7 @@ public class PortalEntity extends RectangleEntity {
 	
 	@Override
 	protected void createSprite(String textureKey, float x, float y, float width, float height) {
-		animation = new Animation("portal.png", 1, 4, 0.1f, true);
+		animation = new Animation("portal.png", 1, 4, 0.1f, true, true);
 		animation.setSprite(new Vector2(x, y), new Vector2(width, height));
 		sprite = animation.getSprite();
 		sprite.setFlip(false, true);

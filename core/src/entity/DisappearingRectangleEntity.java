@@ -20,7 +20,7 @@ public class DisappearingRectangleEntity extends RectangleEntity {
 	protected Animation animation;
 	
 	protected DisappearingRectangleEntity(Room room, EntityBodyDef bodyDef) {
-		super(room, "disappearing_gray_block", bodyDef);
+		super(room, "disappearing_block", bodyDef);
 	}
 
 	public static Entity build(String id, Room room, Vector2 pos, Element elem) {
@@ -96,7 +96,7 @@ public class DisappearingRectangleEntity extends RectangleEntity {
 		Vector2 pos = new Vector2(x, y);
 		Vector2 size = new Vector2(width, height);
 		
-		animation = new Animation("disappearing_gray_block.png", 1, 10, (DURATION / 1000.0f) / 10, false);
+		animation = new Animation("disappearing_block.png", 1, 10, (DURATION / 1000.0f) / 10, false, true);
 		animation.setSprite(pos, size);
 		sprite = animation.getSprite();		
 	}

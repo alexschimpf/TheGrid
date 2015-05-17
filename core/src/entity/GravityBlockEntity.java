@@ -19,7 +19,7 @@ public class GravityBlockEntity extends RectangleEntity {
 		float height = custom.getFloat("height_scale", 1) * Room.SQUARE_SIZE;
 		Vector2 size = new Vector2(width, height);
 		EntityBodyDef bodyDef = new EntityBodyDef(pos, size, BodyType.StaticBody);
-		GravityBlockEntity entity = new GravityBlockEntity(room, "green_block", bodyDef);
+		GravityBlockEntity entity = new GravityBlockEntity(room, "block", bodyDef);
 		entity.setId(id);
 		entity.setBodyData();
 		

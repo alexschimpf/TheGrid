@@ -36,7 +36,7 @@ public class BreakableTransportEntity extends TransportChainEntity {
 		Vector2 transportPos = Room.getWorldPosition(room, transportRow, transportCol);
 		Vector2 size = new Vector2(Room.SQUARE_SIZE, Room.SQUARE_SIZE);
 		EntityBodyDef bodyDef = new EntityBodyDef(pos, size, BodyType.StaticBody);
-		BreakableTransportEntity entity = new BreakableTransportEntity(room, "blue_block", bodyDef, transportPos, numShots);
+		BreakableTransportEntity entity = new BreakableTransportEntity(room, "cracked_block_1", bodyDef, transportPos, numShots);
 		entity.setId(id);
 		entity.setBodyData();
 		
@@ -52,12 +52,10 @@ public class BreakableTransportEntity extends TransportChainEntity {
 	public void onBeginContact(final Entity entity) {
 		if(isShot(entity) && startHealth > -1) {
 			health--;
-			Color color = sprite.getColor();
-			sprite.setColor(color.r, color.g, color.b, color.a - (1.0f / startHealth));
 			
 			if(health <= 0) {
 				sounds.playSound("explode");
-				ParticleEffect.startParticleEffect("blue_block", getCenter(), 20);
+				ParticleEffect.startParticleEffect("cracked_block_1", getCenter(), 20);
 				getBodyData().setNeedsRemoved();
 			} else {
 				sounds.playSound("transport");
@@ -74,6 +72,16 @@ public class BreakableTransportEntity extends TransportChainEntity {
 					theGrid.getPlayer().setPosition(transportPos.x, transportPos.y);
 				}
 			});	
+			
+			if(health > 0) {
+				int num = Math.min(4, 5 - (int)((((float)health) / startHealth) * 4));
+				setSprite(num);
+			}
 		}
+ 	}
+	
+	protected void setSprite(int num) {
+		String key = "cracked_block_" + num;
+		sprite.setRegion(textures.getTextureRegion(key));
 	}
 }

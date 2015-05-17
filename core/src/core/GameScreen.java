@@ -91,6 +91,9 @@ public class GameScreen implements Screen {
 		music.setVolume(0.5f);
 		music.setLooping(true);
 		music.setPosition(0.5f);
+		
+		// I don't know why this helps, but it does.
+		Gdx.graphics.setDisplayMode(Gdx.graphics.getDesktopDisplayMode().width, Gdx.graphics.getDesktopDisplayMode().height, true);	
 	}
 
 	@Override

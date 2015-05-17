@@ -67,7 +67,7 @@ public class CircleCreatorEntity extends MovingRectangleEntity {
 	
 	@Override
 	protected void createSprite(String textureKey, float x, float y, float width, float height) {
-		animation = new Animation("question_mark_block.png", 1, 5, 0.075f, false);
+		animation = new Animation("question_mark_block.png", 1, 9, 0.04f, false, true);
 		sprite = animation.getSprite();
 		sprite.setPosition(x, y);
 		sprite.setSize(width, height);

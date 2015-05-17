@@ -108,14 +108,7 @@ public class InputListener extends com.badlogic.gdx.scenes.scene2d.InputListener
         		int row = Integer.parseInt(pieces[2]);
         		int col = Integer.parseInt(pieces[3]);
         		Vector2 worldPos = Room.getWorldPosition(gridRow, gridCol, row, col);
-        		player.setPosition(worldPos.x, worldPos.y);
-        		Gdx.app.postRunnable(new Runnable() {
-					@Override
-					public void run() {
-						Gdx.graphics.setDisplayMode(Gdx.graphics.getDesktopDisplayMode().width, Gdx.graphics.getDesktopDisplayMode().height, true);	
-					}        			
-        		});
-        		
+        		player.setPosition(worldPos.x, worldPos.y);   
            }
         
            @Override

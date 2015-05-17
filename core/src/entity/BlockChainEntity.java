@@ -37,7 +37,6 @@ public class BlockChainEntity extends RectangleEntity {
 		Element custom = elem.getChildByName("custom");
 			
 		String chainStartId = custom.get("start_block_id");
-		String textureKey = custom.get("texture_key");
 		
 		HashMap<Integer, String> stateMachine = new HashMap<Integer, String>();
 		Element stateMap = custom.getChildByName("state_map");
@@ -50,7 +49,7 @@ public class BlockChainEntity extends RectangleEntity {
 			}
 		}	
 		
-		BlockChainEntity entity = new BlockChainEntity(room, textureKey, pos.x, pos.y, chainStartId, stateMachine);
+		BlockChainEntity entity = new BlockChainEntity(room, "filling_block", pos.x, pos.y, chainStartId, stateMachine);
 		entity.setId(id);
 		entity.setBodyData();
 		
@@ -128,7 +127,7 @@ public class BlockChainEntity extends RectangleEntity {
 		Vector2 pos = new Vector2(x, y);
 		Vector2 size = new Vector2(width, height);
 		
-		animation = new Animation("filling_gray_block.png", 1, 10, (ACTIVATED_DURATION / 1000.0f) / 10, false);
+		animation = new Animation("filling_block.png", 1, 10, (ACTIVATED_DURATION / 1000.0f) / 10, false, true);
 		animation.setSprite(pos, size);
 		sprite = animation.getSprite();		
 	}

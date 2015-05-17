@@ -18,7 +18,7 @@ public class BreakableEntity extends RectangleEntity {
 	protected String collisionEntity;
 	
 	protected BreakableEntity(Room room, float x, float y, float breakSpeed, int numShots, String shotEntity) {
-		super(room, "blue_block", BreakableEntity.getEntityBodyDef(x, y));
+		super(room, "cracked_block_1", BreakableEntity.getEntityBodyDef(x, y));
 		
 		this.breakSpeed = breakSpeed;
 		this.startHealth = numShots;
@@ -58,21 +58,27 @@ public class BreakableEntity extends RectangleEntity {
 		
 		if((breakSpeed != 0 && theGrid.getPlayer().getLinearVelocity().y >= breakSpeed)) {
 			sounds.playSound("explode");
-			ParticleEffect.startParticleEffect("blue_block", getCenter(), 20);
+			ParticleEffect.startParticleEffect("cracked_block_1", getCenter(), 20);
 			getBodyData().setNeedsRemoved();	
 		} else if(((collisionEntity == null && isShot(entity)) || 
 				   (collisionEntity != null && entity.getType().equals(collisionEntity))) && 
 				   startHealth > -1) {
 			// TODO: This is getting called twice on each shot collision.
 			health--;
-			Color color = sprite.getColor();
-			sprite.setColor(color.r, color.g, color.b, color.a - (1.0f / startHealth));
-			
+
 			if(health <= 0) {
 				sounds.playSound("explode");
-				ParticleEffect.startParticleEffect("blue_block", getCenter(), 20);
+				ParticleEffect.startParticleEffect("cracked_block_1", getCenter(), 20);
 				getBodyData().setNeedsRemoved();
+			} else {
+				int num = Math.min(4, 5 - (int)((((float)health) / startHealth) * 4));
+				setSprite(num);
 			}
 		}
+	}
+	
+	protected void setSprite(int num) {
+		String key = "cracked_block_" + num;
+		sprite.setRegion(textures.getTextureRegion(key));
 	}
 }

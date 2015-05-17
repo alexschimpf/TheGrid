@@ -6,6 +6,7 @@ import java.util.HashMap;
 import script.Script;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -82,10 +83,11 @@ public class TheGridFileParser {
 			for(Element openingElem : openings) {
 				int row = openingElem.getInt("row");
 				int col = openingElem.getInt("col");
-				Vector2 location = Room.getGridPosition(room, row, col);
-				openingLocations.add(location);
+				openingLocations.add(new Vector2(row, col));
 			}
 		}	
+		
+		room.setOpenings(openingLocations);
 		
 		Element scriptsElem = roomElem.getChildByName("scripts");	
 		createScripts(room, scriptsElem);
@@ -98,9 +100,17 @@ public class TheGridFileParser {
 		Element entitiesElem = roomElem.getChildByName("entities");
 		createEntities(room, entitiesElem);
 		
+		openingLocations = new Array<Vector2>();		
+		if(openingsElem != null) {
+			Array<Element> openings = openingsElem.getChildrenByName("opening");
+			for(Element openingElem : openings) {
+				int row = openingElem.getInt("row");
+				int col = openingElem.getInt("col");
+				Vector2 location = Room.getGridPosition(room, row, col);
+				openingLocations.add(location);
+			}
+		}	
 		createRoomBorder(room, openingLocations);
-
-		room.setOpenings(openingLocations);
 		
 		theGrid.addRoom(room);
 	}
@@ -240,8 +250,8 @@ public class TheGridFileParser {
 		try {
 			Class<?> c = getEntityClassFromType(type);
 			Method method = c.getMethod("build", String.class, Room.class, Vector2.class, Element.class);
-			Entity entity = (Entity)method.invoke(null, id, room, pos, entityElem);
-			
+			Entity entity = (Entity)method.invoke(null, id, room, pos, entityElem);			
+				
 			return entity;
 		} catch(Exception e) {
 			Gdx.app.error("tendersaucer", "createEntity", e);
@@ -364,7 +374,7 @@ public class TheGridFileParser {
 	}
 	
 	private void createGridBorderEntity(Room room, EntityBodyDef bodyDef) {
-		RectangleEntity borderEntity = RectangleEntity.build(null, room, "white", bodyDef);
+		RectangleEntity borderEntity = RectangleEntity.build(null, room, "", bodyDef);
 		borderEntity.setBodyData();
 		borderEntity.addFrictionTop(0.3f);
 		theGrid.addGlobalEntity(borderEntity);

@@ -38,7 +38,7 @@ public class PlayerShot extends RectangleEntity {
 	}
 	
 	public PlayerShot(Vector2 pos) {
-		super(null, "light_gray", PlayerShot.getEntityBodyDef(pos));
+		super(null, "shot", PlayerShot.getEntityBodyDef(pos));
 
 		this.room = theGrid.getPlayer().getRoom();
 		body.setBullet(true);
@@ -146,6 +146,11 @@ public class PlayerShot extends RectangleEntity {
 		theGrid.addGlobalEntity(this);
 		
 		setLinearVelocity(vx, vy);
+	}
+	
+	@Override
+	protected boolean isTintable() {
+		return false;
 	}
 	
 	@Override

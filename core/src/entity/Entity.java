@@ -6,6 +6,7 @@ import assets.Sounds;
 import assets.Textures;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -179,12 +180,15 @@ public abstract class Entity implements IUpdate, IDraw, ICollide {
 	protected abstract FixtureDef createFixtureDef();
 	
 	protected void createSprite(String textureKey, float x, float y, float width, float height) {
-		TextureRegion textureRegion = textures.getTextureRegion(textureKey);
-		sprite = textureRegion != null ? new Sprite(textureRegion) : new Sprite();
+		if(isTintable()) {
+			sprite = textures.getRandomColorSprite(textureKey);
+		} else {
+			sprite = textures.getSprite(textureKey);
+		}
+		
 		sprite.setPosition(x, y);
 		sprite.setSize(width, height);
 		sprite.setOrigin(width / 2, height / 2);
-		sprite.setFlip(false, true);
 	}
 	
 	protected void createBody(BodyType bodyType) {
@@ -224,5 +228,9 @@ public abstract class Entity implements IUpdate, IDraw, ICollide {
 	
 	protected boolean isShot(Entity entity) {
 		return entity.getType().equals("shot");
+	}
+	
+	protected boolean isTintable() {
+		return true;
 	}
 }

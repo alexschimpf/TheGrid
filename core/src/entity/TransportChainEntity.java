@@ -71,11 +71,9 @@ public class TransportChainEntity extends RectangleEntity {
 	}
 	
 	public void setColor(Color color) {
-		String textureKey = "gray_block";
+		String textureKey = "block";
 		if(color.equals(Color.BLUE)) {
-			textureKey = "blue_block";
-		} else if(color.equals(Color.RED)) {
-			textureKey = "red_block";
+			textureKey = "block";
 		}
 
 		TextureRegion tr = textures.getTextureRegion(textureKey);

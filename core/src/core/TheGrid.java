@@ -1,5 +1,6 @@
 package core;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import script.Script;
@@ -27,7 +28,6 @@ public class TheGrid implements IUpdate, IDraw {
 	private Room[][] grid;
 	
 	private Array<Entity> globalEntities = new Array<Entity>();
-	private Array<Vector2> roomOpenings = new Array<Vector2>();
 	
 	public TheGrid() {
 		world = new World(new Vector2(0, DEFAULT_GRAVITY), true);
@@ -93,7 +93,7 @@ public class TheGrid implements IUpdate, IDraw {
 		parser.parseFile("the_grid.xml");
 		
 		for(Room room : getRooms()) {
-			room.createBorderLines();
+			room.createBorderSprites();
 		}
 	}
 	
@@ -114,8 +114,6 @@ public class TheGrid implements IUpdate, IDraw {
 	public void addRoom(Room room) {
 		Vector2 roomPos = room.getGridPosition();
 		grid[(int)roomPos.x][(int)roomPos.y] = room;
-		
-		roomOpenings.addAll(room.getOpenings());
 	}
 	
 	public Array<Room> getRooms() {
@@ -155,8 +153,31 @@ public class TheGrid implements IUpdate, IDraw {
 		return player;
 	}
 	
-	public Array<Vector2> getRoomOpenings() {
-		return roomOpenings;
+	public boolean isEntityAt(Vector2 worldPos) {
+		for(Room room : getRooms()) {
+			Collection<Entity> entities = room.getEntities();
+			for(Entity entity : entities) {
+				if(worldPos.equals(entity.getLeftTop())) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	public boolean isOpeningAt(Vector2 worldPos) {
+		for(Room room : getRooms()) {
+			Array<Vector2> openings = room.getOpenings();
+			for(Vector2 openingGridPos : openings) {
+				Vector2 currWorldPos = Room.getWorldPosition(room, (int)openingGridPos.x, (int)openingGridPos.y);
+				if(worldPos.equals(currWorldPos)) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 	
 	protected void updateGlobals() {

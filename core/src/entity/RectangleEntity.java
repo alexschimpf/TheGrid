@@ -44,7 +44,7 @@ public class RectangleEntity extends Entity {
 		
 		return entity;
 	}
-	
+
 	public static RectangleEntity build(String id, Room room, String textureKey, EntityBodyDef bodyDef) {
 		RectangleEntity entity = new RectangleEntity(room, textureKey, bodyDef);
 		entity.setId(id);
@@ -61,8 +61,8 @@ public class RectangleEntity extends Entity {
 	public void addFrictionTop(float friction) {        
 		Vector2 center = new Vector2(getCenterX(), getTop());
 		center = body.getLocalPoint(center);
-		PolygonShape shape = new PolygonShape();		
-		shape.setAsBox(getWidth() / 2 * 0.95f, 0.01f, center, body.getAngle());		
+		PolygonShape shape = new PolygonShape();
+		shape.setAsBox((getWidth() / 2) * 0.95f, 0.1f, center, body.getAngle());		
 		body.createFixture(shape, 0).setFriction(friction);
 	}
 	

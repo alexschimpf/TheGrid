@@ -4,6 +4,7 @@ import particle.ParticleEffect;
 import misc.Animation;
 import misc.EntityBodyDef;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -36,7 +37,6 @@ public class Player extends RectangleEntity {
 	private long lastBlinkTime = TimeUtils.millis();
 	private float blinkCooldown = MathUtils.random(1000, 6000);
 	private Direction direction = Direction.Right;
-	private Animation animation;
 	private Animation blinkAnimation;
 	private Animation jumpAnimation;
 	
@@ -71,22 +71,14 @@ public class Player extends RectangleEntity {
 			lastBlinkTime = TimeUtils.millis();
 			blinkCooldown = MathUtils.random(1000, 5000);
 			blinkAnimation.play();
-			animation.stop();
 		}
 		
-		if(jumpAnimation.getState() == Animation.State.Playing) {
+		if(jumpAnimation.isPlaying()) {
 			jumpAnimation.update();
 			sprite = jumpAnimation.getSprite();
-		} else if(blinkAnimation.getState() == Animation.State.Playing) {
+		} else if(blinkAnimation.isPlaying()) {
 			blinkAnimation.update();
 			sprite = blinkAnimation.getSprite();
-		} else {
-			if(animation.getState() == Animation.State.Stopped) {
-				animation.play();
-			}
-			
-			animation.update();
-			sprite = animation.getSprite();
 		}
 		
 		Room currRoom = theGrid.getRoomAt(getCenterX(), getCenterY());
@@ -99,12 +91,8 @@ public class Player extends RectangleEntity {
 			room.setAwake(true);
 		} 
 		
-		if(direction == Direction.Left) {
-			sprite.setFlip(true, true);
-		} else {
-			sprite.setFlip(false, true);
-		}
-		
+		sprite.setFlip(direction == Direction.Left, true);
+
 		return super.update();
 	}
 
@@ -119,17 +107,19 @@ public class Player extends RectangleEntity {
 	public void jump() {
 		if(!isJumping() && TimeUtils.timeSinceMillis(lastJumpTime) > JUMP_COOLDOWN) {
 			jumpAnimation.play();
-			animation.stop();
 			lastJumpTime = TimeUtils.millis();
 			sounds.playSound("jump");
 			float x = body.getWorldCenter().x;
 			float y = body.getWorldCenter().y;
 			body.applyLinearImpulse(0, JUMP_IMPULSE, x, y, true);
-			//ParticleEffect.startParticleEffect("light_gray", new Vector2(getCenterX(), getBottom()), 6);
 		}
 	}
 	
 	public void stopMove() {
+		if(!jumping && !blinkAnimation.isPlaying()) {
+			setSprite("player");
+		}
+		
 		body.setLinearVelocity(0, body.getLinearVelocity().y);
 	}
 	
@@ -192,18 +182,15 @@ public class Player extends RectangleEntity {
 	
 	@Override
 	protected void createSprite(String textureKey, float x, float y, float width, float height) {
+		super.createSprite(textureKey, x, y, width, height);
+		
 		Vector2 pos = new Vector2(x, y);
 		Vector2 size = new Vector2(width, height);
-		
-		animation = new Animation("player.png", 1, 4, 0.09f, true);
-		animation.setSprite(pos, size);
-		sprite = animation.getSprite();		
-		animation.play();
-		
-		blinkAnimation = new Animation("player_blink.png", 1, 7, 0.08f, false);
+
+		blinkAnimation = new Animation("player_blink.png", 1, 7, 0.08f, false, false);
 		blinkAnimation.setSprite(pos, size);
 		
-		jumpAnimation = new Animation("player_jump.png", 1, 7, 0.04f, false);
+		jumpAnimation = new Animation("player_jump.png", 1, 9, 0.03f, false, false);
 		jumpAnimation.setSprite(pos, size);
 	}
 	
@@ -226,6 +213,11 @@ public class Player extends RectangleEntity {
 		return fixtureDef;
 	}
 	
+	@Override
+	protected boolean isTintable() {
+		return false;
+	}
+	
 	private void attachExtraFixtures() {
 		CircleShape shape = new CircleShape();
 
@@ -245,18 +237,26 @@ public class Player extends RectangleEntity {
 	private void move(Direction moveDirection) {
 		direction = moveDirection;
 		
-		Vector2 pos = new Vector2(getRight(), getBottom() - (getHeight() / 15));
+		Vector2 pos = new Vector2(getLeft() + (getWidth() / 4.0f), getBottom() - (getHeight() / 15));
 		float vx = Player.MOVE_SPEED;
 		if(moveDirection == Direction.Left) {
 			vx = 0 - vx;
-			pos.x = getLeft();
+			pos.x = getRight() - (getWidth() / 4.0f);
 		}
 
 		if(numContacts > 0 && !isJumping()) {
+			setSprite("player_move");
 			boolean particleMoveLeft = moveDirection == Direction.Right;
 			ParticleEffect.startParticleEffect("shot", pos, 1, particleMoveLeft, 500);
+		} else if(!jumpAnimation.isPlaying()){
+			setSprite("player");
 		}
 		
 		body.setLinearVelocity(vx, body.getLinearVelocity().y);
+	}
+	
+	private void setSprite(String textureKey) {
+		sprite.setRegion(textures.getTextureRegion(textureKey));
+		sprite.setFlip(direction == Direction.Left, true);
 	}
 }

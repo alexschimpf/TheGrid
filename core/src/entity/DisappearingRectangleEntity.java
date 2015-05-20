@@ -96,8 +96,8 @@ public class DisappearingRectangleEntity extends RectangleEntity {
 		Vector2 pos = new Vector2(x, y);
 		Vector2 size = new Vector2(width, height);
 		
-		animation = new Animation("disappearing_block.png", 1, 10, (DURATION / 1000.0f) / 10, false, true);
+		animation = new Animation("disappearing_block", DURATION / 1000.0f, false, true);
 		animation.setSprite(pos, size);
-		sprite = animation.getSprite();		
+		sprite = animation.getSprite();	
 	}
 }

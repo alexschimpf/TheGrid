@@ -91,6 +91,10 @@ public class InputListener extends com.badlogic.gdx.scenes.scene2d.InputListener
 			player.stopMove();
 		}
 		
+		if(Gdx.input.isKeyPressed(Keys.A)) {
+			player.shoot();
+		}
+		
 		if(Gdx.input.isKeyPressed(Keys.Z)) {
 			globals.getCamera().zoom += 0.05f;
 		} else if(Gdx.input.isKeyPressed(Keys.X)) {

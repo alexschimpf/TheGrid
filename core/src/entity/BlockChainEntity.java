@@ -6,6 +6,8 @@ import misc.Animation;
 import misc.EntityBodyDef;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
@@ -17,11 +19,12 @@ import core.Room;
 public class BlockChainEntity extends RectangleEntity {
 
 	private static final float ACTIVATED_DURATION = 880; //780;
-	
+
 	private long activationStartTime = 0;
 	private boolean activated = false;
 	private int state = 0;
 	private String chainStartId;
+	private Color color;
 	protected Animation animation;
 	private HashMap<Integer, String> stateMachine = new HashMap<Integer, String>();
 	
@@ -31,6 +34,8 @@ public class BlockChainEntity extends RectangleEntity {
 		
 		this.chainStartId = chainStartId;
 		this.stateMachine = stateMachine;
+		
+		color = textures.getRandomSchemeColor();
 	}
 	
 	public static Entity build(String id, Room room, Vector2 pos, Element elem) {
@@ -53,7 +58,7 @@ public class BlockChainEntity extends RectangleEntity {
 		entity.setId(id);
 		entity.setBodyData();
 		
-		if(id.equals(chainStartId)) {
+		if(entity.isChainStart()) {
 			entity.activate();
 		}
 		
@@ -65,15 +70,13 @@ public class BlockChainEntity extends RectangleEntity {
 	}
 	
 	@Override
-	public boolean update() {	 
+	public boolean update() {	
 		animation.update();
 		
-		if(!(id.equals(chainStartId) && state == 0)) {
-			sprite = animation.getSprite();
-		}
+		updateSprite();
 
 		float timeSinceActivated = TimeUtils.timeSinceMillis(activationStartTime);
-		if(activated && !(id.equals(chainStartId) && state == 0) &&
+		if(activated && !(isChainStart() && state == 0) &&
 		   timeSinceActivated > ACTIVATED_DURATION) {
 			restartChain();
 		}
@@ -109,11 +112,12 @@ public class BlockChainEntity extends RectangleEntity {
 	}
 	
 	public void activate() {
-		if(id.equals(chainStartId) && state == 0) {
-			sprite = animation.getSprite(9);
+		if(isChainStart() && state == 0) {
+			sprite.setRegion(textures.getTextureRegion("block_chain_start"));
 		} else {
 			animation.play();
 		}
+		
 		activationStartTime = TimeUtils.millis();
 		activated = true;
 	}
@@ -127,19 +131,21 @@ public class BlockChainEntity extends RectangleEntity {
 		Vector2 pos = new Vector2(x, y);
 		Vector2 size = new Vector2(width, height);
 		
-		animation = new Animation("filling_block.png", 1, 10, (ACTIVATED_DURATION / 1000.0f) / 10, false, true);
+		animation = new Animation("filling_block", ACTIVATED_DURATION / 1000.0f, false, false);
 		animation.setSprite(pos, size);
-		sprite = animation.getSprite();		
+
+		sprite = new Sprite(textures.getTextureRegion("block"));
+		sprite.setSize(width, height);
+		sprite.setPosition(x, y);
 	}
 
 	private void deactivate() {
 		activated = false;
-		sprite.setColor(Color.WHITE);
 		animation.stop();
 	}
 
 	private void restartChain() {
-		for(Object entity : room.getEntities()) {
+		for(Entity entity : room.getEntities()) {
 			if(entity instanceof BlockChainEntity) {
 				BlockChainEntity blockChainEntity = (BlockChainEntity)entity;
 				blockChainEntity.setState(0);
@@ -149,5 +155,26 @@ public class BlockChainEntity extends RectangleEntity {
 		
 		BlockChainEntity startBlock = (BlockChainEntity)room.getEntityById(chainStartId);
 		startBlock.activate();
+	}
+	
+	private void updateSprite() {
+		if(animation.isPlaying()) {
+			sprite = animation.getSprite();
+		} else if(isChainStart()) {
+			if(state == 0) {
+				sprite.setRegion(textures.getTextureRegion("block_chain_start"));
+			} else {
+				sprite.setRegion(textures.getTextureRegion("block"));
+			}
+ 			
+		} else {
+			sprite.setRegion(textures.getTextureRegion("block"));
+		}
+		
+		sprite.setColor(color);
+	}
+	
+	private boolean isChainStart() {
+		return id.equals(chainStartId);
 	}
 }

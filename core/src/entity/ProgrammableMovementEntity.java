@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.Iterator;
+
 import misc.EntityBodyDef;
 
 import com.badlogic.gdx.Gdx;
@@ -134,7 +136,7 @@ public class ProgrammableMovementEntity extends RectangleEntity {
     }
     
     protected void deactivateOthers() {
-    	for(Object entity : room.getEntities()) {
+    	for(Entity entity : room.getEntities()) {	
 			if(entity instanceof ProgrammableMovementEntity) {
 				ProgrammableMovementEntity other = (ProgrammableMovementEntity)entity;
 				if(other != this) {

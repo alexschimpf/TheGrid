@@ -62,7 +62,7 @@ public class RectangleEntity extends Entity {
 		Vector2 center = new Vector2(getCenterX(), getTop());
 		center = body.getLocalPoint(center);
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox((getWidth() / 2) * 0.95f, 0.1f, center, body.getAngle());		
+		shape.setAsBox((getWidth() / 2) * 0.95f, 0.01f, center, body.getAngle());		
 		body.createFixture(shape, 0).setFriction(friction);
 	}
 	

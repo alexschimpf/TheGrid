@@ -8,8 +8,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 import core.IUpdate;
 
@@ -22,6 +24,7 @@ public class Animation implements IUpdate {
 		Done
 	};
 	
+	private int numFrames;
 	private float stateTime;
 	private boolean loop;
 	private State state = State.Stopped;
@@ -29,27 +32,17 @@ public class Animation implements IUpdate {
 	private com.badlogic.gdx.graphics.g2d.Animation animation;
 	private Color color;
 	
-	public Animation(String filename, int numRows, int numCols, float frameDuration, boolean loop, boolean tint) {
-		FileHandle file = Gdx.files.internal("textures/" + filename);
-		Texture sheet = new Texture(file);
-		sheet.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+	public Animation(String textureKey, float totalDuration, boolean loop, boolean tint) {
+		Array<AtlasRegion> regions = Textures.getInstance().getTextureRegions(textureKey);
 		
-		int frameWidth = sheet.getWidth() / numCols;
-		int frameHeight = sheet.getHeight() / numRows;
-        TextureRegion[][] temp = TextureRegion.split(sheet, frameWidth, frameHeight);
-        TextureRegion[] frames = new TextureRegion[numRows * numCols];
-        
-        int index = 0;
-        for(int row = 0; row < numRows; row++) {
-            for(int col = 0; col < numCols; col++) {
-                frames[index++] = temp[row][col];
-            }
-        }
-        
+		numFrames = regions.size;
+		
         this.loop = loop;
         sprite = new Sprite();
-        animation = new com.badlogic.gdx.graphics.g2d.Animation(frameDuration, frames);
-        stateTime = 0;   
+        
+        float frameDuration = totalDuration / numFrames;
+        animation = new com.badlogic.gdx.graphics.g2d.Animation(frameDuration, regions);
+        stateTime = 0;
         
         if(tint) {
         	color = Textures.getInstance().getRandomSchemeColor();
@@ -105,6 +98,10 @@ public class Animation implements IUpdate {
 	
 	public State getState() {
 		return state;
+	}
+	
+	public int getNumFrames() {
+		return numFrames;
 	}
 	
 	public boolean isPlaying() {

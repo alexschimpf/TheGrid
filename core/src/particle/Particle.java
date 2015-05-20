@@ -26,7 +26,7 @@ public class Particle implements IUpdate, IDraw {
 		this.velocity = velocity;
 		this.duration = duration;
 		
-		sprite = new Sprite(textures.getTextureRegion(textureKey));
+		sprite = textures.getSprite(textureKey);
 		sprite.setSize(Room.SQUARE_SIZE / 10, Room.SQUARE_SIZE / 10);
 		sprite.setPosition(position.x, position.y);
 	}

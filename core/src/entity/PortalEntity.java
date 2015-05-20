@@ -126,7 +126,7 @@ public class PortalEntity extends RectangleEntity {
 	
 	@Override
 	protected void createSprite(String textureKey, float x, float y, float width, float height) {
-		animation = new Animation("portal.png", 1, 4, 0.1f, true, true);
+		animation = new Animation("portal", 0.4f, true, true);
 		animation.setSprite(new Vector2(x, y), new Vector2(width, height));
 		sprite = animation.getSprite();
 		sprite.setFlip(false, true);

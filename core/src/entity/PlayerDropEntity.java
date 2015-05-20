@@ -4,7 +4,6 @@ import misc.EntityBodyDef;
 import misc.Globals;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -16,8 +15,6 @@ public class PlayerDropEntity extends RectangleEntity {
 
 	protected PlayerDropEntity(Room room, float x, float y) {
 		super(room, "up_arrow_block", PlayerDropEntity.getEntityBodyDef(x, y));
-		
-		sprite.setColor(Color.RED);
 	}
 	
 	public static Entity build(String id, Room room, Vector2 pos, Element elem) {
@@ -35,6 +32,11 @@ public class PlayerDropEntity extends RectangleEntity {
 	@Override
 	public String getType() {
 		return "player_drop";
+	}
+	
+	@Override
+	protected boolean isTintable() {
+		return false;
 	}
 	
 	@Override
@@ -59,10 +61,5 @@ public class PlayerDropEntity extends RectangleEntity {
 		         }
 		     });
 		}
-	}
-	
-	@Override
-	protected boolean isTintable() {
-		return false;
 	}
 }

@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.Iterator;
+
 import misc.Animation;
 import misc.EntityBodyDef;
 
@@ -46,6 +48,11 @@ public class CircleCreatorEntity extends MovingRectangleEntity {
 	}
 	
 	@Override
+	protected boolean isTintable() {
+		return false;
+	}
+	
+	@Override
 	public boolean update() {
 		animation.update();
 		sprite = animation.getSprite();
@@ -67,7 +74,7 @@ public class CircleCreatorEntity extends MovingRectangleEntity {
 	
 	@Override
 	protected void createSprite(String textureKey, float x, float y, float width, float height) {
-		animation = new Animation("question_mark_block.png", 1, 9, 0.04f, false, true);
+		animation = new Animation("question_mark_block", 0.36f, false, false);
 		sprite = animation.getSprite();
 		sprite.setPosition(x, y);
 		sprite.setSize(width, height);
@@ -107,8 +114,8 @@ public class CircleCreatorEntity extends MovingRectangleEntity {
 	}
 	
 	protected boolean circleExists() {
-		for(Object object : room.getEntities()) {
-			if(object instanceof CircleEntity) {
+		for(Entity entity : room.getEntities()) {
+			if(entity instanceof CircleEntity) {
 				return true;
 			}
 		}

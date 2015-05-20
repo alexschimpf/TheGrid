@@ -1,13 +1,12 @@
 package core;
 
-import java.util.Collection;
 import java.util.Iterator;
 
-import script.Script;
 import listener.CollisionListener;
 import misc.BodyData;
 import misc.TheGridFileParser;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -35,8 +34,8 @@ public class TheGrid implements IUpdate, IDraw {
 	}
 	
 	public static Vector2 getRoomGridPosition(float x, float y) {
-		int row = MathUtils.floor(y / ROOM_SIZE);
-		int col = MathUtils.floor(x / ROOM_SIZE);
+		int row = Math.max(0, MathUtils.floor(y / ROOM_SIZE));
+		int col = Math.max(0, MathUtils.floor(x / ROOM_SIZE));
 		
 		return new Vector2(row, col);
 	}
@@ -69,7 +68,8 @@ public class TheGrid implements IUpdate, IDraw {
 	@Override
 	public boolean update() {
 		world.step(1 / 45.0f, 5, 5);
-		
+
+		// This was above updateGlobals.
 		player.update();
 		
 		updateGlobals();
@@ -155,8 +155,7 @@ public class TheGrid implements IUpdate, IDraw {
 	
 	public boolean isEntityAt(Vector2 worldPos) {
 		for(Room room : getRooms()) {
-			Collection<Entity> entities = room.getEntities();
-			for(Entity entity : entities) {
+			for(Entity entity : room.getEntities()) {
 				if(worldPos.equals(entity.getLeftTop())) {
 					return true;
 				}

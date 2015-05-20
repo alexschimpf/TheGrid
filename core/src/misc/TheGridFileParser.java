@@ -43,15 +43,15 @@ public class TheGridFileParser {
 			Element sizeElem = root.getChildByName("size");
 			initGrid(sizeElem);
 			
+			Element roomsElem = root.getChildByName("rooms");
+			createRooms(roomsElem);
+			
 			Element playerElem = root.getChildByName("player");
 			int playerGridRow = playerElem.getInt("grid_row");
 			int playerGridCol = playerElem.getInt("grid_col");
 			int playerRow = playerElem.getInt("row");
 			int playerCol = playerElem.getInt("col");
 			theGrid.initPlayer(playerGridRow, playerGridCol, playerRow, playerCol);
-			
-			Element roomsElem = root.getChildByName("rooms");
-			createRooms(roomsElem);
 		} catch(Exception e) {
 			Gdx.app.error("tendersaucer", "parseFile", e);
 		}
@@ -393,8 +393,7 @@ public class TheGridFileParser {
 		entityTypeClassMap.put("portal", "PortalEntity");
 		entityTypeClassMap.put("programmable_movement", "ProgrammableMovementEntity");
 		entityTypeClassMap.put("programmable_movement_trigger", "ProgrammableMovementTriggerEntity");
-		entityTypeClassMap.put("transport_chain", "TransportChainEntity");
-		entityTypeClassMap.put("breakable_transport", "BreakableTransportEntity");
+		entityTypeClassMap.put("transport", "TransportEntity");
 		entityTypeClassMap.put("disappearing_rectangle", "DisappearingRectangleEntity");
 		entityTypeClassMap.put("gravity_block", "GravityBlockEntity");
 		entityTypeClassMap.put("circle_creator", "CircleCreatorEntity");
@@ -402,7 +401,6 @@ public class TheGridFileParser {
 	}
 	
 	private void createScriptTypeClassMap() {
-		scriptTypeClassMap.put("update_transport_chain", "UpdateTransportChainScript");
 		scriptTypeClassMap.put("show_message", "ShowMessageScript");
 	}
 }

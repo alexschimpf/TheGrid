@@ -130,6 +130,7 @@ public class PlayerShot extends RectangleEntity {
 		
 		float vy = player.getLinearVelocity().y * 0.75f;
 		float vx = PlayerShot.SPEED * 1.25f;
+		
 		if(player.getDirection() == Direction.Left) {
 			vx = 0 - vx;
 		}

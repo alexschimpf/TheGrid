@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.concurrent.ConcurrentHashMap;
 
 import script.Script;
 import misc.BodyData;
@@ -39,8 +40,8 @@ public class Room implements IUpdate, IDraw {
 	protected static final float BORDER_LINE_LENGTH = SQUARE_SIZE;
 	
 	protected Vector2 gridPos;
-	protected HashMap<String, Script> scriptMap = new HashMap<String, Script>();
-	protected HashMap<String, Entity> entityMap = new HashMap<String, Entity>();
+	protected ConcurrentHashMap<String, Script> scriptMap = new ConcurrentHashMap<String, Script>();
+	protected ConcurrentHashMap<String, Entity> entityMap = new ConcurrentHashMap<String, Entity>();
 	protected Array<Vector2> openings = new Array<Vector2>();
 	protected Array<Sprite> borderSprites = new Array<Sprite>();
 	protected Globals globals = Globals.getInstance();
@@ -87,18 +88,31 @@ public class Room implements IUpdate, IDraw {
 	}
 	
 	@Override
-	public void draw(SpriteBatch batch) {
+	public void draw(SpriteBatch batch) {	
+		if(!theGrid.getPlayer().canSeeRoom(this)) {
+			return;
+		}
+
 		for(Entity entity : entityMap.values()) {
+			if(entity == null) {
+				continue;
+			}
+			
 			entity.draw(batch);
 		}
 		
 		for(Sprite sprite : borderSprites) {
 			sprite.draw(batch);
 		}
+		
 	}
 
 	@Override
 	public boolean update() {
+//		if(!theGrid.getPlayer().canSeeRoom(this)) {
+//			return false;
+//		}
+		
 		updateEntities();
 		updateScripts();
 		
@@ -166,13 +180,13 @@ public class Room implements IUpdate, IDraw {
 		return false;
 	}
 	
-	public void setAwake(boolean awake) {
-		for(Entity entity : entityMap.values()) {
-			if(entity.getBody() != null) {
-				entity.getBody().setAwake(awake);
-			}
-		}
-	}
+//	public void setAwake(boolean awake) {
+//		for(Entity entity : entityMap.values()) {
+//			if(entity.getBody() != null) {
+//				entity.getBody().setAwake(awake);
+//			}
+//		}
+//	}
 	
 	public Array<Vector2> getOpenings() {
 		return openings;

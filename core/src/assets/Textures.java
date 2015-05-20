@@ -10,8 +10,11 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Array;
 
 public class Textures {
 
@@ -20,49 +23,55 @@ public class Textures {
 	private static Textures instance;
 	
 	private HashMap<String, TextureRegion> textureMap = new HashMap<String, TextureRegion>();
+	private HashMap<String, Array<AtlasRegion>> textureListMap = new HashMap<String, Array<AtlasRegion>>();
 	private BodyEditorLoader loader;
+	private TextureAtlas atlas;
 
 	private Textures() {
 		initSchemeColors();
 		
-		createTextureRegion("player.png", "player");	
-		createTextureRegion("player_move.png", "player_move");
-		createTextureRegion("player_blink.png", "player_blink");	
-		createTextureRegion("player_jump.png", "player_jump");
-		createTextureRegion("background.png", "background");
-		createTextureRegion("shot.png", "shot");
-		createTextureRegion("ball.png", "ball"); 
-		createTextureRegion("disappearing_block.png", "disappearing_block");
-		createTextureRegion("filling_block.png", "filling_block");
-		createTextureRegion("question_mark_block.png", "question_mark_block");
-		createTextureRegion("up_arrow_block.png", "up_arrow_block");
-		createTextureRegion("portal.png", "portal");
-		createTextureRegion("programmable_block.png", "programmable_block");
-		createTextureRegion("programmable_block_1.png", "programmable_block_1");
-		createTextureRegion("programmable_block_2.png", "programmable_block_2");
-		createTextureRegion("programmable_block_3.png", "programmable_block_3");
-		createTextureRegion("programmable_block_4.png", "programmable_block_4");
+		atlas = new TextureAtlas(Gdx.files.internal("game.atlas"));
+
+		// Single images
+		createTextureRegion("player", "player");	
+		createTextureRegion("player_move", "player_move");		
+		createTextureRegion("background", "background");
+		createTextureRegion("shot", "shot");
+		createTextureRegion("ball", "ball"); 		
+		createTextureRegion("block", "block");
+		createTextureRegion("block_chain_start", "block_chain_start");		
+		createTextureRegion("up_arrow_block", "up_arrow_block");	
+		createTextureRegion("programmable_block", "programmable_block");
+		createTextureRegion("programmable_block1", "programmable_block_1");
+		createTextureRegion("programmable_block2", "programmable_block_2");
+		createTextureRegion("programmable_block3", "programmable_block_3");
+		createTextureRegion("programmable_block4", "programmable_block_4");		
+		createTextureRegion("cracked_block1", "cracked_block_1");
+		createTextureRegion("cracked_block2", "cracked_block_2");
+		createTextureRegion("cracked_block3", "cracked_block_3");
+		createTextureRegion("cracked_block4", "cracked_block_4");		
+		createTextureRegion("grid_corner1", "gc1");
+		createTextureRegion("grid_bottom_horizontal1", "gbh1");
+		createTextureRegion("grid_top_horizontal1", "gth1");
+		createTextureRegion("grid_edge_horizontal1", "geh1");
+		createTextureRegion("grid_edge_vertical1", "gev1");
+		createTextureRegion("grid_left_vertical1", "glv1");
+		createTextureRegion("grid_right_vertical1", "grv1");
+		createTextureRegion("grid_top_left", "gtl");
+		createTextureRegion("grid_top_right", "gtr");
+		createTextureRegion("grid_bottom_left", "gbl");
+		createTextureRegion("grid_bottom_right", "gbr");
 		
-		createTextureRegion("block.png", "block");
-		createTextureRegion("cracked_block_1.png", "cracked_block_1");
-		createTextureRegion("cracked_block_2.png", "cracked_block_2");
-		createTextureRegion("cracked_block_3.png", "cracked_block_3");
-		createTextureRegion("cracked_block_4.png", "cracked_block_4");
+		// Animations
+		createTextureRegions("player_blink", "player_blink");	
+		createTextureRegions("player_jump", "player_jump");
+		createTextureRegions("disappearing_block", "disappearing_block");
+		createTextureRegions("filling_block", "filling_block");
+		createTextureRegions("question_mark_block", "question_mark_block");
+		createTextureRegions("portal", "portal");
 		
-		createTextureRegion("grid_corner_1.png", "gc1");
-		createTextureRegion("grid_bottom_horizontal_1.png", "gbh1");
-		createTextureRegion("grid_top_horizontal_1.png", "gth1");
-		createTextureRegion("grid_edge_horizontal_1.png", "geh1");
-		createTextureRegion("grid_edge_vertical_1.png", "gev1");
-		createTextureRegion("grid_left_vertical_1.png", "glv1");
-		createTextureRegion("grid_right_vertical_1.png", "grv1");
-		createTextureRegion("grid_top_left.png", "gtl");
-		createTextureRegion("grid_top_right.png", "gtr");
-		createTextureRegion("grid_bottom_left.png", "gbl");
-		createTextureRegion("grid_bottom_right.png", "gbr");
-		
-		createColorTextureRegion(1, 1, 1, 1, "white");
-		createColorTextureRegion(0, 0, 0, 1, "black");
+//		createColorTextureRegion(1, 1, 1, 1, "white");
+//		createColorTextureRegion(0, 0, 0, 1, "black");
 	}
 
 	public static Textures getInstance() {
@@ -81,8 +90,8 @@ public class Textures {
 		return textureMap.get(key);
 	}
 	
-	public Sprite getRandomColorSprite(String key) {
-		return getSprite(key, getRandomSchemeColor());
+	public Array<AtlasRegion> getTextureRegions(String key) {
+		return textureListMap.get(key);
 	}
 	
 	public Sprite getSprite(String key) {
@@ -99,8 +108,27 @@ public class Textures {
 		return sprite;
 	}
 	
+	public Sprite getRandomColorSprite(String key) {
+		return getSprite(key, getRandomSchemeColor());
+	}
+	
+	public Color getRandomSchemeColor() {
+		int pos = MathUtils.random(0, SCHEME_COLORS.length - 1);
+		return SCHEME_COLORS[pos];
+	}
+	
 	public BodyEditorLoader getLoader() {
 		return loader;
+	}
+	
+	private void createTextureRegions(String filename, String key) {
+		Array<AtlasRegion> regions = atlas.findRegions(filename);
+		textureListMap.put(key, regions);
+	}
+	
+	private void createTextureRegion(String filename, String key) {
+		AtlasRegion region = atlas.findRegion(filename);
+		textureMap.put(key,  region);
 	}
 	
 	private void initSchemeColors() {
@@ -110,25 +138,12 @@ public class Textures {
 		SCHEME_COLORS[3] = new Color(255 / 255.0f, 242 / 255.0f, 200 / 255.0f, 1);
 	}
 	
-	public Color getRandomSchemeColor() {
-		int pos = MathUtils.random(0, SCHEME_COLORS.length - 1);
-		return SCHEME_COLORS[pos];
-	}
-	
-	private void createTextureRegion(String filename, String key) {
-		Texture texture = new Texture(Gdx.files.internal("textures/" + filename));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.MipMapNearestLinear);
-		TextureRegion textureRegion = new TextureRegion(texture);
-		textureMap.put(key, textureRegion);
-		textureRegion.flip(false, true);
-	}
-	
-	private TextureRegion createColorTextureRegion(float r, float g, float b, float a, String key) {
-		Pixmap pix = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-		pix.setColor(r, g, b, a);
-		pix.fill();
-		TextureRegion texture = new TextureRegion(new Texture(pix));
-		textureMap.put(key, texture);
-		return texture;
-	}
+//	private TextureRegion createColorTextureRegion(float r, float g, float b, float a, String key) {
+//		Pixmap pix = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+//		pix.setColor(r, g, b, a);
+//		pix.fill();
+//		TextureRegion texture = new TextureRegion(new Texture(pix));
+//		textureMap.put(key, texture);
+//		return texture;
+//	}
 }

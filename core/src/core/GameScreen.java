@@ -98,6 +98,8 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
+		Gdx.app.log("fps", "FPS: " + Gdx.graphics.getFramesPerSecond());
+		
 		globals.updateCamera();
 
 		update();

@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.Iterator;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -33,6 +35,11 @@ public class ProgrammableMovementTriggerEntity extends RectangleEntity {
 	}
 	
 	@Override
+	protected boolean isTintable() {
+		return false;
+	}
+	
+	@Override
 	public boolean update() {
 		animation.update();
 		sprite = animation.getSprite();
@@ -52,7 +59,7 @@ public class ProgrammableMovementTriggerEntity extends RectangleEntity {
 	
 	@Override
 	protected void createSprite(String textureKey, float x, float y, float width, float height) {
-		animation = new Animation("question_mark_block.png", 1, 9, 0.04f, false, true);
+		animation = new Animation("question_mark_block", 0.36f, false, false);
 		sprite = animation.getSprite();
 		sprite.setPosition(x, y);
 		sprite.setSize(width, height);
@@ -61,7 +68,7 @@ public class ProgrammableMovementTriggerEntity extends RectangleEntity {
 	}
 	
 	protected void trigger() {
-		for(Object entity : room.getEntities()) {
+		for(Entity entity : room.getEntities()) {
 			if(entity instanceof ProgrammableMovementEntity) {
 				ProgrammableMovementEntity pme = (ProgrammableMovementEntity)entity;
 				if(pme.isActivated()) {

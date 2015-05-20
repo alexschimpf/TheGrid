@@ -91,7 +91,7 @@ public class PlayerShot extends RectangleEntity {
 		
 		// May have hit a chain pad, for example.
 		if(entity == null) {
-			ParticleEffect.startParticleEffect("shot", new Vector2(x, y));
+			createParticleEffect(x, y);
 			getBodyData().setNeedsRemoved();
 			return;
 		}
@@ -107,7 +107,7 @@ public class PlayerShot extends RectangleEntity {
 		}
 		
 		if(PlayerShot.doParticleEffect(entity.getType())) {
-			ParticleEffect.startParticleEffect("shot", new Vector2(x, y));
+			createParticleEffect(x, y);
 		}
 		
 		getBodyData().setNeedsRemoved();
@@ -168,7 +168,12 @@ public class PlayerShot extends RectangleEntity {
 		fixtureDef.friction = 0.2f;
 		fixtureDef.restitution = 0.2f;
 		fixtureDef.filter.categoryBits = 0x0002;
-
+		
 		return fixtureDef;
+	}
+	
+	protected void createParticleEffect(float x, float y) {
+		ParticleEffect effect = new ParticleEffect("shot", x, y);
+		effect.begin();
 	}
 }

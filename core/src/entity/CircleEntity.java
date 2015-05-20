@@ -56,7 +56,7 @@ public class CircleEntity extends Entity {
 		}
 		
 		if(removeOnContact && !isPlayer(entity)) {
-			ParticleEffect.startParticleEffect("ball", getCenter());
+			createParticleEffect();
 			getBodyData().setNeedsRemoved();
 		}
 	}
@@ -79,5 +79,12 @@ public class CircleEntity extends Entity {
 		fixtureDef.restitution = 0.75f;
 
 		return fixtureDef;
+	}
+	
+	protected void createParticleEffect() {
+		ParticleEffect effect = new ParticleEffect("shot", getCenterX(), getCenterY());
+		effect.color(sprite.getColor())
+		.endColor(sprite.getColor())
+		.begin();
 	}
 }

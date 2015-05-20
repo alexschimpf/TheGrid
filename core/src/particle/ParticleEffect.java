@@ -4,85 +4,132 @@ import java.util.Iterator;
 
 import misc.Globals;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool;
 
 import core.IDraw;
 import core.IUpdate;
 import core.Room;
-import entity.special.PlayerShot;
 
 public class ParticleEffect implements IUpdate, IDraw {
-
-	protected static final int MIN_NUM_PARTICLES = 6;
-	protected static final int MAX_NUM_PARTICLES = 12;
-	protected static final float MIN_PARTICLE_DURATION = 400;
-	protected static final float MAX_PARTICLE_DURATION = 1300;
 	
+	public static final int DEFAULT_MIN_NUM_PARTICLES = 6;
+	public static final int DEFAULT_MAX_NUM_PARTICLES = 12;
+	public static final float DEFAULT_MIN_DURATION = 400;
+	public static final float DEFAULT_MAX_DURATION = 1300;
+	public static final float DEFAULT_MIN_SIZE = Room.SQUARE_SIZE / 10;
+	public static final float DEFAULT_MAX_SIZE = Room.SQUARE_SIZE / 8;
+	public static final float DEFAULT_MIN_V = -Room.SQUARE_SIZE;
+	public static final float DEFAULT_MAX_V = Room.SQUARE_SIZE;
+	public static final Color DEFAULT_COLOR = Color.WHITE;
+	public static final Color DEFAULT_END_COLOR = Color.WHITE;
+	
+	protected static final Pool<Particle> PARTICLE_POOL = new Pool<Particle>() {
+	    @Override
+	    protected Particle newObject() {
+	        return new Particle();
+	    }
+	};
+		
+	protected float x;
+	protected float y;
+	protected String textureKey;
+	protected float minVX = DEFAULT_MIN_V;
+	protected float minVY = DEFAULT_MIN_V;
+	protected float maxVX = DEFAULT_MAX_V;
+	protected float maxVY = DEFAULT_MAX_V;
+	protected float minSize = DEFAULT_MIN_SIZE;
+	protected float maxSize = DEFAULT_MAX_SIZE;
+	protected float minDuration = DEFAULT_MIN_DURATION;
+	protected float maxDuration = DEFAULT_MAX_DURATION;
+	protected int minNumParticles = DEFAULT_MIN_NUM_PARTICLES;
+	protected int maxNumParticles = DEFAULT_MAX_NUM_PARTICLES;
+	protected Color color = DEFAULT_COLOR;
+	protected Color endColor = DEFAULT_END_COLOR;
 	protected Array<Particle> particles = new Array<Particle>();
+
+	public ParticleEffect(String textureKey, float x, float y) {
+		this.textureKey = textureKey;
+		this.x = x;
+		this.y = y;
+	}
 	
-	// TODO: Use Builder Pattern!!!
-	protected ParticleEffect(String textureKey, Vector2 position, int numParticles, Boolean moveLeft, Boolean moveUp, Float maxDuration) {
+	public void begin() {
+		int numParticles = MathUtils.random(minNumParticles, maxNumParticles);
 		for(int i = 0; i < numParticles; i++) {
-			float squareSize = Room.SQUARE_SIZE;
-			float vx = MathUtils.random(squareSize / 6, squareSize);
-			float vy = MathUtils.random(squareSize / 6, squareSize);
-			Vector2 velocity = new Vector2(vx, vy);
-			
-			if(MathUtils.random() < 0.5) {
-				velocity.x = 0 - velocity.x;
-			}
-			
-			if(moveLeft != null) {
-				if(moveLeft) {
-					velocity.x = -Math.abs(velocity.x);
-				} else {
-					velocity.x = Math.abs(velocity.x);
-				}
-			}
-			
-			if(moveUp != null) {
-				if(moveUp) {
-					velocity.y = -Math.abs(velocity.y);
-				} else {
-					velocity.y = Math.abs(velocity.y);
-				}
-			}
-			
-			if(MathUtils.random() < 0.5) {
-				velocity.y = 0 - velocity.y;
-			}
-			
-			if(maxDuration == null) {
-				maxDuration = MAX_PARTICLE_DURATION;
-			}
-			
-			float duration = MathUtils.random(MIN_PARTICLE_DURATION, maxDuration);
-			
-			Particle particle = new Particle(textureKey, position, velocity, duration);
+			Particle particle = PARTICLE_POOL.obtain();
+			float size = MathUtils.random(minSize, maxSize);
+			float vx = MathUtils.random(minVX, maxVX);
+			float vy = MathUtils.random(minVY, maxVY);
+			float duration = MathUtils.random(minDuration, maxDuration);
+			particle.set(textureKey, x, y, size, vx, vy, duration, color, endColor);
 			particles.add(particle);
 		}
+		
+		Globals.getInstance().getGame().addParticleEffect(this);
 	}
 	
-	public ParticleEffect(String textureKey, Vector2 position) {
-		this(textureKey, position, MathUtils.random(MIN_NUM_PARTICLES, MAX_NUM_PARTICLES), null, null, null);
+	public ParticleEffect minNumParticles(int numParticles) {
+		this.minNumParticles = numParticles;
+		return this;
 	}
 	
-	public static void startParticleEffect(String textureKey, Vector2 position, int numParticles, boolean moveLeft, float maxDuration) {
-		ParticleEffect effect = new ParticleEffect(textureKey, position, numParticles, moveLeft, true, maxDuration);
-		Globals.getInstance().getGame().addParticleEffect(effect);
+	public ParticleEffect maxNumParticles(int numParticles) {
+		this.maxNumParticles = numParticles;
+		return this;
 	}
 	
-	public static void startParticleEffect(String textureKey, Vector2 position, int numParticles) {
-		ParticleEffect effect = new ParticleEffect(textureKey, position, numParticles, null, null, null);
-		Globals.getInstance().getGame().addParticleEffect(effect);
+	public ParticleEffect minVX(float vx) {
+		this.minVX = vx;
+		return this;
 	}
 	
-	public static void startParticleEffect(String textureKey, Vector2 position) {
-		ParticleEffect effect = new ParticleEffect(textureKey, position);
-		Globals.getInstance().getGame().addParticleEffect(effect);
+	public ParticleEffect maxVX(float vx) {
+		this.maxVX = vx;
+		return this;
+	}
+	
+	public ParticleEffect minVY(float vy) {
+		this.minVY = vy;
+		return this;
+	}
+	
+	public ParticleEffect maxVY(float vy) {
+		this.maxVY = vy;
+		return this;
+	}
+	
+	public ParticleEffect minSize(float size) {
+		this.minSize = size;
+		return this;
+	}
+	
+	public ParticleEffect maxSize(float size) {
+		this.maxSize = size;
+		return this;
+	}
+	
+	public ParticleEffect minDuration(float duration) {
+		this.minDuration = duration;
+		return this;
+	}
+	
+	public ParticleEffect maxDuration(float duration) {
+		this.maxDuration = duration;
+		return this;
+	}
+	
+	public ParticleEffect color(Color color) {
+		this.color = color;
+		return this;
+	}
+	
+	public ParticleEffect endColor(Color color) {
+		this.endColor = color;
+		return this;
 	}
 	
 	@Override
@@ -101,6 +148,8 @@ public class ParticleEffect implements IUpdate, IDraw {
 			if(particle.update()) {
 				particle.done();
 				particlesItr.remove();
+				
+				PARTICLE_POOL.free(particle);
 			}
 		}
 		

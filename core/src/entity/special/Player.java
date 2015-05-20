@@ -4,7 +4,6 @@ import particle.ParticleEffect;
 import misc.Animation;
 import misc.EntityBodyDef;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -258,8 +257,7 @@ public class Player extends RectangleEntity {
 
 		if(numContacts > 0 && !isJumping()) {
 			setSprite("player_move");
-			boolean particleMoveLeft = moveDirection == Direction.Right;
-			ParticleEffect.startParticleEffect("shot", pos, 1, particleMoveLeft, 500);
+			createParticleEffect();
 		} else if(!jumpAnimation.isPlaying()){
 			setSprite("player");
 		}
@@ -270,5 +268,27 @@ public class Player extends RectangleEntity {
 	private void setSprite(String textureKey) {
 		sprite.setRegion(textures.getTextureRegion(textureKey));
 		sprite.setFlip(direction == Direction.Left, true);
+	}
+	
+	protected void createParticleEffect() {
+		float minVX = Math.abs(ParticleEffect.DEFAULT_MIN_V);
+		float maxVX = ParticleEffect.DEFAULT_MAX_V * 1.2f;
+		if(direction == Direction.Right) {
+			maxVX = ParticleEffect.DEFAULT_MIN_V * 1.2f;
+			minVX = -ParticleEffect.DEFAULT_MAX_V;
+		}
+		
+		float x = getLeft() + (getWidth() / 4.0f);
+		float y = getBottom() - (getHeight() / 15);
+		ParticleEffect effect = new ParticleEffect("shot", x, y);
+		effect.minNumParticles(1)
+		.maxNumParticles(1)
+		.minVX(minVX)
+		.maxVX(maxVX)
+		.minVY(-Math.abs(ParticleEffect.DEFAULT_MIN_V) * 0.1f)
+		.maxVY(-ParticleEffect.DEFAULT_MAX_V)
+		.minDuration(300)
+		.maxDuration(500)
+		.begin();
 	}
 }

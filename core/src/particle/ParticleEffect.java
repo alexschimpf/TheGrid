@@ -60,7 +60,7 @@ public class ParticleEffect implements IUpdate, IDraw {
 	public void begin() {
 		int numParticles = MathUtils.random(minNumParticles, maxNumParticles);
 		for(int i = 0; i < numParticles; i++) {
-			Particle particle = PARTICLE_POOL.obtain();
+			Particle particle = ParticleEffect.PARTICLE_POOL.obtain();
 			float size = MathUtils.random(minSize, maxSize);
 			float vx = MathUtils.random(minVX, maxVX);
 			float vy = MathUtils.random(minVY, maxVY);

@@ -6,10 +6,8 @@ import assets.Sounds;
 import assets.Textures;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -103,6 +101,10 @@ public abstract class Entity implements IUpdate, IDraw, ICollide {
 				update();
 			}		
 		});
+	}
+	
+	public boolean isVisible() {
+		return globals.isVisible(getLeft(), getTop(), getWidth(), getHeight());
 	}
 	
 	public Body getBody() {

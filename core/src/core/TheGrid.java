@@ -6,7 +6,6 @@ import listener.CollisionListener;
 import misc.BodyData;
 import misc.TheGridFileParser;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -50,7 +49,9 @@ public class TheGrid implements IUpdate, IDraw {
 	@Override
 	public void draw(SpriteBatch batch) {
 		for(Entity entity : globalEntities) {
-			entity.draw(batch);
+			if(entity.isVisible()) {
+				entity.draw(batch);
+			}
 		}
 		
 		for(int row = 0; row < getNumRows(); row++) {

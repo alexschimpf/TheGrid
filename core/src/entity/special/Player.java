@@ -179,18 +179,6 @@ public class Player extends RectangleEntity {
 		setJumping(numFootContacts < 1);
 	}
 	
-	public boolean canSeeRoom(Room room) {
-		Vector2 playerRoomPos = getRoom().getGridPosition();
-		Vector2 roomPos = room.getGridPosition();
-		int px = (int)playerRoomPos.x;
-		int py = (int)playerRoomPos.y;
-		int rx = (int)roomPos.x;
-		int ry = (int)roomPos.y;
-		
-		return (px == rx && Math.abs(py - ry) <= 1) || (py == ry && Math.abs(px - rx) <= 1) ||
-		       (Math.abs(py - ry) <= 1 && Math.abs(px - rx) <= 1);
-	}
-	
 	@Override
 	protected void createSprite(String textureKey, float x, float y, float width, float height) {
 		super.createSprite(textureKey, x, y, width, height);

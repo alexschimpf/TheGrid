@@ -1,7 +1,5 @@
 package entity;
 
-import java.util.Iterator;
-
 import misc.Animation;
 import misc.EntityBodyDef;
 

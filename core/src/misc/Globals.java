@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import core.GameScreen;
 import core.GameState;
-import core.TheGame;
 import core.TheGrid;
 
 public class Globals {
@@ -42,6 +41,13 @@ public class Globals {
 		}	
 		
 		camera.update();
+	}
+	
+	public boolean isVisible(float x, float y, float width, float height) {
+		return camera.frustum.pointInFrustum(x, y, 0) ||
+			   camera.frustum.pointInFrustum(x + width, y, 0) || 
+			   camera.frustum.pointInFrustum(x, y + height, 0) ||
+			   camera.frustum.pointInFrustum(x + width, y + height, 0);
 	}
 	
 	public float getCameraTop() {

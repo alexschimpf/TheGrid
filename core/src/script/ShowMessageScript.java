@@ -1,16 +1,9 @@
 package script;
 
-import misc.Globals;
-import misc.Utils;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.XmlReader.Element;
 
-import core.TheGame;
 import core.Room;
 
 public class ShowMessageScript extends Script {

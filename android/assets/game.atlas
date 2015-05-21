@@ -325,6 +325,13 @@ player_blink
   orig: 75, 100
   offset: 0, 0
   index: 1
+player_blink
+  rotate: false
+  xy: 410, 410
+  size: 75, 100
+  orig: 75, 100
+  offset: 0, 0
+  index: 7
 player_jump
   rotate: false
   xy: 410, 410
@@ -339,13 +346,6 @@ player_jump
   orig: 75, 100
   offset: 0, 0
   index: 9
-player_blink
-  rotate: false
-  xy: 410, 410
-  size: 75, 100
-  orig: 75, 100
-  offset: 0, 0
-  index: 7
 player_blink
   rotate: false
   xy: 512, 512

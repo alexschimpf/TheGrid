@@ -15,7 +15,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -27,13 +26,10 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-
 import entity.special.Player;
 
 public class GameScreen implements Screen {
@@ -98,7 +94,8 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		//Gdx.app.log("fps", "FPS: " + Gdx.graphics.getFramesPerSecond());
+		//Gdx.app.log("FPS", "" + Gdx.graphics.getFramesPerSecond());
+		//Gdx.app.log("Max sprites in batch", "" + batch.maxSpritesInBatch);
 		
 		globals.updateCamera();
 
@@ -111,7 +108,7 @@ public class GameScreen implements Screen {
 		globals.getCamera().viewportHeight = (Globals.VIEWPORT_WIDTH / width) * height;
         globals.updateCamera();
         
-        stage.getViewport().update(width, height, true);
+        stage.getViewport().update(width, height, false);
 	}
 
 	@Override

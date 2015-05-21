@@ -1,37 +1,24 @@
 package core;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import script.Script;
 import misc.BodyData;
-import misc.EntityBodyDef;
 import misc.Globals;
 import assets.Textures;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
 
 import entity.Entity;
-import entity.RectangleEntity;
 
 public class Room implements IUpdate, IDraw {
 
@@ -89,12 +76,8 @@ public class Room implements IUpdate, IDraw {
 	
 	@Override
 	public void draw(SpriteBatch batch) {	
-		if(!theGrid.getPlayer().canSeeRoom(this)) {
-			return;
-		}
-
 		for(Entity entity : entityMap.values()) {
-			if(entity == null) {
+			if(entity == null || !entity.isVisible()) {
 				continue;
 			}
 			
@@ -102,17 +85,15 @@ public class Room implements IUpdate, IDraw {
 		}
 		
 		for(Sprite sprite : borderSprites) {
-			sprite.draw(batch);
+			if(globals.isVisible(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight())) {
+				sprite.draw(batch);
+			}
 		}
 		
 	}
 
 	@Override
 	public boolean update() {
-//		if(!theGrid.getPlayer().canSeeRoom(this)) {
-//			return false;
-//		}
-		
 		updateEntities();
 		updateScripts();
 		

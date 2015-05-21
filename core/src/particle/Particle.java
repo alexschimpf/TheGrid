@@ -6,13 +6,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool.Poolable;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import core.IDraw;
 import core.IUpdate;
-import core.Room;
 
 public class Particle implements IUpdate, IDraw, Poolable {
 

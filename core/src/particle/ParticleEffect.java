@@ -3,6 +3,8 @@ package particle;
 import java.util.Iterator;
 
 import misc.Globals;
+import misc.IDraw;
+import misc.IUpdate;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,11 +12,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 
-import core.IDraw;
-import core.IUpdate;
 import core.Room;
 
-public class ParticleEffect implements IUpdate, IDraw {
+public final class ParticleEffect implements IUpdate, IDraw {
 	
 	public static final int DEFAULT_MIN_NUM_PARTICLES = 6;
 	public static final int DEFAULT_MAX_NUM_PARTICLES = 12;
@@ -24,32 +24,36 @@ public class ParticleEffect implements IUpdate, IDraw {
 	public static final float DEFAULT_MAX_SIZE = Room.SQUARE_SIZE / 8;
 	public static final float DEFAULT_MIN_V = -Room.SQUARE_SIZE;
 	public static final float DEFAULT_MAX_V = Room.SQUARE_SIZE;
-	public static final Color DEFAULT_COLOR = Color.WHITE;
-	public static final Color DEFAULT_END_COLOR = Color.WHITE;
 	
-	protected static final Pool<Particle> PARTICLE_POOL = new Pool<Particle>() {
+	private static final Pool<Particle> PARTICLE_POOL = new Pool<Particle>() {
 	    @Override
 	    protected Particle newObject() {
 	        return new Particle();
 	    }
 	};
 		
-	protected float x;
-	protected float y;
-	protected String textureKey;
-	protected float minVX = DEFAULT_MIN_V;
-	protected float minVY = DEFAULT_MIN_V;
-	protected float maxVX = DEFAULT_MAX_V;
-	protected float maxVY = DEFAULT_MAX_V;
-	protected float minSize = DEFAULT_MIN_SIZE;
-	protected float maxSize = DEFAULT_MAX_SIZE;
-	protected float minDuration = DEFAULT_MIN_DURATION;
-	protected float maxDuration = DEFAULT_MAX_DURATION;
-	protected int minNumParticles = DEFAULT_MIN_NUM_PARTICLES;
-	protected int maxNumParticles = DEFAULT_MAX_NUM_PARTICLES;
-	protected Color color = DEFAULT_COLOR;
-	protected Color endColor = DEFAULT_END_COLOR;
-	protected Array<Particle> particles = new Array<Particle>();
+	private float x;
+	private float y;
+	private String textureKey;
+	private float minVX = DEFAULT_MIN_V;
+	private float minVY = DEFAULT_MIN_V;
+	private float maxVX = DEFAULT_MAX_V;
+	private float maxVY = DEFAULT_MAX_V;
+	private float minWidth = DEFAULT_MIN_SIZE;
+	private float maxWidth = DEFAULT_MAX_SIZE;
+	private float minHeight = DEFAULT_MIN_SIZE;
+	private float maxHeight = DEFAULT_MAX_SIZE;
+	private float minDuration = DEFAULT_MIN_DURATION;
+	private float maxDuration = DEFAULT_MAX_DURATION;
+	private int minNumParticles = DEFAULT_MIN_NUM_PARTICLES;
+	private int maxNumParticles = DEFAULT_MAX_NUM_PARTICLES;
+	private float startAlpha = 1;
+	private float endAlpha = 0;
+	private boolean fadeIn = false;
+	private boolean fixSlowSpeed = false;
+	private Color color = null;
+	private Color endColor = null;
+	private Array<Particle> particles = new Array<Particle>();
 
 	public ParticleEffect(String textureKey, float x, float y) {
 		this.textureKey = textureKey;
@@ -58,14 +62,20 @@ public class ParticleEffect implements IUpdate, IDraw {
 	}
 	
 	public void begin() {
-		int numParticles = MathUtils.random(minNumParticles, maxNumParticles);
+		int numParticles = MathUtils.random(minNumParticles, maxNumParticles);	
 		for(int i = 0; i < numParticles; i++) {
 			Particle particle = ParticleEffect.PARTICLE_POOL.obtain();
-			float size = MathUtils.random(minSize, maxSize);
+			float width = MathUtils.random(minWidth, maxWidth);
+			float height = MathUtils.random(minHeight, maxHeight);
 			float vx = MathUtils.random(minVX, maxVX);
 			float vy = MathUtils.random(minVY, maxVY);
+			
+			if(fixSlowSpeed && Math.abs(vx) < Math.abs(minVX) / 5) {
+				vx = minVX / 5;
+			}
+
 			float duration = MathUtils.random(minDuration, maxDuration);
-			particle.set(textureKey, x, y, size, vx, vy, duration, color, endColor);
+			particle.set(textureKey, x, y, width, height, vx, vy, duration, startAlpha, endAlpha, color, endColor, fadeIn);
 			particles.add(particle);
 		}
 		
@@ -102,13 +112,35 @@ public class ParticleEffect implements IUpdate, IDraw {
 		return this;
 	}
 	
+	public ParticleEffect minWidth(float size) {
+		this.minWidth = size;
+		return this;
+	}
+	
+	public ParticleEffect maxWidth(float size) {
+		this.maxWidth = size;
+		return this;
+	}
+	
+	public ParticleEffect minHeight(float size) {
+		this.minHeight = size;
+		return this;
+	}
+	
+	public ParticleEffect maxHeight(float size) {
+		this.maxHeight = size;
+		return this;
+	}
+	
 	public ParticleEffect minSize(float size) {
-		this.minSize = size;
+		this.minWidth = size;
+		this.minHeight = size;
 		return this;
 	}
 	
 	public ParticleEffect maxSize(float size) {
-		this.maxSize = size;
+		this.maxWidth = size;
+		this.maxHeight = size;
 		return this;
 	}
 	
@@ -122,6 +154,16 @@ public class ParticleEffect implements IUpdate, IDraw {
 		return this;
 	}
 	
+	public ParticleEffect startAlpha(float alpha) {
+		this.startAlpha = alpha;
+		return this;
+	}
+	
+	public ParticleEffect endAlpha(float alpha) {
+		this.endAlpha = alpha;
+		return this;
+	}
+	
 	public ParticleEffect color(Color color) {
 		this.color = color;
 		return this;
@@ -132,11 +174,33 @@ public class ParticleEffect implements IUpdate, IDraw {
 		return this;
 	}
 	
+	public ParticleEffect fadeIn(boolean fadeIn) {
+		this.fadeIn = fadeIn;
+		return this;
+	}
+	
+	public ParticleEffect fixSlowSpeed(boolean fix) {
+		this.fixSlowSpeed = fix;
+		return this;
+	}
+	
 	@Override
 	public void draw(SpriteBatch batch) {
 		for(Particle particle : particles) {
 			particle.draw(batch);
 		}
+	}
+	
+	public String getTextureKey() {
+		return textureKey;
+	}
+	
+	public float getX() {
+		return x;
+	}
+	
+	public float getY() {
+		return y;
 	}
 
 	@Override

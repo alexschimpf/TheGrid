@@ -1,16 +1,20 @@
 package core;
 
+import screen.GameScreen;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class TheGame extends Game {
+public final class TheGame extends Game {
 
+	public static boolean DEBUG = false;
+	
 	private SpriteBatch batch;
 
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		setScreen(new MainMenuScreen(this));
+		setScreen(new GameScreen(this));
 	}
 
 	@Override

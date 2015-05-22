@@ -83,7 +83,7 @@ public class CircleEntity extends Entity {
 	protected void createParticleEffect() {
 		ParticleEffect effect = new ParticleEffect("shot", getCenterX(), getCenterY());
 		effect.color(sprite.getColor())
-		.endColor(sprite.getColor())
-		.begin();
+		      .endColor(sprite.getColor())
+		      .begin();
 	}
 }

@@ -73,7 +73,7 @@ public class SensorEntity extends Entity {
 		float cy = pos.y + (getHeight() / 2);
 		bodyDef.position.set(cx, cy);
 
-		body = world.createBody(bodyDef);		
+		body = Entity.getWorld().createBody(bodyDef);		
 		body.setFixedRotation(true);
 		body.setAwake(false);
 		

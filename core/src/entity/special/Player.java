@@ -17,11 +17,11 @@ import com.badlogic.gdx.utils.TimeUtils;
 import core.Room;
 import entity.RectangleEntity;
 
-public class Player extends RectangleEntity {
+public final class Player extends RectangleEntity {
 
 	public static enum Direction {
-		Left,
-		Right
+		LEFT,
+		RIGHT
 	}
 	
 	public static final float MOVE_SPEED = 18;
@@ -35,7 +35,7 @@ public class Player extends RectangleEntity {
 	private long lastJumpTime = 0;
 	private long lastBlinkTime = TimeUtils.millis();
 	private float blinkCooldown = MathUtils.random(1000, 6000);
-	private Direction direction = Direction.Right;
+	private Direction direction = Direction.RIGHT;
 	private Animation blinkAnimation;
 	private Animation jumpAnimation;
 	
@@ -80,7 +80,7 @@ public class Player extends RectangleEntity {
 			sprite = blinkAnimation.getSprite();
 		}
 		
-		Room currRoom = theGrid.getRoomAt(getCenterX(), getCenterY());
+		Room currRoom = THE_GRID.getRoomAt(getCenterX(), getCenterY());
 		if(room != currRoom) {
 			if(room != null) {
 				//room.setAwake(false);
@@ -90,24 +90,24 @@ public class Player extends RectangleEntity {
 //			room.setAwake(true);
 		} 
 		
-		sprite.setFlip(direction == Direction.Left, true);
+		sprite.setFlip(direction == Direction.LEFT, true);
 
 		return super.update();
 	}
 
 	public void moveLeft() {
-		move(Direction.Left);
+		move(Direction.LEFT);
 	}
 	
 	public void moveRight() {
-		move(Direction.Right);
+		move(Direction.RIGHT);
 	}
 	
 	public void jump() {
 		if(!isJumping() && TimeUtils.timeSinceMillis(lastJumpTime) > JUMP_COOLDOWN) {
 			jumpAnimation.play();
 			lastJumpTime = TimeUtils.millis();
-			sounds.playSound("jump");
+			SOUNDS.playSound("jump");
 			float x = body.getWorldCenter().x;
 			float y = body.getWorldCenter().y;
 			body.applyLinearImpulse(0, JUMP_IMPULSE, x, y, true);
@@ -131,14 +131,14 @@ public class Player extends RectangleEntity {
 	public void shoot() {
 		if(TimeUtils.timeSinceMillis(lastShotTime) > SHOOT_COOLDOWN) {
 			lastShotTime = TimeUtils.millis();
-			sounds.playSound("shoot");
+			SOUNDS.playSound("shoot");
 			PlayerShot shot = new PlayerShot(this);
 			shot.shoot();
 		}		
 	}
 	
 	public float getFrontX() {
-		if(direction == Direction.Left) {
+		if(direction == Direction.LEFT) {
 			return getLeft();
 		} else {
 			return getRight();
@@ -146,7 +146,7 @@ public class Player extends RectangleEntity {
 	}
 	
 	public float getBackX() {
-		if(direction == Direction.Left) {
+		if(direction == Direction.LEFT) {
 			return getRight();
 		} else {
 			return getLeft();
@@ -238,7 +238,7 @@ public class Player extends RectangleEntity {
 		
 		Vector2 pos = new Vector2(getLeft() + (getWidth() / 4.0f), getBottom() - (getHeight() / 15));
 		float vx = Player.MOVE_SPEED;
-		if(moveDirection == Direction.Left) {
+		if(moveDirection == Direction.LEFT) {
 			vx = 0 - vx;
 			pos.x = getRight() - (getWidth() / 4.0f);
 		}
@@ -254,14 +254,14 @@ public class Player extends RectangleEntity {
 	}
 	
 	private void setSprite(String textureKey) {
-		sprite.setRegion(textures.getTextureRegion(textureKey));
-		sprite.setFlip(direction == Direction.Left, true);
+		sprite.setRegion(TEXTURES.getTextureRegion(textureKey));
+		sprite.setFlip(direction == Direction.LEFT, true);
 	}
 	
 	protected void createParticleEffect() {
 		float minVX = Math.abs(ParticleEffect.DEFAULT_MIN_V);
 		float maxVX = ParticleEffect.DEFAULT_MAX_V * 1.2f;
-		if(direction == Direction.Right) {
+		if(direction == Direction.RIGHT) {
 			maxVX = ParticleEffect.DEFAULT_MIN_V * 1.2f;
 			minVX = -ParticleEffect.DEFAULT_MAX_V;
 		}
@@ -270,13 +270,15 @@ public class Player extends RectangleEntity {
 		float y = getBottom() - (getHeight() / 15);
 		ParticleEffect effect = new ParticleEffect("shot", x, y);
 		effect.minNumParticles(1)
-		.maxNumParticles(1)
-		.minVX(minVX)
-		.maxVX(maxVX)
-		.minVY(-Math.abs(ParticleEffect.DEFAULT_MIN_V) * 0.1f)
-		.maxVY(-ParticleEffect.DEFAULT_MAX_V)
-		.minDuration(300)
-		.maxDuration(500)
-		.begin();
+		      .maxNumParticles(1)
+		      .minSize(Room.SQUARE_SIZE / 16)
+		      .maxSize(Room.SQUARE_SIZE / 8)
+		      .minVX(minVX)
+		      .maxVX(maxVX)
+		      .minVY(0)
+		      .maxVY(-ParticleEffect.DEFAULT_MAX_V * 1.2f)
+		      .minDuration(300)
+		      .maxDuration(500)
+		      .begin();
 	}
 }

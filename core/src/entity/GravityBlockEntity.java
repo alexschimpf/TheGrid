@@ -2,6 +2,7 @@ package entity;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.XmlReader.Element;
 
 import misc.EntityBodyDef;
@@ -33,10 +34,11 @@ public class GravityBlockEntity extends RectangleEntity {
 	
 	@Override
 	public void onBeginContact(Entity entity) {
+		World world = Entity.getWorld();
 		if(isShot(entity)) {
-			sounds.playSound("transport");
+			SOUNDS.playSound("transport");
 			world.setGravity(world.getGravity().scl(-1));
-			theGrid.getPlayer().getBody().setAwake(true);
+			Entity.getPlayer().getBody().setAwake(true);
 		}
 	}
 }

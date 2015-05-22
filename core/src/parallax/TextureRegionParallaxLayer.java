@@ -14,7 +14,7 @@ import parallax.ParallaxUtils.WH;
  * @author Rahul
  *
  */
-public class TextureRegionParallaxLayer extends ParallaxLayer{
+public final class TextureRegionParallaxLayer extends ParallaxLayer{
 
 	private TextureRegion texRegion;
 	private float padLeft=0,padRight=0,padBottom=0,padTop=0;

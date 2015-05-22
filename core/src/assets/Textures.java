@@ -2,8 +2,6 @@ package assets;
 
 import java.util.HashMap;
 
-import misc.BodyEditorLoader;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -13,29 +11,27 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 
-public class Textures {
+public final class Textures {
 
 	private static final Color[] SCHEME_COLORS = new Color[4];
 	
 	private static Textures instance;
 	
-	private HashMap<String, TextureRegion> textureMap = new HashMap<String, TextureRegion>();
-	private HashMap<String, Array<AtlasRegion>> textureListMap = new HashMap<String, Array<AtlasRegion>>();
-	private BodyEditorLoader loader;
-	private TextureAtlas atlas;
+//	private final BodyEditorLoader loader = null;
+	private final HashMap<String, TextureRegion> textureMap = new HashMap<String, TextureRegion>();
+	private final HashMap<String, Array<AtlasRegion>> textureListMap = new HashMap<String, Array<AtlasRegion>>();
+	private final HashMap<String, String> keyToAtlasFileMap = new HashMap<String, String>();
+	private final TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("game.atlas"));
 
 	private Textures() {
 		initSchemeColors();
 		
-		atlas = new TextureAtlas(Gdx.files.internal("game.atlas"));
-
 		// Single images
 		createTextureRegion("player", "player");	
 		createTextureRegion("player_move", "player_move");		
 		createTextureRegion("background", "background");
 		createTextureRegion("shot", "shot");
 		createTextureRegion("ball", "ball"); 		
-		createTextureRegion("block", "block");
 		createTextureRegion("block_chain_start", "block_chain_start");		
 		createTextureRegion("up_arrow_block", "up_arrow_block");	
 		createTextureRegion("programmable_block", "programmable_block");
@@ -46,26 +42,28 @@ public class Textures {
 		createTextureRegion("cracked_block1", "cracked_block_1");
 		createTextureRegion("cracked_block2", "cracked_block_2");
 		createTextureRegion("cracked_block3", "cracked_block_3");
-		createTextureRegion("cracked_block4", "cracked_block_4");		
-		createTextureRegion("grid_corner1", "gc1");
-		createTextureRegion("grid_bottom_horizontal1", "gbh1");
-		createTextureRegion("grid_top_horizontal1", "gth1");
-		createTextureRegion("grid_edge_horizontal1", "geh1");
-		createTextureRegion("grid_edge_vertical1", "gev1");
-		createTextureRegion("grid_left_vertical1", "glv1");
-		createTextureRegion("grid_right_vertical1", "grv1");
+		createTextureRegion("cracked_block4", "cracked_block_4");				
 		createTextureRegion("grid_top_left", "gtl");
 		createTextureRegion("grid_top_right", "gtr");
 		createTextureRegion("grid_bottom_left", "gbl");
 		createTextureRegion("grid_bottom_right", "gbr");
-		
-		// Animations
+
+		// Indexed
+		createTextureRegions("block", "block");
 		createTextureRegions("player_blink", "player_blink");	
 		createTextureRegions("player_jump", "player_jump");
 		createTextureRegions("disappearing_block", "disappearing_block");
 		createTextureRegions("filling_block", "filling_block");
 		createTextureRegions("question_mark_block", "question_mark_block");
 		createTextureRegions("portal", "portal");
+		createTextureRegions("cloud", "cloud");
+		createTextureRegions("grid_corner", "gc");
+		createTextureRegions("grid_bottom_horizontal", "gbh");
+		createTextureRegions("grid_top_horizontal", "gth");
+		createTextureRegions("grid_edge_horizontal", "geh");
+		createTextureRegions("grid_edge_vertical", "gev");
+		createTextureRegions("grid_left_vertical", "glv");
+		createTextureRegions("grid_right_vertical", "grv");	
 		
 //		createColorTextureRegion(1, 1, 1, 1, "white");
 //		createColorTextureRegion(0, 0, 0, 1, "black");
@@ -79,12 +77,22 @@ public class Textures {
 		return instance;
 	}
 	
-	public void initLoader() {
-		//loader = new BodyEditorLoader(Gdx.files.internal("loader_data.json"));
+	public TextureRegion getTextureRegion(String key) {
+		TextureRegion texture = textureMap.get(key);
+		
+		if(texture == null) {
+			Array<AtlasRegion> textureRegions = getTextureRegions(key);
+			if(textureRegions != null) {
+				int index = getRandomVariation(key);
+				texture = getTextureRegions(key).get(index);
+			}
+		}
+		
+		return texture;
 	}
 	
-	public TextureRegion getTextureRegion(String key) {
-		return textureMap.get(key);
+	public TextureRegion getTextureRegion(String key, int index) {
+		return getTextureRegions(key).get(index);
 	}
 	
 	public Array<AtlasRegion> getTextureRegions(String key) {
@@ -97,9 +105,25 @@ public class Textures {
 
 	public Sprite getSprite(String key, Color color) {
 		TextureRegion texture = getTextureRegion(key);
+		
+		if(texture == null) {
+			// If there are multiple variations available, then always choose a random one.
+			Array<AtlasRegion> textureRegions = getTextureRegions(key);
+			if(textureRegions != null) {
+				int index = getRandomVariation(key);
+				texture = getTextureRegions(key).get(index);
+			}
+		}
 
+		boolean flipHor = false;
+		boolean flipVert = true;
+		if(key.equals("block")) {
+			flipHor = MathUtils.random() < 0.5f;
+			flipVert = MathUtils.random() < 0.5f;
+		}
+		
 		Sprite sprite = texture != null ? new Sprite(texture) : new Sprite();
-		sprite.setFlip(false, true);		
+		sprite.setFlip(flipHor, flipVert);		
 		sprite.setColor(color);
 		
 		return sprite;
@@ -114,18 +138,25 @@ public class Textures {
 		return SCHEME_COLORS[pos];
 	}
 	
-	public BodyEditorLoader getLoader() {
-		return loader;
+//	public BodyEditorLoader getLoader() {
+//		return loader;
+//	}
+	
+	private int getRandomVariation(String key) {
+		int numVariations = atlas.findRegions(keyToAtlasFileMap.get(key)).size;
+		return MathUtils.random(0, numVariations - 1);
 	}
 	
 	private void createTextureRegions(String filename, String key) {
 		Array<AtlasRegion> regions = atlas.findRegions(filename);
 		textureListMap.put(key, regions);
+		keyToAtlasFileMap.put(key, filename);
 	}
 	
 	private void createTextureRegion(String filename, String key) {
 		AtlasRegion region = atlas.findRegion(filename);
 		textureMap.put(key,  region);
+		keyToAtlasFileMap.put(key, filename);
 	}
 	
 	private void initSchemeColors() {

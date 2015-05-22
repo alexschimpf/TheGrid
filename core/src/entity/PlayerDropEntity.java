@@ -1,8 +1,6 @@
 package entity;
 
 import misc.EntityBodyDef;
-import misc.Globals;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -42,12 +40,12 @@ public class PlayerDropEntity extends RectangleEntity {
 	@Override
 	public void onBeginContact(Entity entity) {
 		if(isShot(entity)) {
-			sounds.playSound("transport");
+			SOUNDS.playSound("transport");
 			Gdx.app.postRunnable(new Runnable() {
 		        @Override
 		        public void run() {
 		            float roomTop = room.getTop();
-		     		Player player = Globals.getInstance().getTheGrid().getPlayer();
+		     		Player player = GLOBALS.getPlayer();
 		     		float newTop = roomTop + Room.SQUARE_SIZE;
 		     		Vector2 worldPos = new Vector2(player.getLeft(), newTop);
 		     		

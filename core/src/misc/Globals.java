@@ -1,12 +1,14 @@
 package misc;
 
+import screen.GameScreen;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.physics.box2d.World;
 
-import core.GameScreen;
-import core.GameState;
 import core.TheGrid;
+import entity.special.Player;
 
-public class Globals {
+public final class Globals {
 
 	public static final float VIEWPORT_WIDTH = 60.0f;
 	public static final float VIEWPORT_HEIGHT = 100.0f;
@@ -22,7 +24,7 @@ public class Globals {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(true, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 		//state = GameState.CutScene;
-		state = GameState.Running;
+		state = GameState.RUNNING;
 	}
 
 	public static Globals getInstance() {
@@ -84,6 +86,14 @@ public class Globals {
 	
 	public TheGrid getTheGrid() {
 		return theGrid;
+	}
+	
+	public Player getPlayer() {
+		return theGrid.getPlayer();
+	}
+	
+	public World getWorld() {
+		return theGrid.getWorld();
 	}
 	
 	public GameState getGameState() {

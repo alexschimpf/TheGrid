@@ -12,9 +12,9 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import entity.Entity;
 import entity.special.Player;
 
-public class CollisionListener implements ContactListener {
+public final class CollisionListener implements ContactListener {
 	
-	private Globals globals = Globals.getInstance();
+	private static final Globals GLOBALS = Globals.getInstance();
 	
 	public CollisionListener() {	
 	}
@@ -98,7 +98,7 @@ public class CollisionListener implements ContactListener {
 		boolean footContact = (fixA.isSensor() && a.getType().equals("player")) ||
 	                          (fixB.isSensor() && b.getType().equals("player")); 
         if(footContact) {
-        	Player player = globals.getTheGrid().getPlayer();        	
+        	Player player = GLOBALS.getPlayer();        	
         	if(beginContact) {
         		player.incrementFootContacts();
         	} else {

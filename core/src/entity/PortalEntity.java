@@ -137,8 +137,8 @@ public class PortalEntity extends RectangleEntity {
 	protected FixtureDef createFixtureDef() {
 		PolygonShape shape = new PolygonShape();
 		
-		float width = (getWidth() / 4);
-		float height = (getHeight() / 4);
+		float width = (getWidth() / 3.5f);
+		float height = (getHeight() / 3.5f);
 		shape.setAsBox(width, height);
 		
 		FixtureDef fixtureDef = new FixtureDef();

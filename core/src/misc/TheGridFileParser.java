@@ -21,7 +21,7 @@ import core.TheGrid;
 import entity.Entity;
 import entity.RectangleEntity;
 
-public class TheGridFileParser {
+public final class TheGridFileParser {
 
 	private TheGrid theGrid;
 	private HashMap<String, String> entityTypeClassMap = new HashMap<String, String>();
@@ -67,7 +67,7 @@ public class TheGridFileParser {
 		for(Element roomElem : rooms) {
 			int row = roomElem.getInt("row");
 			int col = roomElem.getInt("col");
-			Vector2 roomPos = new Vector2(row, col);			
+			Vector2 roomPos = new Vector2(row, col);	
 			createRoom(roomPos, roomElem);
 		}
 	}
@@ -109,8 +109,9 @@ public class TheGridFileParser {
 				openingLocations.add(location);
 			}
 		}	
-		createRoomBorder(room, openingLocations);
 		
+		createRoomBorder(room, openingLocations);
+	
 		theGrid.addRoom(room);
 	}
 	

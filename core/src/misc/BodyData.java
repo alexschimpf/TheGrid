@@ -2,7 +2,7 @@ package misc;
 
 import entity.Entity;
 
-public class BodyData {
+public final class BodyData {
 
 	private boolean needsRemoved = false;
 	private Entity entity;

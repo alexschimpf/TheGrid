@@ -1,8 +1,9 @@
-package core;
+package screen;
 
 import java.util.Iterator;
 
 import listener.InputListener;
+import misc.GameState;
 import misc.Globals;
 import parallax.ParallaxBackground;
 import parallax.TextureRegionParallaxLayer;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -30,15 +32,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
+import core.Room;
+import core.TheGame;
+import core.TheGrid;
 import entity.special.Player;
 
-public class GameScreen implements Screen {
+public final class GameScreen implements Screen {
 
+	private static Globals GLOBALS;
+	
 	private Matrix4 debugMatrix;
 	private Box2DDebugRenderer debugRenderer;
 	private ParallaxBackground background;
 	private TheGrid theGrid;
-	private Globals globals;
 	private String text;
 	private BitmapFont font;
 	private Music music;
@@ -57,14 +64,14 @@ public class GameScreen implements Screen {
 		this.game = game;
 		this.batch = game.getSpriteBatch();
 		
-		globals = Globals.getInstance();
-		globals.setGame(this);
-		//globals.getCamera().zoom -= 0.4f;
-		globals.getCamera().zoom += 0.1f;
+		GLOBALS = Globals.getInstance();
+		GLOBALS.setGame(this);
+		//GLOBALS.getCamera().zoom -= 0.4f;
+		GLOBALS.getCamera().zoom += 0.1f;
 		debugRenderer = new Box2DDebugRenderer();
 		
 		theGrid = new TheGrid();
-		globals.setTheGrid(theGrid);
+		GLOBALS.setTheGrid(theGrid);
 		theGrid.build();
 
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -89,15 +96,20 @@ public class GameScreen implements Screen {
 		music.setPosition(0.5f);
 		
 		// I don't know why this helps, but it does.
-		Gdx.graphics.setDisplayMode(Gdx.graphics.getDesktopDisplayMode().width, Gdx.graphics.getDesktopDisplayMode().height, true);	
+		if(!TheGame.DEBUG) {
+			Gdx.graphics.setDisplayMode(Gdx.graphics.getDesktopDisplayMode().width, Gdx.graphics.getDesktopDisplayMode().height, true);	
+		}
 	}
+		
 
 	@Override
 	public void render(float delta) {
-		//Gdx.app.log("FPS", "" + Gdx.graphics.getFramesPerSecond());
-		//Gdx.app.log("Max sprites in batch", "" + batch.maxSpritesInBatch);
+		if(TheGame.DEBUG) {
+			Gdx.app.log("FPS", "" + Gdx.graphics.getFramesPerSecond());
+			Gdx.app.log("Max sprites in batch", "" + batch.maxSpritesInBatch);
+		}		
 		
-		globals.updateCamera();
+		GLOBALS.updateCamera();
 
 		update();
 		draw();	
@@ -105,8 +117,8 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		globals.getCamera().viewportHeight = (Globals.VIEWPORT_WIDTH / width) * height;
-        globals.updateCamera();
+		GLOBALS.getCamera().viewportHeight = (Globals.VIEWPORT_WIDTH / width) * height;
+        GLOBALS.updateCamera();
         
         stage.getViewport().update(width, height, false);
 	}
@@ -140,24 +152,24 @@ public class GameScreen implements Screen {
 	}
 	
 	private void update() {
-		debugMatrix = new Matrix4(globals.getCamera().combined);
+		debugMatrix = new Matrix4(GLOBALS.getCamera().combined);
 		
 		theGrid.update();		
 		updateParticleEffects();		
 		inputListener.update();
 		
-		GameState state = globals.getGameState();			
-		if(state == GameState.CutScene) {
+		GameState state = GLOBALS.getGameState();			
+		if(state == GameState.CUT_SCENE) {
 			updateOpeningScene();
 		}
 		
 		// TODO:: Get this outta here.
 		if(Gdx.app.getType() == ApplicationType.Android) {
-			if(state == GameState.Running) {
+			if(state == GameState.RUNNING) {
 				checkPressedButtons();
 			}
 			
-			if(state != GameState.Running) {
+			if(state != GameState.RUNNING) {
 				hideUI();
 			} else {
 				showUI();
@@ -171,10 +183,10 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor((201.0f / 255), (238.0f / 255), (255.0f / 255), 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		batch.setProjectionMatrix(globals.getCamera().combined);
+		batch.setProjectionMatrix(GLOBALS.getCamera().combined);
 		batch.enableBlending();
 		batch.begin(); {
-			background.draw(globals.getCamera(), batch);
+			background.draw(GLOBALS.getCamera(), batch);
 			drawParticleEffects(batch);
 			theGrid.draw(batch);		
 		} batch.end();
@@ -208,6 +220,8 @@ public class GameScreen implements Screen {
 	}
 	
 	private void updateParticleEffects() {
+		int numClouds = 0;
+		
 		Iterator<ParticleEffect> particleEffectsItr = particleEffects.iterator();
 		while(particleEffectsItr.hasNext()) {
 			ParticleEffect effect = particleEffectsItr.next();
@@ -216,7 +230,48 @@ public class GameScreen implements Screen {
 				effect.done();
 				particleEffectsItr.remove();
 			}
+			
+			if(effect.getTextureKey().contains("cloud")) {
+				numClouds++;
+			}
 		}
+
+		int minNumClouds = theGrid.getNumCols() * theGrid.getNumRows() * 2;
+		if(numClouds < minNumClouds) {
+			for(int i = 0; i < minNumClouds - numClouds; i++) {
+				addCloud(numClouds != 0);
+			}
+		}
+	}
+
+	protected void addCloud(boolean fadeIn) {
+		Sprite sprite = Textures.getInstance().getSprite("cloud");
+		float whRatio = sprite.getWidth() / sprite.getHeight();
+		float width = MathUtils.random(Room.SQUARE_SIZE * 10, Room.SQUARE_SIZE * 16);
+		float height = width / whRatio;
+		
+		float roomSize = Room.SQUARE_SIZE * TheGrid.ROOM_NUM_SQUARES_WIDE;
+		float x = MathUtils.random(-roomSize / 2, roomSize * (theGrid.getNumCols() - 0.5f));
+		float y = MathUtils.random(-roomSize / 2, roomSize * (theGrid.getNumRows() - 0.5f));
+		
+		ParticleEffect cloud = new ParticleEffect("cloud", x, y);
+		cloud.minDuration(20000)
+			 .maxDuration(120000)
+			 .minWidth(width)
+		     .maxWidth(width)
+		     .minHeight(height)
+	 	     .maxHeight(height)
+		     .minVX(-Player.MOVE_SPEED / 14)
+		     .maxVX(Player.MOVE_SPEED / 14)
+		     .minVY(0)
+		     .maxVY(0)
+		     .minNumParticles(1)
+		     .maxNumParticles(1)
+		     .startAlpha(0.9f)
+		     .endAlpha(0)
+		     .fadeIn(fadeIn)
+		     .fixSlowSpeed(true)
+	     	 .begin();
 	}
 	
 	private void drawParticleEffects(SpriteBatch batch) {
@@ -232,10 +287,10 @@ public class GameScreen implements Screen {
 	private boolean stopped = false;
 	private void updateOpeningScene() {
 		if(TimeUtils.timeSinceMillis(openingSceneStartTime) > 10000) {
-			globals.getCamera().zoom += (5.0f / 50.0f) * Gdx.graphics.getDeltaTime();
-			if(globals.getCamera().zoom >= 1.1f) {
-				globals.getCamera().zoom = 1.1f;
-				globals.setGameState(GameState.Running);
+			GLOBALS.getCamera().zoom += (5.0f / 50.0f) * Gdx.graphics.getDeltaTime();
+			if(GLOBALS.getCamera().zoom >= 1.1f) {
+				GLOBALS.getCamera().zoom = 1.1f;
+				GLOBALS.setGameState(GameState.RUNNING);
 				
 				if(Gdx.app.getType() == ApplicationType.Android) {
 					showUI();
@@ -278,7 +333,7 @@ public class GameScreen implements Screen {
 		moveButton.addListener(new com.badlogic.gdx.scenes.scene2d.InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				if(globals.getGameState() == GameState.Running) {
+				if(GLOBALS.getGameState() == GameState.RUNNING) {
 					movePointer = pointer;
 				}
 				 
@@ -300,7 +355,7 @@ public class GameScreen implements Screen {
 		jumpButton.addListener(new com.badlogic.gdx.scenes.scene2d.InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				if(globals.getGameState() == GameState.Running) { 
+				if(GLOBALS.getGameState() == GameState.RUNNING) { 
 					player.jump();
 				}
 				
@@ -309,7 +364,7 @@ public class GameScreen implements Screen {
 			
 			@Override
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				if(globals.getGameState() == GameState.Running) { 
+				if(GLOBALS.getGameState() == GameState.RUNNING) { 
 					player.stopJump();
 				}
 			}
@@ -329,7 +384,7 @@ public class GameScreen implements Screen {
 		shootButton.addListener(new com.badlogic.gdx.scenes.scene2d.InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				if(globals.getGameState() == GameState.Running) { 
+				if(GLOBALS.getGameState() == GameState.RUNNING) { 
 					player.shoot();
 				}
 				

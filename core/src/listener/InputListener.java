@@ -1,27 +1,27 @@
 package listener;
 
+import misc.GameState;
 import misc.Globals;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Input.TextInputListener;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import core.GameState;
+
 import core.Room;
 import core.TheGrid;
 import entity.special.Player;
 
-public class InputListener extends com.badlogic.gdx.scenes.scene2d.InputListener {
+public final class InputListener extends com.badlogic.gdx.scenes.scene2d.InputListener {
 
+	private static final Globals GLOBALS = Globals.getInstance();
+	
 	private Player player;
 	private TheGrid theGrid;
-	private Globals globals = Globals.getInstance();
-	private Camera camera = Globals.getInstance().getCamera();
 	
 	public InputListener() {
-		theGrid = globals.getTheGrid();
+		theGrid = GLOBALS.getTheGrid();
 		player = theGrid.getPlayer();
 	}
 	
@@ -31,7 +31,7 @@ public class InputListener extends com.badlogic.gdx.scenes.scene2d.InputListener
 			Gdx.app.exit();
 		}
 		
-		if(globals.getGameState() != GameState.Running) {
+		if(GLOBALS.getGameState() != GameState.RUNNING) {
 			return false;
 		}
 		
@@ -52,7 +52,7 @@ public class InputListener extends com.badlogic.gdx.scenes.scene2d.InputListener
 	
 	@Override
 	public boolean keyUp(InputEvent event, int keyCode) {
-		if(globals.getGameState() != GameState.Running) {
+		if(GLOBALS.getGameState() != GameState.RUNNING) {
 			return false;
 		}
 		
@@ -67,7 +67,7 @@ public class InputListener extends com.badlogic.gdx.scenes.scene2d.InputListener
 	}
 	
 	public void update() {
-		if(globals.getGameState() != GameState.Running) {
+		if(GLOBALS.getGameState() != GameState.RUNNING) {
 			return;
 		}
 		
@@ -86,9 +86,9 @@ public class InputListener extends com.badlogic.gdx.scenes.scene2d.InputListener
 		}
 		
 		if(Gdx.input.isKeyPressed(Keys.Z)) {
-			globals.getCamera().zoom += 0.05f;
+			GLOBALS.getCamera().zoom += 0.05f;
 		} else if(Gdx.input.isKeyPressed(Keys.X)) {
-			globals.getCamera().zoom -= 0.05f;
+			GLOBALS.getCamera().zoom -= 0.05f;
 		}
 	}
 	

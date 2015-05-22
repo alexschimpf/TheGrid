@@ -1,4 +1,4 @@
-package core;
+package misc;
 
 public interface IUpdate {
 

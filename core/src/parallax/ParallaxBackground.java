@@ -17,7 +17,7 @@ import parallax.ParallaxLayer.TileMode;
  * @author Rahul Verma
  *
  */
-public class ParallaxBackground {
+public final class ParallaxBackground {
 	
 	/**
 	 * this array contains the parallax scrolling layers that are drawn on the screen. Layers are rendered in the order they are present in this array.

@@ -20,7 +20,7 @@ public class ShowMessageScript extends Script {
 	}
 	
 	public static Script build(String id, Room room, Element elem) {
-		Element custom = elem.getChildByName("custom");
+		//Element custom = elem.getChildByName("custom");
 		//String message = custom.get("message", null);
 		
 		ShowMessageScript script = new ShowMessageScript(room, null);

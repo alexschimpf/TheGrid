@@ -38,7 +38,7 @@ public class ProgrammableMovementEntity extends RectangleEntity {
     @Override
     public boolean update() {
     	if(isPlayerInContact()) {
-    		onBeginContact(theGrid.getPlayer());
+    		onBeginContact(Entity.getPlayer());
     	}
 
     	return super.update();
@@ -142,7 +142,7 @@ public class ProgrammableMovementEntity extends RectangleEntity {
     }
     
     protected boolean isPlayerInContact() {
-    	Player player = theGrid.getPlayer();
+    	Player player = Entity.getPlayer();
     	Fixture fixture = getBody().getFixtureList().get(0);
     	return fixture.testPoint(player.getCenterX(), player.getBottom());
     }
@@ -170,6 +170,6 @@ public class ProgrammableMovementEntity extends RectangleEntity {
     	if(num > 0) {
     		key += "_" + num;
     	}
-    	sprite.setRegion(textures.getTextureRegion(key));
+    	sprite.setRegion(TEXTURES.getTextureRegion(key));
     }
 }

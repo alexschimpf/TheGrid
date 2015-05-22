@@ -60,8 +60,8 @@ public class BreakableEntity extends RectangleEntity {
 	public void onBeginContact(Entity entity) {
 		super.onBeginContact(entity);
 		
-		if((breakSpeed != 0 && theGrid.getPlayer().getLinearVelocity().y >= breakSpeed)) {
-			sounds.playSound("explode");
+		if((breakSpeed != 0 && Entity.getPlayer().getLinearVelocity().y >= breakSpeed)) {
+			SOUNDS.playSound("explode");
 			createParticleEffect();
 			getBodyData().setNeedsRemoved();	
 		} else if(((collisionEntity == null && isShot(entity)) || 
@@ -71,7 +71,7 @@ public class BreakableEntity extends RectangleEntity {
 			health--;
 
 			if(health <= 0) {
-				sounds.playSound("explode");
+				SOUNDS.playSound("explode");
 				createParticleEffect();
 				getBodyData().setNeedsRemoved();
 			} else {
@@ -83,15 +83,17 @@ public class BreakableEntity extends RectangleEntity {
 	
 	protected void setSprite(int num) {
 		String key = "cracked_block_" + num;
-		sprite.setRegion(textures.getTextureRegion(key));
+		sprite.setRegion(TEXTURES.getTextureRegion(key));
 	}
 	
 	protected void createParticleEffect() {
-		ParticleEffect effect = new ParticleEffect("shot", getCenterX(), getCenterY());
-		effect.minNumParticles(18)
-		.maxNumParticles(20)
-		.color(sprite.getColor())
-		.endColor(sprite.getColor())
-		.begin();
+		ParticleEffect effect = new ParticleEffect("cracked_block_1", getCenterX(), getCenterY());
+		effect.minNumParticles(8)
+		      .maxNumParticles(12)
+		      .minSize(Room.SQUARE_SIZE / 8)
+		      .maxSize(Room.SQUARE_SIZE / 3)
+		      .color(sprite.getColor())
+		      .endColor(sprite.getColor())
+		      .begin();
 	}
 }

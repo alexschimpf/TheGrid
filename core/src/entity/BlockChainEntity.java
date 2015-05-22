@@ -6,7 +6,6 @@ import misc.Animation;
 import misc.EntityBodyDef;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
@@ -34,7 +33,7 @@ public class BlockChainEntity extends RectangleEntity {
 		this.chainStartId = chainStartId;
 		this.stateMachine = stateMachine;
 		
-		color = textures.getRandomSchemeColor();
+		color = TEXTURES.getRandomSchemeColor();
 	}
 	
 	public static Entity build(String id, Room room, Vector2 pos, Element elem) {
@@ -112,7 +111,7 @@ public class BlockChainEntity extends RectangleEntity {
 	
 	public void activate() {
 		if(isChainStart() && state == 0) {
-			sprite.setRegion(textures.getTextureRegion("block_chain_start"));
+			sprite.setRegion(TEXTURES.getTextureRegion("block_chain_start"));
 		} else {
 			animation.play();
 		}
@@ -133,7 +132,7 @@ public class BlockChainEntity extends RectangleEntity {
 		animation = new Animation("filling_block", ACTIVATED_DURATION / 1000.0f, false, false);
 		animation.setSprite(pos, size);
 
-		sprite = new Sprite(textures.getTextureRegion("block"));
+		sprite = TEXTURES.getSprite("block");
 		sprite.setSize(width, height);
 		sprite.setPosition(x, y);
 	}
@@ -161,13 +160,13 @@ public class BlockChainEntity extends RectangleEntity {
 			sprite = animation.getSprite();
 		} else if(isChainStart()) {
 			if(state == 0) {
-				sprite.setRegion(textures.getTextureRegion("block_chain_start"));
+				sprite.setRegion(TEXTURES.getTextureRegion("block_chain_start"));
 			} else {
-				sprite.setRegion(textures.getTextureRegion("block"));
+				sprite.setRegion(TEXTURES.getTextureRegion("block", 0));
 			}
  			
 		} else {
-			sprite.setRegion(textures.getTextureRegion("block"));
+			sprite.setRegion(TEXTURES.getTextureRegion("block", 0));
 		}
 		
 		sprite.setColor(color);

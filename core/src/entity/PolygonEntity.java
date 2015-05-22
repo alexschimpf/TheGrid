@@ -1,9 +1,6 @@
 package entity;
 
-import misc.BodyEditorLoader;
 import misc.EntityBodyDef;
-import assets.Textures;
-
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -48,8 +45,8 @@ public class PolygonEntity extends Entity {
 	
 	@Override
 	protected void attachFixture(FixtureDef fixtureDef) {
-		BodyEditorLoader loader = Textures.getInstance().getLoader();
-		loader.attachFixture(body, fixtureKey, fixtureDef, getWidth());
-		origin = loader.getOrigin(fixtureKey, getWidth()).cpy();
+//		BodyEditorLoader loader = Textures.getInstance().getLoader();
+//		loader.attachFixture(body, fixtureKey, fixtureDef, getWidth());
+//		origin = loader.getOrigin(fixtureKey, getWidth()).cpy();
 	}
 }

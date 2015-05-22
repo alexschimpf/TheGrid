@@ -17,12 +17,11 @@ import entity.Entity;
 import entity.RectangleEntity;
 import entity.special.Player.Direction;
 
-public class PlayerShot extends RectangleEntity {
+public final class PlayerShot extends RectangleEntity {
 
 	private static final String[] NO_PARTICLE_EFFECT_TYPES = new String[] {
 		"portal",
 		"breakable",
-		"breakable_transport"
 	};	
 	public static final float SPEED = Player.MOVE_SPEED * 7;
 	private static final float SIZE = Room.SQUARE_SIZE / 3;
@@ -40,7 +39,7 @@ public class PlayerShot extends RectangleEntity {
 	public PlayerShot(Vector2 pos) {
 		super(null, "shot", PlayerShot.getEntityBodyDef(pos));
 
-		this.room = theGrid.getPlayer().getRoom();
+		this.room = Entity.getPlayer().getRoom();
 		body.setBullet(true);
 		body.setGravityScale(0);
 	}
@@ -49,7 +48,7 @@ public class PlayerShot extends RectangleEntity {
 		float x = player.getCenterX();
 		float y = player.getCenterY() - (SIZE / 2);
 		
-		if(player.getDirection() == Direction.Left) {
+		if(player.getDirection() == Direction.LEFT) {
 			x -= SIZE;
 		}
 		
@@ -126,12 +125,17 @@ public class PlayerShot extends RectangleEntity {
 	public void shoot() {
 		setBodyData();	
 		
-		theGrid.addGlobalEntity(this);
+		THE_GRID.addGlobalEntity(this);
 		
 		float vy = player.getLinearVelocity().y * 0.75f;
 		float vx = PlayerShot.SPEED * 1.25f;
 		
-		if(player.getDirection() == Direction.Left) {
+		if(vy > 0) {
+			vy = Math.min(vy, Math.abs(vx) * 0.75f);
+		}
+		
+		
+		if(player.getDirection() == Direction.LEFT) {
 			vx = 0 - vx;
 		}
 		
@@ -144,7 +148,7 @@ public class PlayerShot extends RectangleEntity {
 	public void shoot(float vx, float vy) {
 		setBodyData();
 		
-		theGrid.addGlobalEntity(this);
+		THE_GRID.addGlobalEntity(this);
 		
 		setLinearVelocity(vx, vy);
 	}

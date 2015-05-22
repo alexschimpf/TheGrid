@@ -1,4 +1,4 @@
-package core;
+package screen;
 
 import misc.Globals;
 
@@ -15,7 +15,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
-public class MainMenuScreen implements Screen {
+import core.TheGame;
+
+public final class MainMenuScreen implements Screen {
 	
 	private TheGame game;
 	private SpriteBatch batch;

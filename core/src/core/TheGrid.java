@@ -4,6 +4,9 @@ import java.util.Iterator;
 
 import listener.CollisionListener;
 import misc.BodyData;
+import misc.Globals;
+import misc.IDraw;
+import misc.IUpdate;
 import misc.TheGridFileParser;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,16 +18,16 @@ import com.badlogic.gdx.utils.Array;
 import entity.Entity;
 import entity.special.Player;
 
-public class TheGrid implements IUpdate, IDraw {
+public final class TheGrid implements IUpdate, IDraw {
 
 	public static float DEFAULT_GRAVITY = 18;
 	public static int ROOM_NUM_SQUARES_WIDE = 12;
 	public static float ROOM_SIZE = Room.SQUARE_SIZE * ROOM_NUM_SQUARES_WIDE;
+	protected static final Globals GLOBALS = Globals.getInstance();
 	
 	private Player player;
 	private World world;
-	private Room[][] grid;
-	
+	private Room[][] grid;	
 	private Array<Entity> globalEntities = new Array<Entity>();
 	
 	public TheGrid() {

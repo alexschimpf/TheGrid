@@ -46,7 +46,7 @@ public class TransportEntity extends RectangleEntity {
 			Gdx.app.postRunnable(new Runnable() {
 			    @Override
 				public void run() {
-			    	sounds.playSound("transport");
+			    	SOUNDS.playSound("transport");
 			    	entity.setLinearVelocity(0, 0.01f);
 					entity.setPosition(transportPos.x, transportPos.y);
 				}

@@ -2,6 +2,8 @@ package entity;
 
 import misc.BodyData;
 import misc.Globals;
+import misc.IDraw;
+import misc.IUpdate;
 import assets.Sounds;
 import assets.Textures;
 
@@ -16,23 +18,31 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-import core.IDraw;
-import core.IUpdate;
 import core.Room;
 import core.TheGrid;
+import entity.special.Player;
 
 public abstract class Entity implements IUpdate, IDraw, ICollide {
 
+	protected static final Globals GLOBALS = Globals.getInstance();
+	protected static final Textures TEXTURES = Textures.getInstance();
+	protected static final Sounds SOUNDS = Sounds.getInstance();
+	protected static final TheGrid THE_GRID = GLOBALS.getTheGrid();
+	
 	protected int numContacts = 0;
 	protected String id;
 	protected Body body;
 	protected Sprite sprite;
 	protected Room room;	
-	protected Textures textures = Textures.getInstance();
-	protected Sounds sounds = Sounds.getInstance();
-	protected Globals globals = Globals.getInstance();
-	protected TheGrid theGrid = globals.getTheGrid();
-	protected World world = theGrid.getWorld();
+	protected Vector2 leftTop = new Vector2();
+	
+	public static Player getPlayer() {
+		return THE_GRID.getPlayer();
+	}
+	
+	public static World getWorld() {
+		return THE_GRID.getWorld();
+	}
 	
 	protected Entity(Room room) {
 		this.room = room;
@@ -46,7 +56,7 @@ public abstract class Entity implements IUpdate, IDraw, ICollide {
 		sprite.setRotation(MathUtils.radiansToDegrees * body.getAngle());
 
 		if(body.getType() != BodyType.StaticBody) {
-			Room currRoom = theGrid.getRoomAt(getCenterX(), getCenterY());
+			Room currRoom = THE_GRID.getRoomAt(getCenterX(), getCenterY());
 			if(currRoom != null && currRoom != room) {
 				setRoom(currRoom);
 			}
@@ -57,7 +67,7 @@ public abstract class Entity implements IUpdate, IDraw, ICollide {
 	
 	@Override
 	public void done() {
-		world.destroyBody(body);
+		Entity.getWorld().destroyBody(body);
 	}
 	
 	@Override
@@ -104,7 +114,7 @@ public abstract class Entity implements IUpdate, IDraw, ICollide {
 	}
 	
 	public boolean isVisible() {
-		return globals.isVisible(getLeft(), getTop(), getWidth(), getHeight());
+		return GLOBALS.isVisible(getLeft(), getTop(), getWidth(), getHeight());
 	}
 	
 	public Body getBody() {
@@ -164,7 +174,7 @@ public abstract class Entity implements IUpdate, IDraw, ICollide {
 	}
 	
 	public Vector2 getLeftTop() {
-		return new Vector2(getLeft(), getTop());
+		return leftTop.set(getLeft(), getTop());
 	}
 	
 	public void setId(String id) {
@@ -183,9 +193,9 @@ public abstract class Entity implements IUpdate, IDraw, ICollide {
 	
 	protected void createSprite(String textureKey, float x, float y, float width, float height) {
 		if(isTintable()) {
-			sprite = textures.getRandomColorSprite(textureKey);
+			sprite = TEXTURES.getRandomColorSprite(textureKey);
 		} else {
-			sprite = textures.getSprite(textureKey);
+			sprite = TEXTURES.getSprite(textureKey);
 		}
 		
 		sprite.setPosition(x, y);
@@ -206,7 +216,7 @@ public abstract class Entity implements IUpdate, IDraw, ICollide {
 		float cy = sprite.getY() + (getHeight() / 2);
 		bodyDef.position.set(cx, cy);
 
-		body = world.createBody(bodyDef);		
+		body = Entity.getWorld().createBody(bodyDef);		
 		body.setFixedRotation(true);
 //		body.setAwake(false);
 		

@@ -5,11 +5,11 @@ import java.util.HashMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 
-public class Sounds {
+public final class Sounds {
 
 	private static Sounds instance;
 	
-	private HashMap<String, Sound> soundMap = new HashMap<String, Sound>();
+	private final HashMap<String, Sound> soundMap = new HashMap<String, Sound>();
 
 	private Sounds() {
 		createSound("jump_low.wav", "jump");

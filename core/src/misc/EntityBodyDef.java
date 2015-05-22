@@ -3,7 +3,7 @@ package misc;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-public class EntityBodyDef {
+public final class EntityBodyDef {
 
 	public Vector2 position;
 	public Vector2 size;

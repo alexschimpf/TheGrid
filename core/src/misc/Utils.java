@@ -5,32 +5,32 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 
-public class Utils {
+public final class Utils {
 	
-	private static Globals globals = Globals.getInstance();
+	private static final Globals GLOBALS = Globals.getInstance();
 	
 	public static float toMetersX(float pixels) {
-		return globals.getCameraLeft() + (pixels * Globals.VIEWPORT_WIDTH) / Gdx.graphics.getWidth();
+		return GLOBALS.getCameraLeft() + (pixels * Globals.VIEWPORT_WIDTH) / Gdx.graphics.getWidth();
 	}
 	
 	public static float toMetersY(float pixels) {
-		return globals.getCameraTop() + (pixels * Globals.VIEWPORT_HEIGHT) / Gdx.graphics.getHeight();
+		return GLOBALS.getCameraTop() + (pixels * Globals.VIEWPORT_HEIGHT) / Gdx.graphics.getHeight();
 	}
 	
 	public static float getCameraTop() {
-		return globals.getCamera().position.y - (Globals.VIEWPORT_HEIGHT / 2);
+		return GLOBALS.getCamera().position.y - (Globals.VIEWPORT_HEIGHT / 2);
 	}
 	
 	public static float getCameraBottom() {
-		return globals.getCamera().position.y + (Globals.VIEWPORT_HEIGHT / 2);
+		return GLOBALS.getCamera().position.y + (Globals.VIEWPORT_HEIGHT / 2);
 	}
 	
 	public static float getCameraLeft() {
-		return globals.getCamera().position.x - (Globals.VIEWPORT_WIDTH / 2);
+		return GLOBALS.getCamera().position.x - (Globals.VIEWPORT_WIDTH / 2);
 	}
 	
 	public static float getCameraRight() {
-		return globals.getCamera().position.x + (Globals.VIEWPORT_WIDTH / 2);
+		return GLOBALS.getCamera().position.x + (Globals.VIEWPORT_WIDTH / 2);
 	}
 	
 	public static float[] getLocalVertices(PolygonShape shape) {

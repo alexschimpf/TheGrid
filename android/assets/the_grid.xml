@@ -1,13 +1,13 @@
 <the_grid>
     <size num_rows="4" num_cols="4" />
-    <player grid_row="0" grid_col="0" row="5" col="5" />
+    <player grid_row="0" grid_col="0" row="3" col="4" />
     <rooms>
         <!--------------------------------------------------------------------------
         <!-- Room 0, 0
         <!-------------------------------------------------------------------------->
         <room row="0" col="0">
 		    <openings>
-		        <opening row="11" col="5" />
+		        <opening row="11" col="6" />
 		    </openings>
 		    <entities>
 		       <entity type="rectangle">
@@ -21,7 +21,7 @@
 		           </locations>
 		       </entity>
 		       <entity type="player_drop" row="9" col="9" />
-		       <entity type="breakable" row="11" col="5">
+		       <entity type="breakable" row="11" col="6">
 		           <custom>
 		               <friction_top>true</friction_top>
 		               <break_speed>50</break_speed>
@@ -141,7 +141,7 @@
         <!-------------------------------------------------------------------------->
 		<room row="1" col="0">
 		    <openings>
-		        <opening row="0" col="5" />
+		        <opening row="0" col="6" />
 		        <opening row="1" col="11" />
 		    </openings>
 		    <chain_pads>
@@ -156,7 +156,7 @@
 		               <texture_key>block</texture_key>
 		           </custom>
 		           <locations>
-		               <location row="1" col="7" />
+                       <location row="1" col="7" />
 		               <location row="2" col="7" />
 		               <location row="3" col="7" />
 		               <location row="3" col="8" />

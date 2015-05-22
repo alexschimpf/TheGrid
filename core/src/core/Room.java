@@ -2,12 +2,13 @@ package core;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import script.Script;
 import misc.BodyData;
 import misc.Globals;
+import misc.IDraw;
+import misc.IUpdate;
 import assets.Textures;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -19,21 +20,22 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
 import entity.Entity;
+import entity.special.Player;
 
 public class Room implements IUpdate, IDraw {
 
 	public static final float SQUARE_SIZE = Globals.VIEWPORT_WIDTH / 16;
 	protected static final float BORDER_LINE_THICKNESS = SQUARE_SIZE / 32;
 	protected static final float BORDER_LINE_LENGTH = SQUARE_SIZE;
+	protected static final Globals GLOBALS = Globals.getInstance();
+	protected static final TheGrid THE_GRID = GLOBALS.getTheGrid();
+	protected static final World WORLD = THE_GRID.getWorld();
 	
 	protected Vector2 gridPos;
 	protected ConcurrentHashMap<String, Script> scriptMap = new ConcurrentHashMap<String, Script>();
 	protected ConcurrentHashMap<String, Entity> entityMap = new ConcurrentHashMap<String, Entity>();
 	protected Array<Vector2> openings = new Array<Vector2>();
 	protected Array<Sprite> borderSprites = new Array<Sprite>();
-	protected Globals globals = Globals.getInstance();
-	protected TheGrid theGrid = globals.getTheGrid();
-	protected World world = theGrid.getWorld();	
 	
 	public Room(Vector2 gridPos) {
 		this.gridPos = gridPos;
@@ -49,7 +51,8 @@ public class Room implements IUpdate, IDraw {
 	public static Vector2 getGridPosition(Room room, int row, int col) {
 		Vector2 gridPos = room.getGridPosition();
 		int topRow = (int)gridPos.x * TheGrid.ROOM_NUM_SQUARES_WIDE;
-		int leftCol = (int)gridPos.y * TheGrid.ROOM_NUM_SQUARES_WIDE;			
+		int leftCol = (int)gridPos.y * TheGrid.ROOM_NUM_SQUARES_WIDE;	
+		
 		return new Vector2(topRow + row, leftCol + col);
 	}
 	
@@ -63,14 +66,16 @@ public class Room implements IUpdate, IDraw {
 	public static Vector2 getWorldPosition(Room room, int row, int col) {
 		Vector2 gridPos = room.getGridPosition();
 		int topRow = (int)gridPos.x * TheGrid.ROOM_NUM_SQUARES_WIDE;
-		int leftCol = (int)gridPos.y * TheGrid.ROOM_NUM_SQUARES_WIDE;			
+		int leftCol = (int)gridPos.y * TheGrid.ROOM_NUM_SQUARES_WIDE;		
+		
 		return getWorldPosition(topRow + row, leftCol + col);
 	}
 	
 	public static Vector2 getWorldPosition(int gridRow, int gridCol, int row, int col) {
 		Vector2 gridPos = new Vector2(gridRow, gridCol);
 		int topRow = (int)gridPos.x * TheGrid.ROOM_NUM_SQUARES_WIDE;
-		int leftCol = (int)gridPos.y * TheGrid.ROOM_NUM_SQUARES_WIDE;			
+		int leftCol = (int)gridPos.y * TheGrid.ROOM_NUM_SQUARES_WIDE;	
+		
 		return getWorldPosition(topRow + row, leftCol + col);
 	}
 	
@@ -85,7 +90,7 @@ public class Room implements IUpdate, IDraw {
 		}
 		
 		for(Sprite sprite : borderSprites) {
-			if(globals.isVisible(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight())) {
+			if(GLOBALS.isVisible(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight())) {
 				sprite.draw(batch);
 			}
 		}
@@ -97,7 +102,7 @@ public class Room implements IUpdate, IDraw {
 		updateEntities();
 		updateScripts();
 		
-		return theGrid.getPlayer().getRoom() != this;
+		return THE_GRID.getPlayer().getRoom() != this;
 	}
 
 	@Override
@@ -107,13 +112,13 @@ public class Room implements IUpdate, IDraw {
 	public void createBorderSprites() {
 		Vector2 gridPos = getGridPosition();
 		
-		boolean edge = gridPos.x == 0 || gridPos.x == theGrid.getNumRows() - 1 ||
-				       gridPos.y == 0 || gridPos.y == theGrid.getNumCols() - 1;
+		boolean edge = gridPos.x == 0 || gridPos.x == THE_GRID.getNumRows() - 1 ||
+				       gridPos.y == 0 || gridPos.y == THE_GRID.getNumCols() - 1;
 		
 		// Left side
 		for(int i = 1; i < TheGrid.ROOM_NUM_SQUARES_WIDE - 1; i++) {
 			Vector2 pos = new Vector2(i, 0);
-			String textureKey = edge && gridPos.y == 0 ? "gev1" : "glv1";
+			String textureKey = edge && gridPos.y == 0 ? "gev" : "glv";
 			
 			createBorderSprite(textureKey, pos);
 		}
@@ -121,21 +126,21 @@ public class Room implements IUpdate, IDraw {
 		// Right side
 		for(int i = 1; i < TheGrid.ROOM_NUM_SQUARES_WIDE - 1; i++) {
 			Vector2 pos = new Vector2(i, TheGrid.ROOM_NUM_SQUARES_WIDE - 1);
-			String textureKey = edge && gridPos.y == theGrid.getNumCols() - 1 ? "gev1" : "grv1";
+			String textureKey = edge && gridPos.y == THE_GRID.getNumCols() - 1 ? "gev" : "grv";
 			createBorderSprite(textureKey, pos);
 		}
 		
 		// Top side
 		for(int i = 1; i < TheGrid.ROOM_NUM_SQUARES_WIDE - 1; i++) {
 			Vector2 pos = new Vector2(0, i);
-			String textureKey = edge && gridPos.x == 0 ? "geh1" : "gth1";
+			String textureKey = edge && gridPos.x == 0 ? "geh" : "gth";
 			createBorderSprite(textureKey, pos);
 		}
 		
 		// Bottom side
 		for(int i = 1; i < TheGrid.ROOM_NUM_SQUARES_WIDE - 1; i++) {
 			Vector2 pos = new Vector2(TheGrid.ROOM_NUM_SQUARES_WIDE - 1, i);
-			String textureKey = edge && gridPos.x == theGrid.getNumRows() - 1 ? "geh1" : "gbh1";
+			String textureKey = edge && gridPos.x == THE_GRID.getNumRows() - 1 ? "geh" : "gbh";
 			createBorderSprite(textureKey, pos);
 		}
 		
@@ -143,16 +148,24 @@ public class Room implements IUpdate, IDraw {
 	}
 	
 	public boolean entityExistsInArea(Vector2 topLeft, float width, float height, Entity ignoreEntity) {
-		LinkedList<Entity> entities = new LinkedList<Entity>();
-		entities.addAll(getEntities());
-		entities.add(theGrid.getPlayer());
-		for(Entity entity : entities) {
+		for(Entity entity : getEntities()) {
 			if(ignoreEntity != null && entity.equals(ignoreEntity)) {
 				continue;
 			}
 			
 			Rectangle checkRect = new Rectangle(topLeft.x, topLeft.y, width, height);
-			Rectangle entityRect = new Rectangle(entity.getLeft(), entity.getTop(), entity.getWidth(), entity.getHeight());
+			Rectangle entityRect = new Rectangle(entity.getLeft(), entity.getTop(), 
+					                             entity.getWidth(), entity.getHeight());
+			if(checkRect.overlaps(entityRect)) {
+				return true;
+			}
+		}
+		
+		Player player = THE_GRID.getPlayer();
+		if(ignoreEntity != null && !ignoreEntity.equals(player)) {
+			Rectangle checkRect = new Rectangle(topLeft.x, topLeft.y, width, height);
+			Rectangle entityRect = new Rectangle(player.getLeft(), player.getTop(), 
+					                             player.getWidth(), player.getHeight());
 			if(checkRect.overlaps(entityRect)) {
 				return true;
 			}
@@ -287,49 +300,49 @@ public class Room implements IUpdate, IDraw {
 	protected void createBorderCorners(Vector2 gridPos) {
 		Vector2 topLeftPos = new Vector2(0, 0);
 		boolean globalTopLeft = gridPos.x == 0 && gridPos.y == 0;
-		String topLeftTextureKey = globalTopLeft ? "gtl" : "gc1";
+		String topLeftTextureKey = globalTopLeft ? "gtl" : "gc";
 		if(!globalTopLeft) {
 			if(gridPos.x == 0) {
-				topLeftTextureKey = "gbh1";
+				topLeftTextureKey = "gbh";
 			} else if(gridPos.y == 0) {
-				topLeftTextureKey = "grv1";
+				topLeftTextureKey = "grv";
 			}
 			
 		}
 		createBorderSprite(topLeftTextureKey, topLeftPos);
 		
 		Vector2 topRightPos = new Vector2(0, TheGrid.ROOM_NUM_SQUARES_WIDE - 1);
-		boolean globalTopRight = gridPos.x == 0 && gridPos.y == theGrid.getNumCols() - 1;
-		String topRightTextureKey = globalTopRight ? "gtr" : "gc1";
+		boolean globalTopRight = gridPos.x == 0 && gridPos.y == THE_GRID.getNumCols() - 1;
+		String topRightTextureKey = globalTopRight ? "gtr" : "gc";
 		if(!globalTopRight) {
 			if(gridPos.x == 0) {
-				topRightTextureKey = "gbh1";
-			} else if(gridPos.y == theGrid.getNumCols() - 1) {
-				topRightTextureKey = "glv1";
+				topRightTextureKey = "gbh";
+			} else if(gridPos.y == THE_GRID.getNumCols() - 1) {
+				topRightTextureKey = "glv";
 			}
 		}
 		createBorderSprite(topRightTextureKey, topRightPos);
 			
 		Vector2 bottomLeftPos = new Vector2(TheGrid.ROOM_NUM_SQUARES_WIDE - 1, 0);
-		boolean globalBottomLeft = gridPos.x == theGrid.getNumRows() - 1 && gridPos.y == 0;
-		String bottomLeftTextureKey = globalBottomLeft ? "gbl" : "gc1";
+		boolean globalBottomLeft = gridPos.x == THE_GRID.getNumRows() - 1 && gridPos.y == 0;
+		String bottomLeftTextureKey = globalBottomLeft ? "gbl" : "gc";
 		if(!globalBottomLeft) {
 			if(gridPos.y == 0) {
-				bottomLeftTextureKey = "grv1";
-			} else if(gridPos.x == theGrid.getNumRows() - 1) {
-				bottomLeftTextureKey = "gth1";
+				bottomLeftTextureKey = "grv";
+			} else if(gridPos.x == THE_GRID.getNumRows() - 1) {
+				bottomLeftTextureKey = "gth";
 			}
 		}
 		createBorderSprite(bottomLeftTextureKey, bottomLeftPos);	
 		
 		Vector2 bottomRightPos = new Vector2(TheGrid.ROOM_NUM_SQUARES_WIDE - 1, TheGrid.ROOM_NUM_SQUARES_WIDE - 1);
-		boolean globalBottomRight = gridPos.x == theGrid.getNumRows() - 1 && gridPos.y == theGrid.getNumCols() - 1;
-		String bottomRightTextureKey = globalBottomRight ? "gbr" : "gc1";
+		boolean globalBottomRight = gridPos.x == THE_GRID.getNumRows() - 1 && gridPos.y == THE_GRID.getNumCols() - 1;
+		String bottomRightTextureKey = globalBottomRight ? "gbr" : "gc";
 		if(!globalBottomRight) {
-			if(gridPos.x == theGrid.getNumRows() - 1) {
-				bottomRightTextureKey = "gth1";
-			} else if(gridPos.y == theGrid.getNumCols() - 1) {
-				bottomRightTextureKey = "glv1";
+			if(gridPos.x == THE_GRID.getNumRows() - 1) {
+				bottomRightTextureKey = "gth";
+			} else if(gridPos.y == THE_GRID.getNumCols() - 1) {
+				bottomRightTextureKey = "glv";
 			}
 		}
 		createBorderSprite(bottomRightTextureKey, bottomRightPos);
@@ -345,31 +358,32 @@ public class Room implements IUpdate, IDraw {
 		Vector2 rightPos = Room.getWorldPosition(this, (int)pos.x, (int)pos.y + 1);
 		Vector2 abovePos = Room.getWorldPosition(this, (int)pos.x - 1, (int)pos.y);
 		Vector2 belowPos = Room.getWorldPosition(this, (int)pos.x + 1, (int)pos.y);
-		if(theGrid.isOpeningAt(belowPos)) {
+		if(THE_GRID.isOpeningAt(belowPos)) {
 			textureKey = pos.y == 0 ? "gbr" : "gbl";
 			if(pos.x == 0) {
-				textureKey = roomGridPos.x == 0 ? "geh1" : "gth1";
+				textureKey = roomGridPos.x == 0 ? "geh" : "gth";
 			}
-		} else if(theGrid.isOpeningAt(abovePos)) {
+		} else if(THE_GRID.isOpeningAt(abovePos)) {
 			textureKey = pos.y == 0 ? "gtr" : "gtl";
 			if(pos.x == TheGrid.ROOM_NUM_SQUARES_WIDE - 1) {
-				textureKey = roomGridPos.x == theGrid.getNumRows() - 1 ? "geh1" : "gbh1";
+				textureKey = roomGridPos.x == THE_GRID.getNumRows() - 1 ? "geh" : "gbh";
 			}
-		} else if(theGrid.isOpeningAt(leftPos)) {
+		} else if(THE_GRID.isOpeningAt(leftPos)) {
 			textureKey = pos.x == 0 ? "gbl" : "gtl";
 			if(pos.y == TheGrid.ROOM_NUM_SQUARES_WIDE - 1) {
-				textureKey = roomGridPos.y == theGrid.getNumCols() - 1 ? "gev1" : "grv1";
+				textureKey = roomGridPos.y == THE_GRID.getNumCols() - 1 ? "gev" : "grv";
 			}
-		} else if(theGrid.isOpeningAt(rightPos)) {
+		} else if(THE_GRID.isOpeningAt(rightPos)) {
 			textureKey = pos.x == 0 ? "gbr" : "gtr";
 			if(pos.y == 0) {
-				textureKey = roomGridPos.y == 0 ? "gev1" : "glv1";
+				textureKey = roomGridPos.y == 0 ? "gev" : "glv";
 			}
 		}
 
-		Vector2 worldPos = Room.getWorldPosition(this, (int)pos.x, (int)pos.y);
+		Vector2 WORLDPos = Room.getWorldPosition(this, (int)pos.x, (int)pos.y);
 		Sprite sprite = Textures.getInstance().getSprite(textureKey);
-		sprite.setPosition(worldPos.x, worldPos.y);
+		
+		sprite.setPosition(WORLDPos.x, WORLDPos.y);
 		sprite.setSize(Room.SQUARE_SIZE, Room.SQUARE_SIZE);
 		borderSprites.add(sprite);
 	}

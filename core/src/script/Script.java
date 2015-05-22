@@ -1,24 +1,33 @@
 package script;
 
 import misc.Globals;
+import misc.IUpdate;
 import assets.Sounds;
 import assets.Textures;
 
 import com.badlogic.gdx.physics.box2d.World;
 
-import core.IUpdate;
 import core.Room;
 import core.TheGrid;
+import entity.special.Player;
 
 public abstract class Script implements IUpdate {
 
+	protected static final Globals GLOBALS = Globals.getInstance();
+	protected static final Textures TEXTURES = Textures.getInstance();
+	protected static final Sounds SOUNDS = Sounds.getInstance();
+	protected static final TheGrid THE_GRID = GLOBALS.getTheGrid();
+	
 	protected String id;
 	protected Room room;
-	protected Textures textures = Textures.getInstance();
-	protected Sounds sounds = Sounds.getInstance();
-	protected Globals globals = Globals.getInstance();
-	protected TheGrid theGrid = globals.getTheGrid();
-	protected World world = theGrid.getWorld();
+	
+	public static Player getPlayer() {
+		return THE_GRID.getPlayer();
+	}
+	
+	public static World getWorld() {
+		return THE_GRID.getWorld();
+	}
 	
 	public Script(Room room) {
 		this.room = room;	

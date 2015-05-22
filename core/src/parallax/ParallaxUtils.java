@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  * @author Rahul Verma
  *
  */
-public class ParallaxUtils {
+public final class ParallaxUtils {
 
 	public enum WH{
 		width, height

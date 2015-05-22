@@ -11,21 +11,19 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
-import core.IUpdate;
-
-public class Animation implements IUpdate {
+public final class Animation implements IUpdate {
 
 	public static enum State {
-		Paused,
-		Playing,
-		Stopped,
-		Done
+		PAUSED,
+		PLAYING,
+		STOPPED,
+		DONE
 	};
 	
 	private int numFrames;
 	private float stateTime;
 	private boolean loop;
-	private State state = State.Stopped;
+	private State state = State.STOPPED;
 	private Sprite sprite;
 	private com.badlogic.gdx.graphics.g2d.Animation animation;
 	private Color color;
@@ -49,12 +47,12 @@ public class Animation implements IUpdate {
 
 	@Override
 	public boolean update() {
-		if(state == State.Playing) {
+		if(state == State.PLAYING) {
 			stateTime += Gdx.graphics.getDeltaTime();
 		}
 		
 		if(!loop && animation.isAnimationFinished(stateTime)) {
-			state = State.Done;
+			state = State.DONE;
 		}
 		
 		return false;
@@ -81,16 +79,16 @@ public class Animation implements IUpdate {
 	}
 	
 	public void pause() {
-		state = State.Paused;
+		state = State.PAUSED;
 	}
 	
 	public void play() {
 		stateTime = 0;
-		state = State.Playing;
+		state = State.PLAYING;
 	}
 	
 	public void stop() {
-		state = State.Stopped;
+		state = State.STOPPED;
 		stateTime = 0;
 	}
 	
@@ -103,7 +101,7 @@ public class Animation implements IUpdate {
 	}
 	
 	public boolean isPlaying() {
-		return state == State.Playing;
+		return state == State.PLAYING;
 	}
 	
 	public void setLooping(boolean loop) {

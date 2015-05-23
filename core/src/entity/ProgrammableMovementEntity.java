@@ -13,6 +13,8 @@ import entity.special.Player;
 
 public class ProgrammableMovementEntity extends RectangleEntity {
 
+	public static final String TYPE = "programmable_movement";
+	
 	protected enum Direction {
 		Left, Right, Up, Down, None
 	}
@@ -46,7 +48,7 @@ public class ProgrammableMovementEntity extends RectangleEntity {
     
     @Override
     public String getType() {
-    	return "programmable_movement";
+    	return TYPE;
     }
     
     @Override

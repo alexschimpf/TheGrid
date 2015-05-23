@@ -10,6 +10,8 @@ import core.Room;
 
 public class GravityBlockEntity extends RectangleEntity {
 
+	public static final String TYPE = "gravity_block";
+	
 	protected GravityBlockEntity(Room room, String textureKey, EntityBodyDef bodyDef) {
 		super(room, textureKey, bodyDef);
 	}
@@ -29,7 +31,7 @@ public class GravityBlockEntity extends RectangleEntity {
 	
 	@Override
 	public String getType() {
-		return "gravity_block";
+		return TYPE;
 	}
 	
 	@Override

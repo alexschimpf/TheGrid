@@ -10,6 +10,8 @@ import core.Room;
 
 public class TransportEntity extends RectangleEntity {
 
+	public static final String TYPE = "transport";
+	
 	protected Vector2 transportPos;
 	
 	protected TransportEntity(Room room, String textureKey, EntityBodyDef bodyDef, Vector2 transportPos) {
@@ -35,7 +37,7 @@ public class TransportEntity extends RectangleEntity {
 	
 	@Override
 	public String getType() {
-		return "transport";
+		return TYPE;
 	}
 	
 	@Override

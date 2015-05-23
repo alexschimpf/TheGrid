@@ -1,6 +1,7 @@
 package entity;
 
 import misc.EntityBodyDef;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -9,6 +10,8 @@ import core.Room;
 
 public class PolygonEntity extends Entity {
 
+	public static final String TYPE = "polygon";
+	
 	protected Vector2 origin;
 	protected String fixtureKey;
 	
@@ -30,7 +33,7 @@ public class PolygonEntity extends Entity {
 	
 	@Override
 	public String getType() {
-		return "polygon";
+		return TYPE;
 	}
 
 	@Override

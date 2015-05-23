@@ -21,20 +21,20 @@ import core.TheGrid;
 import entity.Entity;
 import entity.RectangleEntity;
 
-public final class TheGridFileParser {
+public final class GridBuilder {
 
 	private TheGrid theGrid;
-	private HashMap<String, String> entityTypeClassMap = new HashMap<String, String>();
-	private HashMap<String, String> scriptTypeClassMap = new HashMap<String, String>();
+	private HashMap<String, String> entityTypeClassMap;
+	private HashMap<String, String> scriptTypeClassMap;
 	
-	public TheGridFileParser(TheGrid theGrid) {
+	public GridBuilder(TheGrid theGrid) {
 		this.theGrid = theGrid;
 		
-		createEntityTypeClassMap();
-		createScriptTypeClassMap();
+		entityTypeClassMap = GlobalIdMapper.getEntityTypeClassMap();
+		scriptTypeClassMap = GlobalIdMapper.getScriptTypeClassMap();
 	}
 	
-	public void parseFile(String filename) {
+	public void buildFromFile(String filename) {
 		try {
 			XmlReader reader = new XmlReader();
 			Element root = reader.parse(Gdx.files.internal(filename));
@@ -246,11 +246,11 @@ public final class TheGridFileParser {
 		shape.dispose();
 	}
 	
-	private Entity createEntity(String type, String id, Room room, Vector2 pos, Element entityElem) {		
+	private Entity createEntity(String type, String id, Room room, Vector2 pos, Element entityElem) {	
 		try {
 			Class<?> c = getEntityClassFromType(type);
 			Method method = c.getMethod("build", String.class, Room.class, Vector2.class, Element.class);
-			Entity entity = (Entity)method.invoke(null, id, room, pos, entityElem);			
+			Entity entity = (Entity)method.invoke(null, id, room, pos, entityElem);		
 				
 			return entity;
 		} catch(Exception e) {
@@ -277,7 +277,7 @@ public final class TheGridFileParser {
 	private Class<?> getEntityClassFromType(String type) {
 		try {
 			String className = entityTypeClassMap.get(type);
-			return Class.forName("entity." + className);
+			return Class.forName(className);
 		} catch(Exception e) {
 			Gdx.app.error("tendersaucer", "getEntityClassFromType", e);
 		}
@@ -288,7 +288,7 @@ public final class TheGridFileParser {
 	private Class<?> getScriptClassFromType(String type) {
 		try {
 			String className = scriptTypeClassMap.get(type);
-			return Class.forName("script." + className);
+			return Class.forName(className);
 		} catch(Exception e) {
 			Gdx.app.error("tendersaucer", "getScriptClassFromType", e);
 		}
@@ -378,29 +378,5 @@ public final class TheGridFileParser {
 		borderEntity.setBodyData();
 		borderEntity.addFrictionTop(0.3f);
 		theGrid.addGlobalEntity(borderEntity);
-	}
-	
-	private void createEntityTypeClassMap() {
-		entityTypeClassMap.put("rectangle", "RectangleEntity");
-		entityTypeClassMap.put("circle", "CircleEntity");
-		entityTypeClassMap.put("polygon", "PolygonEntity");
-		entityTypeClassMap.put("breakable", "BreakableEntity");
-		entityTypeClassMap.put("player_drop", "PlayerDropEntity");
-		entityTypeClassMap.put("block_chain", "BlockChainEntity");
-		entityTypeClassMap.put("triggered_moving_rectangle", "TriggeredMovingRectangleEntity");
-		entityTypeClassMap.put("moving_rectangle", "MovingRectangleEntity");
-		entityTypeClassMap.put("visible_touched", "VisibleTouchedEntity");
-		entityTypeClassMap.put("portal", "PortalEntity");
-		entityTypeClassMap.put("programmable_movement", "ProgrammableMovementEntity");
-		entityTypeClassMap.put("programmable_movement_trigger", "ProgrammableMovementTriggerEntity");
-		entityTypeClassMap.put("transport", "TransportEntity");
-		entityTypeClassMap.put("disappearing_rectangle", "DisappearingRectangleEntity");
-		entityTypeClassMap.put("gravity_block", "GravityBlockEntity");
-		entityTypeClassMap.put("circle_creator", "CircleCreatorEntity");
-		entityTypeClassMap.put("sensor", "sensor.SensorEntity");
-	}
-	
-	private void createScriptTypeClassMap() {
-		scriptTypeClassMap.put("show_message", "ShowMessageScript");
 	}
 }

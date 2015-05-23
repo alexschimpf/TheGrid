@@ -15,6 +15,8 @@ import entity.special.PlayerShot;
 
 public class PortalEntity extends RectangleEntity {
 
+	public static final String TYPE = "portal";
+	
 	protected enum Direction {
 		Left, Right, Up, Down
 	}
@@ -71,7 +73,7 @@ public class PortalEntity extends RectangleEntity {
 	
 	@Override
 	public String getType() {
-		return "portal";
+		return TYPE;
 	}
 	
 	@Override

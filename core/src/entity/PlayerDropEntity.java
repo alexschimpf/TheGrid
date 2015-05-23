@@ -1,6 +1,7 @@
 package entity;
 
 import misc.EntityBodyDef;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -11,6 +12,8 @@ import entity.special.Player;
 
 public class PlayerDropEntity extends RectangleEntity {
 
+	public static final String TYPE = "player_drop";
+	
 	protected PlayerDropEntity(Room room, float x, float y) {
 		super(room, "up_arrow_block", PlayerDropEntity.getEntityBodyDef(x, y));
 	}
@@ -29,7 +32,7 @@ public class PlayerDropEntity extends RectangleEntity {
 	
 	@Override
 	public String getType() {
-		return "player_drop";
+		return TYPE;
 	}
 	
 	@Override

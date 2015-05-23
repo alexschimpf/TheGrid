@@ -11,6 +11,8 @@ import core.Room;
 
 public class BreakableEntity extends RectangleEntity {
 
+	public static final String TYPE = "breakable";
+	
 	protected float breakSpeed;
 	protected int startHealth;
 	protected int health;
@@ -48,7 +50,7 @@ public class BreakableEntity extends RectangleEntity {
 	
 	@Override
 	public String getType() {
-		return "breakable";
+		return TYPE;
 	}
 	
 	@Override

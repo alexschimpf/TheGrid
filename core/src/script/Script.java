@@ -33,6 +33,8 @@ public abstract class Script implements IUpdate {
 		this.room = room;	
 	}
 	
+	public abstract String getType();
+	
 	public abstract void run(Object... params);
 
 	@Override

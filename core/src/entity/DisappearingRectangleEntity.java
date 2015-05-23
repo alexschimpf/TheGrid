@@ -13,6 +13,8 @@ import core.Room;
 
 public class DisappearingRectangleEntity extends RectangleEntity {
 
+	public static final String TYPE = "disappearing_rectangle";
+	
 	protected static final float DURATION = 1000;
 	
 	protected long startTime;
@@ -39,7 +41,7 @@ public class DisappearingRectangleEntity extends RectangleEntity {
 	
 	@Override
 	public String getType() {
-		return "disappearing_rectangle";
+		return TYPE;
 	}
 	
 	@Override

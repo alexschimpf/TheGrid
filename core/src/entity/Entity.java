@@ -27,7 +27,6 @@ public abstract class Entity implements IUpdate, IDraw, ICollide {
 	protected static final Globals GLOBALS = Globals.getInstance();
 	protected static final Textures TEXTURES = Textures.getInstance();
 	protected static final Sounds SOUNDS = Sounds.getInstance();
-	protected static final TheGrid THE_GRID = GLOBALS.getTheGrid();
 	
 	protected int numContacts = 0;
 	protected String id;
@@ -36,14 +35,18 @@ public abstract class Entity implements IUpdate, IDraw, ICollide {
 	protected Room room;	
 	protected Vector2 leftTop = new Vector2();
 	
+	public static TheGrid getTheGrid() {
+		return GLOBALS.getTheGrid();
+	}
+	
 	public static Player getPlayer() {
-		return THE_GRID.getPlayer();
+		return GLOBALS.getTheGrid().getPlayer();
 	}
 	
 	public static World getWorld() {
-		return THE_GRID.getWorld();
+		return GLOBALS.getTheGrid().getWorld();
 	}
-	
+
 	protected Entity(Room room) {
 		this.room = room;
 	}
@@ -56,7 +59,7 @@ public abstract class Entity implements IUpdate, IDraw, ICollide {
 		sprite.setRotation(MathUtils.radiansToDegrees * body.getAngle());
 
 		if(body.getType() != BodyType.StaticBody) {
-			Room currRoom = THE_GRID.getRoomAt(getCenterX(), getCenterY());
+			Room currRoom = Entity.getTheGrid().getRoomAt(getCenterX(), getCenterY());
 			if(currRoom != null && currRoom != room) {
 				setRoom(currRoom);
 			}

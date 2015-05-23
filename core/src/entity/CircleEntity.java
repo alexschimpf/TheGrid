@@ -14,6 +14,8 @@ import core.Room;
 
 public class CircleEntity extends Entity {
 
+	public static final String TYPE = "circle";
+	
 	protected boolean removeOnContact = false;
 	
 	protected CircleEntity(Room room, String textureKey, EntityBodyDef bodyDef) {
@@ -43,7 +45,7 @@ public class CircleEntity extends Entity {
 	
 	@Override
 	public String getType() {
-		return "circle";
+		return TYPE;
 	}
 	
 	@Override

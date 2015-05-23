@@ -7,7 +7,7 @@ import misc.BodyData;
 import misc.Globals;
 import misc.IDraw;
 import misc.IUpdate;
-import misc.TheGridFileParser;
+import misc.GridBuilder;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -93,8 +93,8 @@ public final class TheGrid implements IUpdate, IDraw {
 	}
 	
 	public void build() {
-		TheGridFileParser parser = new TheGridFileParser(this);
-		parser.parseFile("the_grid.xml");
+		GridBuilder builder = new GridBuilder(this);
+		builder.buildFromFile("the_grid.xml");
 		
 		for(Room room : getRooms()) {
 			room.createBorderSprites();

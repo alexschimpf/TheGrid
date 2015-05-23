@@ -10,6 +10,8 @@ import core.Room;
 
 public class MovingRectangleEntity extends RectangleEntity {
 
+	public static final String TYPE = "moving_rectangle";
+	
 	protected Vector2 startPos;
 	protected Vector2 endPos;
 	protected Vector2 startVelocity;
@@ -70,7 +72,7 @@ public class MovingRectangleEntity extends RectangleEntity {
 	
 	@Override
 	public String getType() {
-		return "moving_rectangle";
+		return TYPE;
 	}
 
 	protected void checkPosition() {

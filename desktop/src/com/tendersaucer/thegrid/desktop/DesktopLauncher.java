@@ -19,7 +19,7 @@ public class DesktopLauncher {
 			config.fullscreen = false;
 			Settings settings = new Settings();
 			settings.duplicatePadding = true;
-			TexturePacker.process(settings, "/Users/schimpf1/Desktop/The Grid/textures", "../android/assets", "game");
+			TexturePacker.process(settings, "/Users/schimpf1/Desktop/The Grid/textures", "/Users/schimpf1/Desktop/libgdx/TheGrid/android/assets", "game");		
 		}
 		
 		new LwjglApplication(new TheGame(), config);

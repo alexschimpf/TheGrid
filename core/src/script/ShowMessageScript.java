@@ -8,6 +8,8 @@ import core.Room;
 
 public class ShowMessageScript extends Script {
 
+	public static final String TYPE = "show_message";
+	
 	protected String message;
 	protected BitmapFont font;
 	protected boolean started = false;
@@ -40,6 +42,11 @@ public class ShowMessageScript extends Script {
 //		}
 		
 		return super.update();
+	}
+	
+	@Override
+	public String getType() {
+		return TYPE;
 	}
 	
 	@Override

@@ -13,6 +13,8 @@ import core.Room;
 
 public class CircleCreatorEntity extends MovingRectangleEntity {
 
+	public static final String TYPE = "circle_creator";
+	
 	private Animation animation;
 	
 	protected CircleCreatorEntity(Room room, String textureKey, EntityBodyDef bodyDef, Vector2 startPos, Vector2 endPos,
@@ -42,7 +44,7 @@ public class CircleCreatorEntity extends MovingRectangleEntity {
 	
 	@Override
 	public String getType() {
-		return "circle_creator";
+		return TYPE;
 	}
 	
 	@Override

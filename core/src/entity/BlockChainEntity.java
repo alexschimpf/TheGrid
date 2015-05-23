@@ -16,6 +16,8 @@ import core.Room;
 
 public class BlockChainEntity extends RectangleEntity {
 
+	public static final String TYPE = "block_chain";
+	
 	private static final float ACTIVATED_DURATION = 880; //780;
 
 	private long activationStartTime = 0;
@@ -84,7 +86,7 @@ public class BlockChainEntity extends RectangleEntity {
 	
 	@Override
 	public String getType() {
-		return "block_chain";
+		return TYPE;
 	}
 
 	@Override

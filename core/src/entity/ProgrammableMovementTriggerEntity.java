@@ -10,6 +10,8 @@ import core.Room;
 
 public class ProgrammableMovementTriggerEntity extends RectangleEntity {
 
+	public static final String TYPE = "programmable_movement_trigger";
+	
 	private Animation animation;
 	
 	protected ProgrammableMovementTriggerEntity(Room room, String textureKey, EntityBodyDef bodyDef) {
@@ -29,7 +31,7 @@ public class ProgrammableMovementTriggerEntity extends RectangleEntity {
 	
 	@Override
 	public String getType() {
-		return "programmable_movement_trigger";
+		return TYPE;
 	}
 	
 	@Override

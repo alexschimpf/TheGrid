@@ -12,6 +12,8 @@ import core.Room;
 
 public class RectangleEntity extends Entity {
 
+	public static final String TYPE = "rectangle";
+	
 	protected RectangleEntity(Room room, String textureKey, EntityBodyDef bodyDef) {
 		super(room);
 		
@@ -55,7 +57,7 @@ public class RectangleEntity extends Entity {
 	
 	@Override
 	public String getType() {
-		return "rectangle";
+		return TYPE;
 	}
 	
 	public void addFrictionTop(float friction) {        

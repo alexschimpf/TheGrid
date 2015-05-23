@@ -10,6 +10,8 @@ import core.Room;
 
 public class TriggeredMovingRectangleEntity extends MovingRectangleEntity implements IBlockChainDone {
 
+	public static final String TYPE = "triggered_moving_rectangle";
+	
 	protected TriggeredMovingRectangleEntity(Room room, String textureKey, EntityBodyDef bodyDef, Vector2 startPos, 
                                 Vector2 endPos, Vector2 startVelocity, Vector2 endVelocity) {
 		super(room, textureKey, bodyDef, startPos, endPos, startVelocity, endVelocity);
@@ -38,7 +40,7 @@ public class TriggeredMovingRectangleEntity extends MovingRectangleEntity implem
     
     @Override
     public String getType() {
-    	return "triggered_moving_rectangle";
+    	return TYPE;
     }
 	
 	@Override

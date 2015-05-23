@@ -125,7 +125,7 @@ public final class PlayerShot extends RectangleEntity {
 	public void shoot() {
 		setBodyData();	
 		
-		THE_GRID.addGlobalEntity(this);
+		Entity.getTheGrid().addGlobalEntity(this);
 		
 		float vy = player.getLinearVelocity().y * 0.75f;
 		float vx = PlayerShot.SPEED * 1.25f;
@@ -148,7 +148,7 @@ public final class PlayerShot extends RectangleEntity {
 	public void shoot(float vx, float vy) {
 		setBodyData();
 		
-		THE_GRID.addGlobalEntity(this);
+		Entity.getTheGrid().addGlobalEntity(this);
 		
 		setLinearVelocity(vx, vy);
 	}

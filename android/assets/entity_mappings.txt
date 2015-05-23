@@ -1,0 +1,17 @@
+player_drop,entity.PlayerDropEntity
+programmable_movement_trigger,entity.ProgrammableMovementTriggerEntity
+gravity_block,entity.GravityBlockEntity
+transport,entity.TransportEntity
+block_chain,entity.BlockChainEntity
+programmable_movement,entity.ProgrammableMovementEntity
+disappearing_rectangle,entity.DisappearingRectangleEntity
+circle_creator,entity.CircleCreatorEntity
+polygon,entity.PolygonEntity
+visible_touched,entity.VisibleTouchedEntity
+triggered_moving_rectangle,entity.TriggeredMovingRectangleEntity
+moving_rectangle,entity.MovingRectangleEntity
+rectangle,entity.RectangleEntity
+breakable,entity.BreakableEntity
+circle,entity.CircleEntity
+portal,entity.PortalEntity
+sensor,entity.sensor.SensorEntity

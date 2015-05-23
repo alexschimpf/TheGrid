@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import core.Room;
+import entity.Entity;
 import entity.RectangleEntity;
 
 public final class Player extends RectangleEntity {
@@ -80,7 +81,7 @@ public final class Player extends RectangleEntity {
 			sprite = blinkAnimation.getSprite();
 		}
 		
-		Room currRoom = THE_GRID.getRoomAt(getCenterX(), getCenterY());
+		Room currRoom = Entity.getTheGrid().getRoomAt(getCenterX(), getCenterY());
 		if(room != currRoom) {
 			if(room != null) {
 				//room.setAwake(false);

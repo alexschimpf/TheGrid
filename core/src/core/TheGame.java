@@ -1,5 +1,6 @@
 package core;
 
+import misc.GlobalIdMapper;
 import screen.GameScreen;
 
 import com.badlogic.gdx.Game;
@@ -13,6 +14,10 @@ public final class TheGame extends Game {
 
 	@Override
 	public void create() {
+		if(DEBUG) {
+			GlobalIdMapper.createGlobalIdMappings();
+		}
+		
 		batch = new SpriteBatch();
 		setScreen(new GameScreen(this));
 	}

@@ -10,6 +10,8 @@ import core.Room;
 
 public class VisibleTouchedEntity extends RectangleEntity {
 
+	public static final String TYPE = "visible_touched";
+	
 	protected VisibleTouchedEntity(Room room, String textureKey, EntityBodyDef bodyDef) {
 		super(room, textureKey, bodyDef);
 		
@@ -31,7 +33,7 @@ public class VisibleTouchedEntity extends RectangleEntity {
 	
 	@Override
 	public String getType() {
-		return "visible_touched";
+		return TYPE;
 	}
 	
 	@Override

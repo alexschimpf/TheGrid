@@ -2,6 +2,7 @@ package entity;
 
 import misc.BodyData;
 import misc.Globals;
+import misc.ICollide;
 import misc.IDraw;
 import misc.IUpdate;
 import assets.Sounds;

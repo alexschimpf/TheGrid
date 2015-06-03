@@ -7,8 +7,7 @@ programmable_movement,entity.ProgrammableMovementEntity
 disappearing_rectangle,entity.DisappearingRectangleEntity
 circle_creator,entity.CircleCreatorEntity
 polygon,entity.PolygonEntity
-visible_touched,entity.VisibleTouchedEntity
-triggered_moving_rectangle,entity.TriggeredMovingRectangleEntity
+visible_touched,entity.VisibleOnTouchEntity
 moving_rectangle,entity.MovingRectangleEntity
 rectangle,entity.RectangleEntity
 breakable,entity.BreakableEntity

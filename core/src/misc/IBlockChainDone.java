@@ -1,4 +1,4 @@
-package entity;
+package misc;
 
 public interface IBlockChainDone {
 

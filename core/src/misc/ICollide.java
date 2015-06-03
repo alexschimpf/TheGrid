@@ -1,4 +1,6 @@
-package entity;
+package misc;
+
+import entity.Entity;
 
 public interface ICollide {
 

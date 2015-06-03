@@ -8,11 +8,11 @@ import com.badlogic.gdx.utils.XmlReader.Element;
 
 import core.Room;
 
-public class VisibleTouchedEntity extends RectangleEntity {
+public class VisibleOnTouchEntity extends RectangleEntity {
 
 	public static final String TYPE = "visible_touched";
 	
-	protected VisibleTouchedEntity(Room room, String textureKey, EntityBodyDef bodyDef) {
+	protected VisibleOnTouchEntity(Room room, String textureKey, EntityBodyDef bodyDef) {
 		super(room, textureKey, bodyDef);
 		
 		sprite.setAlpha(0);
@@ -24,7 +24,7 @@ public class VisibleTouchedEntity extends RectangleEntity {
 		float width = custom.getFloat("width_scale", 1) * Room.SQUARE_SIZE;
 		float height = custom.getFloat("height_scale", 1) * Room.SQUARE_SIZE;
 		EntityBodyDef bodyDef = new EntityBodyDef(pos, new Vector2(width, height), BodyType.StaticBody);
-		VisibleTouchedEntity entity = new VisibleTouchedEntity(room, textureKey, bodyDef);
+		VisibleOnTouchEntity entity = new VisibleOnTouchEntity(room, textureKey, bodyDef);
 		entity.setId(id);
 		entity.setBodyData();
 		

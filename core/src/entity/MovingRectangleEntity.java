@@ -1,6 +1,7 @@
 package entity;
 
 import misc.EntityBodyDef;
+import misc.IBlockChainDone;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -9,7 +10,7 @@ import com.badlogic.gdx.utils.XmlReader.Element;
 
 import core.Room;
 
-public class MovingRectangleEntity extends RectangleEntity {
+public class MovingRectangleEntity extends RectangleEntity implements IBlockChainDone {
 
 	public static final String TYPE = "moving_rectangle";
 	
@@ -18,6 +19,7 @@ public class MovingRectangleEntity extends RectangleEntity {
 	protected Vector2 startVelocity;
 	protected Vector2 endVelocity;
 	protected boolean fromStart = true;
+	protected boolean started = false;
 	
 	protected MovingRectangleEntity(Room room, String textureKey, EntityBodyDef bodyDef, Vector2 startPos, 
                                     Vector2 endPos, Vector2 startVelocity, Vector2 endVelocity) {
@@ -35,6 +37,7 @@ public class MovingRectangleEntity extends RectangleEntity {
 		
 		float width = custom.getFloat("width_scale", 1) * Room.SQUARE_SIZE;
 		float height = custom.getFloat("height_scale", 1) * Room.SQUARE_SIZE;
+		boolean startOnCreate = custom.getBoolean("start_on_create", true);
 		EntityBodyDef bodyDef = new EntityBodyDef(pos, new Vector2(width, height), BodyType.KinematicBody);
 					
 		Vector2 startPos = extractPos(room, custom, "start_pos");
@@ -42,10 +45,15 @@ public class MovingRectangleEntity extends RectangleEntity {
 		Vector2 startVelocity = extractVelocity(custom, "start_velocity");
 		Vector2 endVelocity = extractVelocity(custom, "end_velocity");
 		
-		MovingRectangleEntity entity = new MovingRectangleEntity(room, textureKey, bodyDef, startPos, endPos, startVelocity, endVelocity);
+		MovingRectangleEntity entity = new MovingRectangleEntity(room, textureKey, bodyDef, startPos, endPos, startVelocity, 
+				                                                 endVelocity);
 		entity.setId(id);
 		entity.setBodyData();
-		entity.getBody().setLinearVelocity(startVelocity);
+
+		if(startOnCreate) {
+			entity.getBody().setLinearVelocity(startVelocity);
+			entity.start();
+		}
 		
 		return entity;
 	}
@@ -66,6 +74,10 @@ public class MovingRectangleEntity extends RectangleEntity {
 	
 	@Override
 	public boolean update() {
+		if(!started) {
+			return false;
+		}
+		
 		checkPosition();
 		
 		return super.update();
@@ -79,6 +91,17 @@ public class MovingRectangleEntity extends RectangleEntity {
 	@Override
 	public boolean hasRandomColor() {
 		return true;
+	}
+
+	@Override
+	public void onChainDone() {
+		fromStart = true;
+		body.setLinearVelocity(startVelocity);
+		start();
+	}
+	
+	public void start() {
+		started = true;
 	}
 
 	protected void checkPosition() {

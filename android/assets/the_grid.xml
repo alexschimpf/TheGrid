@@ -394,9 +394,10 @@
 		                </state_map>
 		            </custom>
 		        </entity>
-		        <entity type="triggered_moving_rectangle" id="9" row="0" col="7">
+		        <entity type="moving_rectangle" id="9" row="0" col="7">
 		       	    <custom>
 		                <texture_key>block</texture_key>
+		                <start_on_create>false</start_on_create>
 		                <start_pos row="10" col="7" />
 		                <start_velocity x="0" y="8" />
 		                <end_pos row="1" col="7" />

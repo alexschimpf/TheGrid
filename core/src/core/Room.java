@@ -182,7 +182,7 @@ public class Room implements IUpdate, IDraw {
 		}
 		
 		Player player = THE_GRID.getPlayer();
-		if(!ignoreTypes.contains(player.getType(), false) && !ignoreEntity.equals(player)) {
+		if(!ignoreTypes.contains(player.getType(), false) && (ignoreEntity == null || !ignoreEntity.equals(player))) {
 			Rectangle checkRect = new Rectangle(leftTop.x, leftTop.y, width, height);
 			Rectangle entityRect = new Rectangle(player.getLeft(), player.getTop(), 
 					                             player.getWidth(), player.getHeight());

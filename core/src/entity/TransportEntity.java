@@ -55,4 +55,9 @@ public class TransportEntity extends RectangleEntity {
 			});	
 		}
 	}
+	
+	@Override
+	protected boolean hasRandomColor() {
+		return true;
+	}
 }

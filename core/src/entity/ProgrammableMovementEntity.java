@@ -50,7 +50,7 @@ public class ProgrammableMovementEntity extends RectangleEntity {
     public String getType() {
     	return TYPE;
     }
-    
+
     @Override
 	public void onBeginContact(Entity entity) {
 		super.onBeginContact(entity);

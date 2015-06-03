@@ -47,6 +47,10 @@ public final class Textures {
 		createTextureRegion("grid_top_right", "gtr");
 		createTextureRegion("grid_bottom_left", "gbl");
 		createTextureRegion("grid_bottom_right", "gbr");
+		createTextureRegion("grid_top_rounded", "gtround");
+		createTextureRegion("grid_bottom_rounded", "gbround");
+		createTextureRegion("grid_left_rounded", "glround");
+		createTextureRegion("grid_right_rounded", "grround");
 
 		// Indexed
 		createTextureRegions("block", "block");
@@ -123,7 +127,7 @@ public final class Textures {
 		}
 		
 		Sprite sprite = texture != null ? new Sprite(texture) : new Sprite();
-		sprite.setFlip(flipHor, flipVert);		
+		//sprite.setFlip(flipHor, flipVert);		
 		sprite.setColor(color);
 		
 		return sprite;
@@ -149,12 +153,17 @@ public final class Textures {
 	
 	private void createTextureRegions(String filename, String key) {
 		Array<AtlasRegion> regions = atlas.findRegions(filename);
+		for(AtlasRegion region : regions) {
+			region.flip(false, true);
+		}
+		
 		textureListMap.put(key, regions);
 		keyToAtlasFileMap.put(key, filename);
 	}
 	
 	private void createTextureRegion(String filename, String key) {
 		AtlasRegion region = atlas.findRegion(filename);
+		region.flip(false, true);
 		textureMap.put(key,  region);
 		keyToAtlasFileMap.put(key, filename);
 	}

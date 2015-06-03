@@ -41,58 +41,46 @@ public final class GlobalIdMapper {
 	}
 	
 	private static void writeEntityMappings() {
-		try {
-			PrintWriter writer = new PrintWriter(OUTPUT_DIR + ENTITY_FILE, "UTF-8");
-			for(Entry<String, String> entry : ENTITY_TYPE_CLASS_MAP.entrySet()) {
-				String type = entry.getKey();
-				String className = entry.getValue();
-				writer.println(type + "," + "entity." + className);
-			}
-			
-			writer.println("sensor,entity.sensor.SensorEntity");
-			
-			writer.close();
-		} catch(Exception e) {
-			Gdx.app.error("tendersaucer", "writeEntityMappings", e);
-		}
+		writeMappings(true);
 	}
 	
 	private static void writeScriptMappings() {
-		try {
-			PrintWriter writer = new PrintWriter(OUTPUT_DIR + SCRIPT_FILE, "UTF-8");
-			for(Entry<String, String> entry : SCRIPT_TYPE_CLASS_MAP.entrySet()) {
-				String type = entry.getKey();
-				String className = entry.getValue();
-				writer.println(type + "," + "script." + className);
-			}
-			
-			writer.close();
-		} catch(Exception e) {
-			Gdx.app.error("tendersaucer", "writeScriptMappings", e);
-		}
+		writeMappings(false);
 	}
 	
 	private static void createEntityMappings() {
-		File dir = new File(SOURCE_ENTITY_DIR);
-		for(final File file : dir.listFiles()) {	
-	        if(file.isDirectory()) {
-	        	continue;
-	        }
-	        
-            String fileName = file.getName();
-            if(!isFileValid(fileName)) {
-            	System.out.println("SKIPPING " + fileName + "...");
-            	continue;
-            }
-            
-            String className = fileName.replace(".java", "");
-            String type = getEntityTypeFromClassName(className);
-			ENTITY_TYPE_CLASS_MAP.put(type, className);
-	    }
+		createMappings(true);
 	}
 	
 	private static void createScriptMappings() {
-		File dir = new File(SOURCE_SCRIPT_DIR);
+		createMappings(false);
+	}
+	
+	private static void writeMappings(boolean entity) {
+		try {
+			String path = OUTPUT_DIR + (entity ? ENTITY_FILE : SCRIPT_FILE);
+			HashMap<String, String> map = entity ? ENTITY_TYPE_CLASS_MAP : SCRIPT_TYPE_CLASS_MAP;
+			PrintWriter writer = new PrintWriter(path, "UTF-8");
+			for(Entry<String, String> entry : map.entrySet()) {
+				String type = entry.getKey();
+				String className = entry.getValue();
+				String prefix = entity ? "entity." : "script.";
+				writer.println(type + "," + prefix + className);
+			}
+			
+			if(entity) {
+				writer.println("sensor,entity.sensor.SensorEntity");
+			}		
+			
+			writer.close();
+		} catch(Exception e) {
+			Gdx.app.error("tendersaucer", "writeMappings", e);
+		}
+	}
+	
+	private static void createMappings(boolean entity) {
+		String dirPath = entity ? SOURCE_ENTITY_DIR : SOURCE_SCRIPT_DIR;
+		File dir = new File(dirPath);
 		for(final File file : dir.listFiles()) {
 	        if(file.isDirectory()) {
 	        	continue;
@@ -105,8 +93,13 @@ public final class GlobalIdMapper {
             }
 
             String className = fileName.replace(".java", "");
-            String type = getScriptTypeFromClassName(className);
-			SCRIPT_TYPE_CLASS_MAP.put(type, className);
+            if(entity) {
+            	String type = getEntityTypeFromClassName(className);
+            	ENTITY_TYPE_CLASS_MAP.put(type, className);
+            } else {
+            	String type = getScriptTypeFromClassName(className);
+            	SCRIPT_TYPE_CLASS_MAP.put(type, className);
+            }
 		}
 	}
 	

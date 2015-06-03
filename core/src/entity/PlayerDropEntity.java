@@ -36,11 +36,6 @@ public class PlayerDropEntity extends RectangleEntity {
 	}
 	
 	@Override
-	protected boolean isTintable() {
-		return false;
-	}
-	
-	@Override
 	public void onBeginContact(Entity entity) {
 		if(isShot(entity)) {
 			SOUNDS.playSound("transport");
@@ -52,7 +47,7 @@ public class PlayerDropEntity extends RectangleEntity {
 		     		float newTop = roomTop + Room.SQUARE_SIZE;
 		     		Vector2 worldPos = new Vector2(player.getLeft(), newTop);
 		     		
-		     		while(room.entityExistsInArea(worldPos, player.getWidth() * 0.75f, player.getHeight(), null)) {
+		     		while(room.entityExistsInArea(worldPos, player.getWidth() * 0.75f, player.getHeight())) {
 		     			worldPos.y += Room.SQUARE_SIZE;
 		     		}
 		     		
@@ -60,7 +55,7 @@ public class PlayerDropEntity extends RectangleEntity {
 		     		player.setPosition(worldPos.x, worldPos.y);
 		     		player.getBody().setLinearVelocity(playerVelocity.x, playerVelocity.y + 0.01f);
 		         }
-		     });
+		     }); 
 		}
 	}
 }

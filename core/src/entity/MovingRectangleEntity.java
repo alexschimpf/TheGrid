@@ -4,6 +4,7 @@ import misc.EntityBodyDef;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.XmlReader.Element;
 
 import core.Room;
@@ -73,6 +74,11 @@ public class MovingRectangleEntity extends RectangleEntity {
 	@Override
 	public String getType() {
 		return TYPE;
+	}
+	
+	@Override
+	public boolean hasRandomColor() {
+		return true;
 	}
 
 	protected void checkPosition() {

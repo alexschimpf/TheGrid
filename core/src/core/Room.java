@@ -1,6 +1,7 @@
 package core;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -35,6 +36,7 @@ public class Room implements IUpdate, IDraw {
 	protected ConcurrentHashMap<String, Script> scriptMap = new ConcurrentHashMap<String, Script>();
 	protected ConcurrentHashMap<String, Entity> entityMap = new ConcurrentHashMap<String, Entity>();
 	protected Array<Vector2> openings = new Array<Vector2>();
+	protected HashMap<Vector2, String> borderOverrideTextureMap = new HashMap<Vector2, String>();
 	protected Array<Sprite> borderSprites = new Array<Sprite>();
 	
 	public Room(Vector2 gridPos) {
@@ -147,13 +149,31 @@ public class Room implements IUpdate, IDraw {
 		createBorderCorners(gridPos);
 	}
 	
-	public boolean entityExistsInArea(Vector2 topLeft, float width, float height, Entity ignoreEntity) {
+	public boolean entityExistsInArea(Vector2 leftTop, float width, float height) {
+		return entityExistsInArea(leftTop, width, height, new Array<String>(), null);
+	}
+	
+	public boolean entityExistsInArea(Vector2 leftTop, float width, float height, Entity ignoreEntity) {
+		return entityExistsInArea(leftTop, width, height, new Array<String>(), ignoreEntity);
+	}
+	
+	public boolean entityExistsInArea(Vector2 leftTop, float width, float height, String ignoreType) {
+		return entityExistsInArea(leftTop, width, height, ignoreType, null);
+	}
+	
+	public boolean entityExistsInArea(Vector2 leftTop, float width, float height, String ignoreType, Entity ignoreEntity) {
+		Array<String> ignoreTypeArr = new Array<String>();
+		ignoreTypeArr.add(ignoreType);
+		return entityExistsInArea(leftTop, width, height, ignoreTypeArr, null);
+	}
+
+	public boolean entityExistsInArea(Vector2 leftTop, float width, float height, Array<String> ignoreTypes, Entity ignoreEntity) {
 		for(Entity entity : getEntities()) {
-			if(ignoreEntity != null && entity.equals(ignoreEntity)) {
+			if(ignoreTypes.contains(entity.getType(), false) || entity.equals(ignoreEntity)) {
 				continue;
 			}
 			
-			Rectangle checkRect = new Rectangle(topLeft.x, topLeft.y, width, height);
+			Rectangle checkRect = new Rectangle(leftTop.x, leftTop.y, width, height);
 			Rectangle entityRect = new Rectangle(entity.getLeft(), entity.getTop(), 
 					                             entity.getWidth(), entity.getHeight());
 			if(checkRect.overlaps(entityRect)) {
@@ -162,8 +182,8 @@ public class Room implements IUpdate, IDraw {
 		}
 		
 		Player player = THE_GRID.getPlayer();
-		if(ignoreEntity != null && !ignoreEntity.equals(player)) {
-			Rectangle checkRect = new Rectangle(topLeft.x, topLeft.y, width, height);
+		if(!ignoreTypes.contains(player.getType(), false) && !ignoreEntity.equals(player)) {
+			Rectangle checkRect = new Rectangle(leftTop.x, leftTop.y, width, height);
 			Rectangle entityRect = new Rectangle(player.getLeft(), player.getTop(), 
 					                             player.getWidth(), player.getHeight());
 			if(checkRect.overlaps(entityRect)) {
@@ -188,6 +208,15 @@ public class Room implements IUpdate, IDraw {
 	
 	public void setOpenings(Array<Vector2> openings) {
 		this.openings = openings;
+	}
+	
+	public void setBorderOverrides(Array<Array<Object>> borderOverrides) {
+		for(Array<Object> borderOverride : borderOverrides) {
+			int row = (Integer)borderOverride.get(0);
+			int col = (Integer)borderOverride.get(1);
+			String textureKey = (String)borderOverride.get(2);
+			borderOverrideTextureMap.put(new Vector2(row, col), textureKey);
+		}
 	}
 
 	public void addScript(Script script) {
@@ -378,6 +407,10 @@ public class Room implements IUpdate, IDraw {
 			if(pos.y == 0) {
 				textureKey = roomGridPos.y == 0 ? "gev" : "glv";
 			}
+		}
+		
+		if(borderOverrideTextureMap.containsKey(pos)) {
+			textureKey = borderOverrideTextureMap.get(pos);
 		}
 
 		Vector2 WORLDPos = Room.getWorldPosition(this, (int)pos.x, (int)pos.y);

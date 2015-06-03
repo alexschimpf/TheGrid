@@ -152,12 +152,7 @@ public final class PlayerShot extends RectangleEntity {
 		
 		setLinearVelocity(vx, vy);
 	}
-	
-	@Override
-	protected boolean isTintable() {
-		return false;
-	}
-	
+
 	@Override
 	protected FixtureDef createFixtureDef() {
 		PolygonShape shape = new PolygonShape();

@@ -90,11 +90,11 @@ public final class GameScreen implements Screen {
 	
 	@Override
 	public void show() {
-		music.play();
-		music.setVolume(0.5f);
-		music.setLooping(true);
-		music.setPosition(0.5f);
-		
+//		music.play();
+//		music.setVolume(0.5f);
+//		music.setLooping(true);
+//		music.setPosition(0.5f);
+//		
 		// I don't know why this helps, but it does.
 		if(!TheGame.DEBUG) {
 			Gdx.graphics.setDisplayMode(Gdx.graphics.getDesktopDisplayMode().width, Gdx.graphics.getDesktopDisplayMode().height, true);	
@@ -191,7 +191,9 @@ public final class GameScreen implements Screen {
 			theGrid.draw(batch);		
 		} batch.end();
 		
-		//debugRenderer.render(theGrid.getWorld(), debugMatrix);
+		if(TheGame.DEBUG) {
+			debugRenderer.render(theGrid.getWorld(), debugMatrix);
+		}
 
 		stage.draw();
 	}
@@ -200,8 +202,8 @@ public final class GameScreen implements Screen {
 		background = new ParallaxBackground();
 		Textures textures = Textures.getInstance();
 		TextureRegion texture = textures.getTextureRegion("background");
-		TextureRegionParallaxLayer layer = 
-				new TextureRegionParallaxLayer(texture, Globals.VIEWPORT_WIDTH * 2, new Vector2(0.1f, 0), WH.width);
+		TextureRegionParallaxLayer layer = new TextureRegionParallaxLayer(texture, Globals.VIEWPORT_WIDTH * 2, 
+				                                                          new Vector2(0.1f, 0), WH.width);
 		layer.setPadBottom(-0.6f * Globals.VIEWPORT_WIDTH * 2);
 		layer.setPadLeft(-0.6f * Globals.VIEWPORT_WIDTH * 2);
 		layer.setTileModeX(TileMode.repeat);

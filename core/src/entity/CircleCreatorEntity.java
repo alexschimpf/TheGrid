@@ -48,11 +48,6 @@ public class CircleCreatorEntity extends MovingRectangleEntity {
 	}
 	
 	@Override
-	protected boolean isTintable() {
-		return false;
-	}
-	
-	@Override
 	public boolean update() {
 		animation.update();
 		sprite = animation.getSprite();

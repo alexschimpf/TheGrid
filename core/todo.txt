@@ -1,2 +1,55 @@
-1. Better menu
-2. Make non-regular block sprites fit new style
+====================================================
+====================================================
+[Fundamental Idea]
+====================================================
+====================================================
+This game is a 2D platformer puzzle game. But it is different in that the mechanics are not very obvious 
+and need to be learned as well. Typically, the mechanics are simple and obvious (or just totally explained), 
+and it's just about applying them correctly. This game is about figuring everything out for yourself.
+The rooms are intentionally small enough to where you can "feel" them out and learn how they work quickly.
+In many games, the mechanics are familiar to the user. In this game, the mechanics are all arbitrary
+and so need to be interacted with in order to understand. By allowing for unfamiliar mechanics, there is 
+an infinite amount of room for creativity and expansion. But the game is also about timing and precision,
+so just "solving the puzzle" is not enough. You have to be able to execute efficiently, too.
+
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+
+- Tutorial
+	- Player starts in a small room with nothing.
+	- Player is told to do certain things to help him learn the controls.
+		- "Push A"... "What'd that do?"
+		- "Hold A"... "You're learning"
+		- "Push SPACE"... "Wow, you're powerful"
+		- "Hold SPACE"... "Impressive"
+	- When all are completed, a portal appears to bring the player to the first grid.
+- Each room introduces a new entity.
+- Each grid is 4 x 4.
+- Each grid has a totally different looking environment.
+	- This allows for a better sense of completion.
+	- Also adds some diversity in the way things look.
+	- And each grid will be small enough so that performance won't be an issue.
+- Each grid should be somewhat unique (e.g. one may be more dynamic, or one may have "living" entities).
+- Should feel continuous (between grids), not discrete and split up (like angry birds)
+
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+
+- Room needs a more flexible entityExistsInArea function.
+	- Should be able to pass in a list of entity types to consider
+	- Give Entity the same method, that passes itself in as an ignore entity.
+- Need new game title
+- Better menu
+- Keep track of completion through each grid
+- Can go back to any completed room in any world
+- No room should get into a "stuck" state
+	- "Restart room" button?
+	- Rooms need to specify which openings are "enter" and which are "exit"
+- Levels of difficulty
+	- Basically just different sets of property values for each entity
+
+	

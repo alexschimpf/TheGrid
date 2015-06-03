@@ -33,12 +33,7 @@ public class ProgrammableMovementTriggerEntity extends RectangleEntity {
 	public String getType() {
 		return TYPE;
 	}
-	
-	@Override
-	protected boolean isTintable() {
-		return false;
-	}
-	
+
 	@Override
 	public boolean update() {
 		animation.update();

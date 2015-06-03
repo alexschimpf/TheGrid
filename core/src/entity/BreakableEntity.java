@@ -52,11 +52,6 @@ public class BreakableEntity extends RectangleEntity {
 	public String getType() {
 		return TYPE;
 	}
-	
-	@Override
-	public boolean isTintable() {
-		return false;
-	}
 
 	@Override
 	public void onBeginContact(Entity entity) {

@@ -8,6 +8,7 @@ import assets.Sounds;
 import assets.Textures;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -192,13 +193,21 @@ public abstract class Entity implements IUpdate, IDraw, ICollide {
 		return id;
 	}
 	
+	public void setColor(Color color) {
+		sprite.setColor(color);
+	}
+	
+	public Color getColor() {
+		return sprite.getColor();
+	}
+	
 	protected abstract FixtureDef createFixtureDef();
 	
 	protected void createSprite(String textureKey, float x, float y, float width, float height) {
-		if(isTintable()) {
+		if(hasRandomColor()) {
 			sprite = TEXTURES.getRandomColorSprite(textureKey);
 		} else {
-			sprite = TEXTURES.getSprite(textureKey);
+			sprite = TEXTURES.getSprite(textureKey);		
 		}
 		
 		sprite.setPosition(x, y);
@@ -245,7 +254,7 @@ public abstract class Entity implements IUpdate, IDraw, ICollide {
 		return entity.getType().equals("shot");
 	}
 	
-	protected boolean isTintable() {
-		return true;
+	protected boolean hasRandomColor() {
+		return false;
 	}
 }

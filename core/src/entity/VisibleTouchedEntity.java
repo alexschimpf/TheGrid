@@ -37,6 +37,11 @@ public class VisibleTouchedEntity extends RectangleEntity {
 	}
 	
 	@Override
+	public boolean hasRandomColor() {
+		return true;
+	}
+	
+	@Override
 	public void onBeginContact(Entity entity) {
 		super.onBeginContact(entity);
 		

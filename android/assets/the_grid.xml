@@ -1,38 +1,140 @@
 <the_grid>
     <size num_rows="4" num_cols="4" />
-    <player grid_row="0" grid_col="0" row="3" col="4" />
+    <player grid_row="0" grid_col="3" row="10" col="5" />
     <rooms>
         <!--------------------------------------------------------------------------
         <!-- Room 0, 0
         <!-------------------------------------------------------------------------->
         <room row="0" col="0">
+            <openings>
+                <opening row="11" col="3" />
+                <opening row="10" col="11" />
+            </openings>
+        </room>
+		<!--------------------------------------------------------------------------
+        <!-- Room 0, 1
+        <!-------------------------------------------------------------------------->
+		<room row="0" col="1">
 		    <openings>
-		        <opening row="11" col="6" />
-		    </openings>
-		    <entities>
-		       <entity type="rectangle">
+                <opening row="10" col="0" />
+                <opening row="10" col="11" />
+            </openings>
+		</room>
+		<!--------------------------------------------------------------------------
+        <!-- Room 0, 2
+        <!-------------------------------------------------------------------------->
+		<room row="0" col="2">
+		    <openings>
+                <opening row="1" col="11" />
+                <opening row="10" col="0" />
+            </openings>
+		</room>
+		<!--------------------------------------------------------------------------
+        <!-- Room 0, 3
+        <!-------------------------------------------------------------------------->
+		<room row="0" col="3">
+			<openings>
+                <opening row="1" col="0" />
+            </openings>
+            <border_overrides>
+                <border_override row="11" col="10" texture_key="gc" />
+                <border_override row="10" col="11" texture_key="glv" />
+                <border_override row="6" col="11" texture_key="glv" />
+            </border_overrides>
+            <entities>
+                <entity type="rectangle">
 		           <custom>
 		               <texture_key>block</texture_key>
 		           </custom>
-		           <locations>
-		               <location row="9" col="10" />
-		               <location row="10" col="10" />
-		               <location row="10" col="9" />
-		           </locations>
+		           <locations>		               
+		               <location row="8" col="4" />
+		               <location row="4" col="4" />
+		           </locations>		           
+		       </entity>
+		       <entity type="rectangle" row="10" col="10">
+		           <custom>
+		               <texture_key>gtl</texture_key>
+		           </custom>
+		       </entity>
+		       <entity type="rectangle" row="6" col="10">
+		           <custom>
+		               <texture_key>glround</texture_key>
+		           </custom>
+		       </entity>
+		       <entity type="moving_rectangle" row="2" col="3">
+		           <custom>
+		               <texture_key>block</texture_key>
+		               <start_pos row="2" col="3" />
+		               <start_velocity x="0" y="-14" />
+		               <end_pos row="6" col="3" />
+		               <end_velocity x="0" y="14" />
+		           </custom>
+		        </entity>
+		        <entity type="moving_rectangle" row="2" col="2">
+		           <custom>
+		               <texture_key>block</texture_key>
+		               <start_pos row="2" col="2" />
+		               <start_velocity x="0" y="-15" />
+		               <end_pos row="6" col="2" />
+		               <end_velocity x="0" y="15" />
+		           </custom>
+		        </entity>		
+		       <entity type="breakable" row="5" col="8">
+		           <custom>
+		               <num_shots>1</num_shots>
+		           </custom>
+	       	   </entity>
+	       	   <entity type="breakable" row="3" col="5">
+		           <custom>
+		               <num_shots>2</num_shots>
+		           </custom>
+	       	   </entity>
+            </entities>
+		</room>
+        <!--------------------------------------------------------------------------
+        <!-- Room 1, 0
+        <!-------------------------------------------------------------------------->
+        <room row="1" col="0">
+		    <openings>
+		        <opening row="11" col="6" />
+		        <opening row="0" col="3" />
+		    </openings>
+		    <border_overrides>
+		        <border_override row="11" col="9" texture_key="gc" />
+		        <border_override row="10" col="10" texture_key="gc" />
+		        <border_override row="9" col="11" texture_key="gc" />
+		        <border_override row="11" col="10" texture_key="gc" />
+		        <border_override row="10" col="11" texture_key="gc" />
+		    </border_overrides>
+		    <entities>
+		       <entity type="rectangle" row="9" col="10">
+		           <custom>
+		               <texture_key>gtl</texture_key>
+		           </custom>
+		       </entity>
+		       <entity type="rectangle" row="10" col="10">
+		           <custom>
+		               <texture_key>gc</texture_key>
+		           </custom>
+		       </entity>
+		       <entity type="rectangle" row="10" col="9">
+		           <custom>
+		               <texture_key>gtl</texture_key>
+		           </custom>
 		       </entity>
 		       <entity type="player_drop" row="9" col="9" />
 		       <entity type="breakable" row="11" col="6">
 		           <custom>
 		               <friction_top>true</friction_top>
-		               <break_speed>50</break_speed>
+		               <break_speed>45</break_speed>
 		           </custom>
 		       </entity>
 		    </entities>
-		</room>
+		</room>=
         <!--------------------------------------------------------------------------
-        <!-- Room 0, 1
+        <!-- Room 1, 1
         <!-------------------------------------------------------------------------->
-		<room row="0" col="1">
+		<room row="1" col="1">
 			<openings>
 		        <opening row="11" col="7" />
 		        <opening row="1" col="11" />
@@ -41,9 +143,9 @@
 		        <entity type="moving_rectangle" row="9" col="1">
 		           <custom>
 		               <texture_key>block</texture_key>
-		               <start_pos row="9" col="11" />
+		               <start_pos row="9" col="10" />
 		               <start_velocity x="14" y="0" />
-		               <end_pos row="9" col="1" />
+		               <end_pos row="9" col="2" />
 		               <end_velocity x="-14" y="0" />
 		           </custom>
 		        </entity>	
@@ -52,7 +154,7 @@
 		               <texture_key>block</texture_key>
 		               <start_pos row="7" col="9" />
 		               <start_velocity x="16" y="0" />
-		               <end_pos row="7" col="1" />
+		               <end_pos row="7" col="2" />
 		               <end_velocity x="-16" y="0" />
 		           </custom>
 		        </entity>	
@@ -68,18 +170,18 @@
 		        <entity type="moving_rectangle" row="2" col="10">
 		           <custom>
 		               <texture_key>block</texture_key>
-		               <start_pos row="4" col="10" />
+		               <start_pos row="4" col="9" />
 		               <start_velocity x="0" y="8" />
-		               <end_pos row="2" col="10" />
+		               <end_pos row="2" col="9" />
 		               <end_velocity x="0" y="-8" />
 		           </custom>
 		        </entity>
 		    </entities>
 		</room>
 		<!--------------------------------------------------------------------------
-        <!-- Room 0, 2
+        <!-- Room 1, 2
         <!-------------------------------------------------------------------------->
-		<room row="0" col="2">
+		<room row="1" col="2">
 			<openings>
 		        <opening row="1" col="0" />
 		        <opening row="11" col="10" />
@@ -132,18 +234,23 @@
 		    </entities>
 		</room>
 		<!--------------------------------------------------------------------------
-        <!-- Room 0, 3
+        <!-- Room 1, 3
         <!-------------------------------------------------------------------------->
-		<room row="0" col="3">
+		<room row="1" col="3">
 		</room>
         <!--------------------------------------------------------------------------
-        <!-- Room 1, 0
+        <!-- Room 2, 0
         <!-------------------------------------------------------------------------->
-		<room row="1" col="0">
+		<room row="2" col="0">
 		    <openings>
 		        <opening row="0" col="6" />
 		        <opening row="1" col="11" />
 		    </openings>
+		    <border_overrides>
+		        <border_override row="0" col="7" texture_key="grv" />
+		        <border_override row="5" col="0" texture_key="grv" />
+		        <border_override row="7" col="0" texture_key="grv" />
+		    </border_overrides>
 		    <chain_pads>
 		        <chain_pad start_row="0" end_row="3" start_col="7" end_col="7" friction="false" correct="true" />
 		        <chain_pad start_row="0" end_row="3" start_col="8" end_col="8" friction="false" />
@@ -153,18 +260,34 @@
 		        <entity type="player_drop" row="6" col="1" />
 		        <entity type="rectangle">
 		           <custom>
-		               <texture_key>block</texture_key>
+		               <texture_key>grround</texture_key>
 		           </custom>
 		           <locations>
-                       <location row="1" col="7" />
-		               <location row="2" col="7" />
-		               <location row="3" col="7" />
-		               <location row="3" col="8" />
-		               <location row="3" col="9" />
 		               <location row="5" col="1" />
 		               <location row="7" col="1" />
 		           </locations>
-		        </entity>		        
+		        </entity>	
+		       	<entity type="rectangle" row="1" col="7">
+		           <custom>
+		               <texture_key>gev</texture_key>
+		               <height_scale>2</height_scale>
+		           </custom>
+		       </entity> 
+		       <entity type="rectangle" row="3" col="7">
+		           <custom>
+		               <texture_key>gbl</texture_key>
+		           </custom>
+		       </entity>     
+		       <entity type="rectangle" row="3" col="8">
+		           <custom>
+		               <texture_key>geh</texture_key>
+		           </custom>
+		       </entity>  
+		       <entity type="rectangle" row="3" col="9">
+		           <custom>
+		               <texture_key>grround</texture_key>
+		           </custom>
+		       </entity>        
                <entity type="circle" row="10" col="5">
 		           <custom>
 		               <texture_key>ball</texture_key>
@@ -174,9 +297,9 @@
 		    </entities>
 		</room>
         <!--------------------------------------------------------------------------
-        <!-- Room 1, 1
+        <!-- Room 2, 1
         <!-------------------------------------------------------------------------->
-		<room row="1" col="1">
+		<room row="2" col="1">
 		    <openings>
 		        <opening row="0" col="7" />
 		        <opening row="1" col="0" />
@@ -283,13 +406,21 @@
 		    </entities>
 		</room>
 		<!--------------------------------------------------------------------------
-        <!-- Room 1, 2
+        <!-- Room 2, 2
         <!-------------------------------------------------------------------------->
-		<room row="1" col="2">
+		<room row="2" col="2">
 		    <openings>
 		        <opening row="0" col="10" />
 		        <opening row="11" col="5" />
 		    </openings>
+		    <border_overrides>
+		        <border_override row="0" col="9" texture_key="glv" />
+		        <border_override row="0" col="1" texture_key="gc" />
+		        <border_override row="0" col="4" texture_key="gc" />
+		        <border_override row="0" col="6" texture_key="gc" />
+		        <border_override row="1" col="0" texture_key="gc" />
+		        <border_override row="3" col="0" texture_key="gc" />
+		    </border_overrides>
 		    <entities>
  		        <entity type="programmable_movement" row="8" col="4" />
 		        <entity type="programmable_movement" row="3" col="6" />
@@ -303,22 +434,36 @@
 		       </entity>
 		       <entity type="rectangle">
 		           <custom>
-		               <texture_key>block</texture_key>
+		               <texture_key>gev</texture_key>
+		               <height_scale>3</height_scale>
 		           </custom>
 		           <locations>
 		               <location row="1" col="9" />
-		               <location row="2" col="9" />
-		               <location row="3" col="9" />
-		               <location row="4" col="9" />
 		           </locations>
 		       </entity>
 		       <entity type="rectangle">
 		           <custom>
-		               <texture_key>block</texture_key>
+		               <texture_key>gbround</texture_key>
 		           </custom>
 		           <locations>
-		               <location row="1" col="1" />
-		               <location row="3" col="1" />
+		               <location row="4" col="9" />
+		           </locations>
+		       </entity>
+		       <entity type="rectangle" row="3" col="1">
+		           <custom>
+		               <texture_key>grround</texture_key>
+		           </custom>
+		       </entity>
+		       <entity type="rectangle" row="1" col="1">
+		           <custom>
+		               <texture_key>gbr</texture_key>
+		           </custom>
+		       </entity>
+		       <entity type="rectangle">
+		           <custom>
+		               <texture_key>gbround</texture_key>
+		           </custom>
+		           <locations>
 		               <location row="1" col="4" />
 		               <location row="1" col="6" />
 		           </locations>
@@ -337,14 +482,14 @@
 		    </entities>
 		</room>
 		<!--------------------------------------------------------------------------
-        <!-- Room 1, 3
+        <!-- Room 2, 3
         <!-------------------------------------------------------------------------->
-		<room row="1" col="3">
+		<room row="2" col="3">
 		</room>
 		<!--------------------------------------------------------------------------
-        <!-- Room 2, 0
+        <!-- Room 3, 0
         <!-------------------------------------------------------------------------->
-		<room row="2" col="0">
+		<room row="3" col="0">
 		    <openings>
 		        <opening row="1" col="11" />
 		        <opening row="11" col="5" />
@@ -403,13 +548,17 @@
 		    </entities>
 		</room>
 		<!--------------------------------------------------------------------------
-        <!-- Room 2, 1
+        <!-- Room 3, 1
         <!-------------------------------------------------------------------------->
-		<room row="2" col="1">
+		<room row="3" col="1">
 		    <openings>
 		        <opening row="10" col="11" />
 		        <opening row="1" col="0" />
 		    </openings>
+		    <border_overrides>
+		        <border_override row="0" col="3" texture_key="gc" />
+		        <border_override row="2" col="0" texture_key="gbh" />
+		    </border_overrides>
 		    <scripts>
 		        <script type="show_message" id="2,1-s1" />
 		    </scripts>
@@ -419,20 +568,30 @@
 		                <script_id>2,1-s1</script_id>
 		            </custom>
 		        </entity>
-		        <entity type="rectangle">
+		        <entity type="rectangle" row="5" col="5">
 		            <custom>
-		                <width_scale>1</width_scale>
-		                <height_scale>1</height_scale>
-		                <texture_key>block</texture_key>
+		                <texture_key>gbround</texture_key>
 		            </custom>
-		            <locations>
-		                <location row="4" col="9" />
-		                <location row="5" col="5" />
-		                <location row="4" col="5" />
-		                <location row="1" col="3" />
-		                <location row="4" col="4" />
-		                <location row="2" col="1" />
-		            </locations>
+		        </entity>
+		        <entity type="rectangle" row="4" col="5">
+		            <custom>
+		                <texture_key>gtr</texture_key>
+		            </custom>
+		        </entity>
+		        <entity type="rectangle" row="4" col="4">
+		            <custom>
+		                <texture_key>glround</texture_key>
+		            </custom>
+		        </entity>
+		        <entity type="rectangle" row="2" col="1">
+		            <custom>
+		                <texture_key>grround</texture_key>
+		            </custom>
+		        </entity>
+		        <entity type="rectangle" row="1" col="3">
+		            <custom>
+		                <texture_key>gbround</texture_key>
+		            </custom>
 		        </entity>
 		        <entity type="disappearing_rectangle">
 		            <custom>
@@ -464,13 +623,16 @@
 		    </entities>
 		</room>
 		<!--------------------------------------------------------------------------
-        <!-- Room 2, 2
+        <!-- Room 3, 2
         <!-------------------------------------------------------------------------->
-		<room row="2" col="2">
+		<room row="3" col="2">
 		    <openings>
 		        <opening row="0" col="5" />
 		        <opening row="10" col="0" />
 		    </openings>
+		    <border_overrides>
+		        <border_override row="0" col="4" texture_key="glv" />
+		    </border_overrides>
 		    <chain_pads>
  		        <chain_pad start_row="3" end_row="3" start_col="5" end_col="9" friction="false" />
 		        <chain_pad start_row="4" end_row="4" start_col="5" end_col="9" friction="false" />
@@ -485,8 +647,6 @@
 		                <texture_key>block</texture_key>
 		            </custom>
 		            <locations>
-		                <location row="1" col="4" />
-		                <location row="2" col="4" />
 		                <location row="3" col="5" />
 		                <location row="3" col="7" />
 		                <location row="3" col="9" />
@@ -501,6 +661,16 @@
 		                <location row="9" col="7" />
 		                <location row="9" col="9" />
 		            </locations>
+		        </entity>
+		        <entity type="rectangle" row="1" col="4">
+		            <custom>
+		                <texture_key>gev</texture_key>
+		            </custom>
+		        </entity>
+		        <entity type="rectangle" row="2" col="4">
+		            <custom>
+		                <texture_key>gbround</texture_key>
+		            </custom>
 		        </entity>
 		        <entity type="breakable" row="10" col="0">
 		            <custom>
@@ -529,29 +699,6 @@
 		            </locations>
 		        </entity>
 		    </entities>
-		</room>
-		<!--------------------------------------------------------------------------
-        <!-- Room 2, 3
-        <!-------------------------------------------------------------------------->
-		<room row="2" col="3">
-		</room>
-		<!--------------------------------------------------------------------------
-        <!-- Room 3, 0
-        <!-------------------------------------------------------------------------->
-		<room row="3" col="0">
-		    <openings>
-		        <opening row="0" col="5" />
-		    </openings>
-		</room>
-		<!--------------------------------------------------------------------------
-        <!-- Room 3, 1
-        <!-------------------------------------------------------------------------->
-		<room row="3" col="1">
-		</room>
-		<!--------------------------------------------------------------------------
-        <!-- Room 3, 2
-        <!-------------------------------------------------------------------------->
-		<room row="3" col="2">
 		</room>
 		<!--------------------------------------------------------------------------
         <!-- Room 3, 3

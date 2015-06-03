@@ -18,13 +18,12 @@ public class BlockChainEntity extends RectangleEntity {
 
 	public static final String TYPE = "block_chain";
 	
-	private static final float ACTIVATED_DURATION = 880; //780;
+	private static final float ACTIVATED_DURATION = 1000; //880;
 
 	private long activationStartTime = 0;
 	private boolean activated = false;
 	private int state = 0;
 	private String chainStartId;
-	private Color color;
 	protected Animation animation;
 	private HashMap<Integer, String> stateMachine = new HashMap<Integer, String>();
 	
@@ -34,8 +33,6 @@ public class BlockChainEntity extends RectangleEntity {
 		
 		this.chainStartId = chainStartId;
 		this.stateMachine = stateMachine;
-		
-		color = TEXTURES.getRandomSchemeColor();
 	}
 	
 	public static Entity build(String id, Room room, Vector2 pos, Element elem) {
@@ -88,6 +85,11 @@ public class BlockChainEntity extends RectangleEntity {
 	public String getType() {
 		return TYPE;
 	}
+	
+	@Override
+	public boolean hasRandomColor() {
+		return true;
+	}
 
 	@Override
 	public void onBeginContact(Entity entity) {
@@ -137,6 +139,7 @@ public class BlockChainEntity extends RectangleEntity {
 		sprite = TEXTURES.getSprite("block");
 		sprite.setSize(width, height);
 		sprite.setPosition(x, y);
+		sprite.setColor(TEXTURES.getRandomSchemeColor());
 	}
 
 	private void deactivate() {
@@ -158,6 +161,8 @@ public class BlockChainEntity extends RectangleEntity {
 	}
 	
 	private void updateSprite() {
+		Color color = sprite.getColor();
+		
 		if(animation.isPlaying()) {
 			sprite = animation.getSprite();
 		} else if(isChainStart()) {

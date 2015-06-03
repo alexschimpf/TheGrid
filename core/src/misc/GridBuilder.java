@@ -6,6 +6,7 @@ import java.util.HashMap;
 import script.Script;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -26,6 +27,7 @@ public final class GridBuilder {
 	private TheGrid theGrid;
 	private HashMap<String, String> entityTypeClassMap;
 	private HashMap<String, String> scriptTypeClassMap;
+	private Element root;
 	
 	public GridBuilder(TheGrid theGrid) {
 		this.theGrid = theGrid;
@@ -37,7 +39,7 @@ public final class GridBuilder {
 	public void buildFromFile(String filename) {
 		try {
 			XmlReader reader = new XmlReader();
-			Element root = reader.parse(Gdx.files.internal(filename));
+			root = reader.parse(Gdx.files.internal(filename));
 			
 			Element sizeElem = root.getChildByName("size");
 			initGrid(sizeElem);
@@ -76,17 +78,10 @@ public final class GridBuilder {
 		Room room = new Room(roomPos);
 		
 		Element openingsElem = roomElem.getChildByName("openings");
-		Array<Vector2> openingLocations = new Array<Vector2>();		
-		if(openingsElem != null) {
-			Array<Element> openings = openingsElem.getChildrenByName("opening");
-			for(Element openingElem : openings) {
-				int row = openingElem.getInt("row");
-				int col = openingElem.getInt("col");
-				openingLocations.add(new Vector2(row, col));
-			}
-		}	
+		room.setOpenings(getRoomOpenings(openingsElem, null));
 		
-		room.setOpenings(openingLocations);
+		Element borderOverridesElem = roomElem.getChildByName("border_overrides");
+		room.setBorderOverrides(getBorderOverrides(borderOverridesElem));
 		
 		Element scriptsElem = roomElem.getChildByName("scripts");	
 		createScripts(room, scriptsElem);
@@ -99,17 +94,8 @@ public final class GridBuilder {
 		Element entitiesElem = roomElem.getChildByName("entities");
 		createEntities(room, entitiesElem);
 		
-		openingLocations = new Array<Vector2>();		
-		if(openingsElem != null) {
-			Array<Element> openings = openingsElem.getChildrenByName("opening");
-			for(Element openingElem : openings) {
-				int row = openingElem.getInt("row");
-				int col = openingElem.getInt("col");
-				Vector2 location = Room.getGridPosition(room, row, col);
-				openingLocations.add(location);
-			}
-		}	
-		
+		// Need the global coords now.
+		Array<Vector2> openingLocations = getRoomOpenings(openingsElem, room);		
 		createRoomBorder(room, openingLocations);
 	
 		theGrid.addRoom(room);
@@ -126,6 +112,7 @@ public final class GridBuilder {
 			String id = entityElem.get("id", null);			
 			int row = entityElem.getInt("row", -1);
 			int col = entityElem.getInt("col", -1);
+			String colorHex = entityElem.get("color", null);
 			
 			Array<String> ids = new Array<String>();
 			Array<Vector2> positions = new Array<Vector2>();
@@ -167,6 +154,11 @@ public final class GridBuilder {
 					}
 					
 					Entity entity = createEntity(type, currId, room, pos, entityElem);
+					if(colorHex != null) {
+						Color color = Color.valueOf(colorHex);
+						entity.setColor(color);
+					}
+					
 					room.addEntity(entity);
 					
 					i++;
@@ -378,5 +370,43 @@ public final class GridBuilder {
 		borderEntity.setBodyData();
 		borderEntity.addFrictionTop(0.3f);
 		theGrid.addGlobalEntity(borderEntity);
+	}
+	
+	private Array<Vector2> getRoomOpenings(Element openingsElem, Room room) {
+		Array<Vector2> openingLocations = new Array<Vector2>();		
+		if(openingsElem != null) {
+			Array<Element> openings = openingsElem.getChildrenByName("opening");
+			for(Element openingElem : openings) {
+				int row = openingElem.getInt("row");
+				int col = openingElem.getInt("col");
+				
+				if(room == null) {
+					openingLocations.add(new Vector2(row, col));
+				} else {
+					openingLocations.add(Room.getGridPosition(room, row, col));
+				}				
+			}
+		}	
+		
+		return openingLocations;
+	}
+	
+	private Array<Array<Object>> getBorderOverrides(Element borderOverridesElem) {
+		Array<Array<Object>> borderOverrideList = new Array<Array<Object>>();		
+		if(borderOverridesElem != null) {
+			Array<Element> borderOverrides = borderOverridesElem.getChildrenByName("border_override");
+			for(Element borderOverrideElem : borderOverrides) {
+				int row = borderOverrideElem.getInt("row");
+				int col = borderOverrideElem.getInt("col");
+				String textureKey = borderOverrideElem.get("texture_key");
+				Array<Object> borderOverride = new Array<Object>();
+				borderOverride.add(row);
+				borderOverride.add(col);
+				borderOverride.add(textureKey);
+				borderOverrideList.add(borderOverride);			
+			}
+		}	
+		
+		return borderOverrideList;
 	}
 }

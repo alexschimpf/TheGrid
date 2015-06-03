@@ -212,12 +212,7 @@ public final class Player extends RectangleEntity {
 
 		return fixtureDef;
 	}
-	
-	@Override
-	protected boolean isTintable() {
-		return false;
-	}
-	
+
 	private void attachExtraFixtures() {
 		CircleShape shape = new CircleShape();
 

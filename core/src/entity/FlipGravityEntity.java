@@ -8,11 +8,11 @@ import com.badlogic.gdx.utils.XmlReader.Element;
 import misc.EntityBodyDef;
 import core.Room;
 
-public class GravityBlockEntity extends RectangleEntity {
+public class FlipGravityEntity extends RectangleEntity {
 
 	public static final String TYPE = "gravity_block";
 	
-	protected GravityBlockEntity(Room room, String textureKey, EntityBodyDef bodyDef) {
+	protected FlipGravityEntity(Room room, String textureKey, EntityBodyDef bodyDef) {
 		super(room, textureKey, bodyDef);
 	}
 	
@@ -22,7 +22,7 @@ public class GravityBlockEntity extends RectangleEntity {
 		float height = custom.getFloat("height_scale", 1) * Room.SQUARE_SIZE;
 		Vector2 size = new Vector2(width, height);
 		EntityBodyDef bodyDef = new EntityBodyDef(pos, size, BodyType.StaticBody);
-		GravityBlockEntity entity = new GravityBlockEntity(room, "block", bodyDef);
+		FlipGravityEntity entity = new FlipGravityEntity(room, "block", bodyDef);
 		entity.setId(id);
 		entity.setBodyData();
 		

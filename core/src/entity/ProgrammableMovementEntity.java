@@ -50,6 +50,11 @@ public class ProgrammableMovementEntity extends RectangleEntity {
     public String getType() {
     	return TYPE;
     }
+    
+    @Override
+	public boolean hasRandomColor() {
+		return true;
+	}
 
     @Override
 	public void onBeginContact(Entity entity) {

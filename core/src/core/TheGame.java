@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public final class TheGame extends Game {
 
 	public static boolean DEBUG = false;
+	public static boolean PRINT_METRICS = false;
 	
 	private SpriteBatch batch;
 

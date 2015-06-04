@@ -33,6 +33,11 @@ public class ProgrammableMovementTriggerEntity extends RectangleEntity {
 	public String getType() {
 		return TYPE;
 	}
+	
+	@Override
+	public boolean hasRandomColor() {
+		return true;
+	}
 
 	@Override
 	public boolean update() {
@@ -60,6 +65,7 @@ public class ProgrammableMovementTriggerEntity extends RectangleEntity {
 		sprite.setSize(width, height);
 		sprite.setOrigin(width / 2, height / 2);
 		sprite.setFlip(false, true);
+		sprite.setColor(TEXTURES.getRandomSchemeColor());
 	}
 	
 	protected void trigger() {

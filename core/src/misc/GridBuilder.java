@@ -326,10 +326,12 @@ public final class GridBuilder {
 				
 		int segLen = 0;
 		int segStart = i;
+		boolean prevWasOpening = false;
 		while(segStart <= k && i <= k) {
 			Vector2 currSquarePos = vert ? new Vector2(i, j) : new Vector2(j, i);
 			if(!openings.contains(currSquarePos, false)) {
-				segLen++;
+				segLen++;				
+				prevWasOpening = false;
 			} else {
 				Vector2 pos = vert ? new Vector2(segStart, j) : new Vector2(j, segStart);
 				pos = Room.getWorldPosition((int)pos.x, (int)pos.y);
@@ -340,11 +342,15 @@ public final class GridBuilder {
 					size.x *= segLen;
 				}
 				
-				EntityBodyDef bodyDef = new EntityBodyDef(pos, size, BodyType.StaticBody);
-				createGridBorderEntity(room, bodyDef);				
+				if(!prevWasOpening) {
+					EntityBodyDef bodyDef = new EntityBodyDef(pos, size, BodyType.StaticBody);
+					createGridBorderEntity(room, bodyDef);	
+				}			
 				
 				segStart = i + 1;
 				segLen = 0;
+				
+				prevWasOpening = true;
 			}
 			
 			i++;

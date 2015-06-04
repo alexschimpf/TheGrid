@@ -10,16 +10,16 @@ import com.badlogic.gdx.utils.XmlReader.Element;
 import core.Room;
 import entity.special.Player;
 
-public class PlayerDropEntity extends RectangleEntity {
+public class DropPlayerEntity extends RectangleEntity {
 
 	public static final String TYPE = "player_drop";
 	
-	protected PlayerDropEntity(Room room, float x, float y) {
-		super(room, "up_arrow_block", PlayerDropEntity.getEntityBodyDef(x, y));
+	protected DropPlayerEntity(Room room, float x, float y) {
+		super(room, "up_arrow_block", DropPlayerEntity.getEntityBodyDef(x, y));
 	}
 	
 	public static Entity build(String id, Room room, Vector2 pos, Element elem) {
-		PlayerDropEntity entity = new PlayerDropEntity(room, pos.x, pos.y);
+		DropPlayerEntity entity = new DropPlayerEntity(room, pos.x, pos.y);
 		entity.setId(id);
 		entity.setBodyData();
 		
@@ -33,6 +33,11 @@ public class PlayerDropEntity extends RectangleEntity {
 	@Override
 	public String getType() {
 		return TYPE;
+	}
+	
+	@Override
+	public boolean hasRandomColor() {
+		return true;
 	}
 	
 	@Override

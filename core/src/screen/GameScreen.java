@@ -94,7 +94,7 @@ public final class GameScreen implements Screen {
 //		music.setVolume(0.5f);
 //		music.setLooping(true);
 //		music.setPosition(0.5f);
-//		
+		
 		// I don't know why this helps, but it does.
 		if(!TheGame.DEBUG) {
 			Gdx.graphics.setDisplayMode(Gdx.graphics.getDesktopDisplayMode().width, Gdx.graphics.getDesktopDisplayMode().height, true);	
@@ -104,7 +104,7 @@ public final class GameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		if(TheGame.DEBUG) {
+		if(TheGame.PRINT_METRICS) {
 			Gdx.app.log("FPS", "" + Gdx.graphics.getFramesPerSecond());
 			Gdx.app.log("Max sprites in batch", "" + batch.maxSpritesInBatch);
 		}		

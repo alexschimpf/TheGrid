@@ -39,6 +39,8 @@ public final class Player extends RectangleEntity {
 	private Direction direction = Direction.RIGHT;
 	private Animation blinkAnimation;
 	private Animation jumpAnimation;
+	private Animation moveAnimation;
+	private Animation shootAnimation;
 	
 	public Player(Vector2 worldPos) {
 		super(null, "player", Player.getEntityBodyDef(worldPos));
@@ -73,9 +75,15 @@ public final class Player extends RectangleEntity {
 			blinkAnimation.play();
 		}
 		
-		if(jumpAnimation.isPlaying()) {
+		if(shootAnimation.isPlaying()) {
+			shootAnimation.update();
+			sprite = shootAnimation.getSprite();
+		} else if(jumpAnimation.isPlaying()) {
 			jumpAnimation.update();
 			sprite = jumpAnimation.getSprite();
+		} else if(moveAnimation.isPlaying()) {
+			moveAnimation.update();
+			sprite = moveAnimation.getSprite();
 		} else if(blinkAnimation.isPlaying()) {
 			blinkAnimation.update();
 			sprite = blinkAnimation.getSprite();
@@ -116,9 +124,11 @@ public final class Player extends RectangleEntity {
 	}
 	
 	public void stopMove() {
-		if(!jumping && !blinkAnimation.isPlaying()) {
+		if(!jumpAnimation.isPlaying() && !blinkAnimation.isPlaying() && !shootAnimation.isPlaying()) {
 			setSprite("player");
 		}
+		
+		moveAnimation.stop();
 		
 		body.setLinearVelocity(0, body.getLinearVelocity().y);
 	}
@@ -131,6 +141,10 @@ public final class Player extends RectangleEntity {
 	
 	public void shoot() {
 		if(TimeUtils.timeSinceMillis(lastShotTime) > SHOOT_COOLDOWN) {
+			if(!shootAnimation.isPlaying()) {
+				shootAnimation.play();
+			}
+			
 			lastShotTime = TimeUtils.millis();
 			SOUNDS.playSound("shoot");
 			PlayerShot shot = new PlayerShot(this);
@@ -180,6 +194,10 @@ public final class Player extends RectangleEntity {
 		setJumping(numFootContacts < 1);
 	}
 	
+	public void setFootContacts(int numFootContacts) {
+		this.numFootContacts = numFootContacts;
+	}
+	
 	@Override
 	protected void createSprite(String textureKey, float x, float y, float width, float height) {
 		super.createSprite(textureKey, x, y, width, height);
@@ -192,6 +210,12 @@ public final class Player extends RectangleEntity {
 		
 		jumpAnimation = new Animation("player_jump", 0.27f, false, false);
 		jumpAnimation.setSprite(pos, size);
+		
+		moveAnimation = new Animation("player_move", 0.2f, true, false);
+		moveAnimation.setSprite(pos, size);
+		
+		shootAnimation = new Animation("player_shoot", 0.05f, false, false);
+		shootAnimation.setSprite(pos, size);
 	}
 	
 	@Override
@@ -240,9 +264,13 @@ public final class Player extends RectangleEntity {
 		}
 
 		if(numContacts > 0 && !isJumping()) {
-			setSprite("player_move");
+			if(!moveAnimation.isPlaying()) {
+				moveAnimation.play();
+			}
+			
 			createParticleEffect();
-		} else if(!jumpAnimation.isPlaying()){
+		} else if(!jumpAnimation.isPlaying() && !shootAnimation.isPlaying()){
+			moveAnimation.stop();
 			setSprite("player");
 		}
 		

@@ -68,6 +68,16 @@ public class BlockChainEntity extends RectangleEntity {
 	}
 	
 	@Override
+	public String getType() {
+		return TYPE;
+	}
+	
+	@Override
+	public boolean hasRandomColor() {
+		return true;
+	}
+	
+	@Override
 	public boolean update() {	
 		animation.update();
 		
@@ -80,16 +90,6 @@ public class BlockChainEntity extends RectangleEntity {
 		}
 		
 		return super.update();
-	}
-	
-	@Override
-	public String getType() {
-		return TYPE;
-	}
-	
-	@Override
-	public boolean hasRandomColor() {
-		return true;
 	}
 
 	@Override

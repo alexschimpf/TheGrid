@@ -26,6 +26,7 @@
 		<room row="0" col="2">
 		    <openings>
                 <opening row="1" col="11" />
+                <opening row="2" col="11" />
                 <opening row="10" col="0" />
             </openings>
 		</room>
@@ -35,60 +36,30 @@
 		<room row="0" col="3">
 			<openings>
                 <opening row="1" col="0" />
+                <opening row="2" col="0" />
             </openings>
-            <border_overrides>
-                <border_override row="11" col="10" texture_key="gc" />
-                <border_override row="10" col="11" texture_key="glv" />
-                <border_override row="6" col="11" texture_key="glv" />
-            </border_overrides>
             <entities>
-                <entity type="rectangle">
-		           <custom>
-		               <texture_key>block</texture_key>
-		           </custom>
-		           <locations>		               
-		               <location row="8" col="4" />
-		               <location row="4" col="4" />
-		           </locations>		           
-		       </entity>
-		       <entity type="rectangle" row="10" col="10">
-		           <custom>
-		               <texture_key>gtl</texture_key>
-		           </custom>
-		       </entity>
-		       <entity type="rectangle" row="6" col="10">
-		           <custom>
-		               <texture_key>glround</texture_key>
-		           </custom>
-		       </entity>
-		       <entity type="moving_rectangle" row="2" col="3">
-		           <custom>
-		               <texture_key>block</texture_key>
-		               <start_pos row="2" col="3" />
-		               <start_velocity x="0" y="-14" />
-		               <end_pos row="6" col="3" />
-		               <end_velocity x="0" y="14" />
-		           </custom>
-		        </entity>
-		        <entity type="moving_rectangle" row="2" col="2">
-		           <custom>
-		               <texture_key>block</texture_key>
-		               <start_pos row="2" col="2" />
-		               <start_velocity x="0" y="-15" />
-		               <end_pos row="6" col="2" />
-		               <end_velocity x="0" y="15" />
-		           </custom>
-		        </entity>		
-		       <entity type="breakable" row="5" col="8">
-		           <custom>
-		               <num_shots>1</num_shots>
-		           </custom>
-	       	   </entity>
-	       	   <entity type="breakable" row="3" col="5">
-		           <custom>
-		               <num_shots>2</num_shots>
-		           </custom>
-	       	   </entity>
+                <entity type="path_rectangle" row="10" col="1">
+                    <custom>
+                        <texture_key>block</texture_key>
+                        <reverse_on_done>true</reverse_on_done>
+                        <reverse_on_blocked>true</reverse_on_blocked>
+                        <move_delay>1000</move_delay>
+                        <path>
+                            <position row="9" col="1" />
+                            <position row="8" col="2" />
+                            <position row="7" col="1" />
+                            <position row="6" col="3" />
+                            <position row="5" col="5" />
+                            <position row="4" col="3" />
+                        </path>
+                    </custom>
+                </entity>
+                <entity type="active_on_bump" row="9" col="9">
+                    <custom>
+                        <texture_key>block</texture_key>
+                    </custom>
+                </entity>
             </entities>
 		</room>
         <!--------------------------------------------------------------------------
@@ -136,8 +107,10 @@
         <!-------------------------------------------------------------------------->
 		<room row="1" col="1">
 			<openings>
+			    <opening row="11" col="6" />
 		        <opening row="11" col="7" />
 		        <opening row="1" col="11" />
+		        <opening row="2" col="11" />
 		    </openings>
 		    <entities>
 		        <entity type="moving_rectangle" row="9" col="1">
@@ -184,6 +157,7 @@
 		<room row="1" col="2">
 			<openings>
 		        <opening row="1" col="0" />
+		        <opening row="2" col="0" />
 		        <opening row="11" col="10" />
 		    </openings>
 		    <chain_pads>
@@ -245,6 +219,7 @@
 		    <openings>
 		        <opening row="0" col="6" />
 		        <opening row="1" col="11" />
+		        <opening row="2" col="11" />
 		    </openings>
 		    <border_overrides>
 		        <border_override row="0" col="7" texture_key="grv" />
@@ -301,8 +276,10 @@
         <!-------------------------------------------------------------------------->
 		<room row="2" col="1">
 		    <openings>
+		        <opening row="0" col="6" />
 		        <opening row="0" col="7" />
 		        <opening row="1" col="0" />
+		        <opening row="2" col="0" />
 		    </openings>
 		    <chain_pads>
 		        <chain_pad start_row="10" end_row="10" start_col="1" end_col="4" />

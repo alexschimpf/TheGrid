@@ -1,6 +1,7 @@
-player_drop,entity.PlayerDropEntity
+player_drop,entity.DropPlayerEntity
+active_on_bump,entity.ActiveOnBumpEntity
 programmable_movement_trigger,entity.ProgrammableMovementTriggerEntity
-gravity_block,entity.GravityBlockEntity
+gravity_block,entity.FlipGravityEntity
 transport,entity.TransportEntity
 block_chain,entity.BlockChainEntity
 programmable_movement,entity.ProgrammableMovementEntity
@@ -13,4 +14,5 @@ rectangle,entity.RectangleEntity
 breakable,entity.BreakableEntity
 circle,entity.CircleEntity
 portal,entity.PortalEntity
+path_rectangle,entity.PathRectangleEntity
 sensor,entity.sensor.SensorEntity

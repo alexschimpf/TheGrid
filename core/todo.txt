@@ -39,9 +39,10 @@ so just "solving the puzzle" is not enough. You have to be able to execute effic
 --------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------
 
-- Room needs a more flexible entityExistsInArea function.
-	- Should be able to pass in a list of entity types to consider
-	- Give Entity the same method, that passes itself in as an ignore entity.
+
+- Need a simple way to specify the border images, without all the border_overrides
+- Need an elegant solution to the contiguous cracks problem
+- Need to use a strong downward force on the player for vertical moving rectangles
 - Need new game title
 - Better menu
 - Keep track of completion through each grid

@@ -90,10 +90,10 @@ public final class GameScreen implements Screen {
 	
 	@Override
 	public void show() {
-//		music.play();
-//		music.setVolume(0.5f);
-//		music.setLooping(true);
-//		music.setPosition(0.5f);
+		music.play();
+		music.setVolume(0.5f);
+		music.setLooping(true);
+		music.setPosition(0.5f);
 		
 		// I don't know why this helps, but it does.
 		if(!TheGame.DEBUG) {

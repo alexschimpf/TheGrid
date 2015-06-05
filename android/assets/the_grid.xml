@@ -466,7 +466,7 @@
 		        <entity type="breakable" row="11" col="5">
 		           <custom>
 		               <friction_top>true</friction_top>
-		               <num_shots>20</num_shots>
+		               <num_shots>8</num_shots>
 		           </custom>
 		       </entity>
 		       <entity type="rectangle">

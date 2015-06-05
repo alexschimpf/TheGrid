@@ -19,10 +19,15 @@ public class DisappearingRectangleEntity extends RectangleEntity {
 	
 	protected long startTime;
 	protected boolean disappearing = false;
+	protected boolean recreate = true;
+	protected boolean onTrigger = false;
 	protected Animation animation;
 	
-	protected DisappearingRectangleEntity(Room room, EntityBodyDef bodyDef) {
+	protected DisappearingRectangleEntity(Room room, EntityBodyDef bodyDef, boolean onTrigger, boolean recreate) {
 		super(room, "disappearing_block", bodyDef);
+		
+		this.recreate = recreate;
+		this.onTrigger = onTrigger;
 	}
 
 	public static Entity build(String id, Room room, Vector2 pos, Element elem) {
@@ -30,9 +35,12 @@ public class DisappearingRectangleEntity extends RectangleEntity {
 		float width = custom.getFloat("width_scale", 1) * Room.SQUARE_SIZE;
 		float height = custom.getFloat("height_scale", 1) * Room.SQUARE_SIZE;
 		
+		boolean onTrigger = custom.getBoolean("on_trigger", false);
+		boolean recreate = custom.getBoolean("recreate", true);
+		
 		Vector2 size = new Vector2(width, height);
 		EntityBodyDef bodyDef = new EntityBodyDef(pos, size, BodyType.StaticBody);
-		DisappearingRectangleEntity entity = new DisappearingRectangleEntity(room, bodyDef);
+		DisappearingRectangleEntity entity = new DisappearingRectangleEntity(room, bodyDef, onTrigger, recreate);
 		entity.setId(id);
 		entity.setBodyData();
 		
@@ -64,6 +72,11 @@ public class DisappearingRectangleEntity extends RectangleEntity {
 	
 	@Override
 	public void done() {
+		if(!recreate) {
+			super.done();
+			return;
+		}
+		
 		final Vector2 size = new Vector2(getWidth(), getHeight());
 		final Vector2 pos = getLeftTop();
 		final EntityBodyDef bodyDef = new EntityBodyDef(pos, size, BodyType.StaticBody);
@@ -72,7 +85,7 @@ public class DisappearingRectangleEntity extends RectangleEntity {
 		timer.scheduleTask(new Task() {
 			@Override
 			public void run() {
-				DisappearingRectangleEntity entity = new DisappearingRectangleEntity(room, bodyDef);
+				DisappearingRectangleEntity entity = new DisappearingRectangleEntity(room, bodyDef, onTrigger, recreate);
 				entity.setId(id);
 				entity.setBodyData();
 				room.addEntity(entity);
@@ -86,7 +99,13 @@ public class DisappearingRectangleEntity extends RectangleEntity {
 	public void onBeginContact(Entity entity) {
 		super.onBeginContact(entity);	
 		
-		if(isPlayer(entity) && !disappearing) {
+		if(isPlayer(entity) && !onTrigger) {
+			disappear();
+		}
+	}
+	
+	public void disappear() {
+		if(!disappearing) {
 			animation.play();
 			disappearing = true;
 			startTime = TimeUtils.millis();

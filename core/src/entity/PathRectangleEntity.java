@@ -39,7 +39,7 @@ public class PathRectangleEntity extends RectangleEntity {
 		float width = custom.getFloat("width_scale", 1) * Room.SQUARE_SIZE;
 		float height = custom.getFloat("height_scale", 1) * Room.SQUARE_SIZE;
 		float moveDelay = custom.getFloat("move_delay", 1000);
-		boolean reverseOnDone = custom.getBoolean("reverse_on_done", true);
+		boolean reverseOnDone = custom.getBoolean("reverse_on_done", false);
 		boolean reverseOnBlocked = custom.getBoolean("reverse_on_blocked", false);
 		EntityBodyDef bodyDef = new EntityBodyDef(pos, new Vector2(width, height), BodyType.KinematicBody);
 

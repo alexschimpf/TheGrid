@@ -15,9 +15,6 @@ public class ActiveOnBumpEntity extends RectangleEntity {
 
 	public static final String TYPE = "active_on_bump";
 	
-	protected static final float ACTIVE_FLIP_DELAY = 300;
-	
-	protected long lastActiveTime = 0;
 	protected String textureKey;
 	
 	protected ActiveOnBumpEntity(Room room, String textureKey, EntityBodyDef bodyDef) {
@@ -56,10 +53,7 @@ public class ActiveOnBumpEntity extends RectangleEntity {
 		super.onBeginContact(entity);
 		
 		Player player = Entity.getPlayer();
-		if(isPlayer(entity) && player.getTop() >= getBottom() - (getHeight() / 10) && 
-		   TimeUtils.timeSinceMillis(lastActiveTime) > ACTIVE_FLIP_DELAY) {
-			lastActiveTime = TimeUtils.millis();
-			
+		if(isPlayer(entity) && player.getTop() >= getBottom() - (getHeight() / 10))	{
 			Gdx.app.postRunnable(new Runnable() {
 				@Override
 				public void run() {

@@ -9,6 +9,7 @@ disappearing_rectangle,entity.DisappearingRectangleEntity
 circle_creator,entity.CircleCreatorEntity
 polygon,entity.PolygonEntity
 visible_touched,entity.VisibleOnTouchEntity
+disappearing_rectangle_trigger,entity.DisappearingRectangleTriggerEntity
 moving_rectangle,entity.MovingRectangleEntity
 rectangle,entity.RectangleEntity
 breakable,entity.BreakableEntity

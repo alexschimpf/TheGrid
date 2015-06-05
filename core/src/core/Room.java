@@ -169,6 +169,10 @@ public class Room implements IUpdate, IDraw {
 
 	public boolean entityExistsInArea(Vector2 leftTop, float width, float height, Array<String> ignoreTypes, Entity ignoreEntity) {
 		for(Entity entity : getEntities()) {
+			if(entity.getBody().getFixtureList().get(0).isSensor()) {
+				continue;
+			}
+			
 			if(ignoreTypes.contains(entity.getType(), false) || entity.equals(ignoreEntity)) {
 				continue;
 			}

@@ -1,6 +1,6 @@
 <the_grid>
     <size num_rows="4" num_cols="4" />
-    <player grid_row="0" grid_col="3" row="10" col="9" />
+    <player grid_row="1" grid_col="1" row="9" col="9" />
     <rooms>
         <!--------------------------------------------------------------------------
         <!-- Room 0, 0

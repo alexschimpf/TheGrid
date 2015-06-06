@@ -242,14 +242,14 @@ public final class Player extends RectangleEntity {
 		
 		// This a hack to avoid getting stuck between close bodies.
 		Vector2[] vertices = new Vector2[8];
-		vertices[0] = new Vector2(1.2f, -1.69f);
-		vertices[1] = new Vector2(1.19f, -1.7f);
-		vertices[2] = new Vector2(-1.19f, -1.7f);
-		vertices[3] = new Vector2(-1.2f, -1.69f);
-		vertices[4] = new Vector2(-1.2f, 1.69f);
-		vertices[5] = new Vector2(-1.19f, 1.7f);		
-		vertices[6] = new Vector2(1.19f, 1.7f);
-		vertices[7] = new Vector2(1.2f, 1.69f);
+		vertices[0] = new Vector2(1.2f, -1.68f);
+		vertices[1] = new Vector2(0.9f, -1.7f);
+		vertices[2] = new Vector2(-0.9f, -1.7f);
+		vertices[3] = new Vector2(-1.2f, -1.68f);
+		vertices[4] = new Vector2(-1.2f, 1.68f);
+		vertices[5] = new Vector2(-0.9f, 1.7f);		
+		vertices[6] = new Vector2(0.9f, 1.7f);
+		vertices[7] = new Vector2(1.2f, 1.68f);
 		
 		shape.set(vertices);
 		

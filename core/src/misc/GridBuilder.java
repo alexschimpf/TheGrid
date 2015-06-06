@@ -374,7 +374,7 @@ public final class GridBuilder {
 	private void createGridBorderEntity(Room room, EntityBodyDef bodyDef) {
 		RectangleEntity borderEntity = RectangleEntity.build(null, room, "", bodyDef);
 		borderEntity.setBodyData();
-		borderEntity.addFrictionTop(0.3f);
+//		borderEntity.addFrictionTop(0.3f);
 		theGrid.addGlobalEntity(borderEntity);
 	}
 	

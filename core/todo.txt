@@ -41,7 +41,6 @@ so just "solving the puzzle" is not enough. You have to be able to execute effic
 
 
 - Need a simple way to specify the border images, without all the border_overrides
-- Need an elegant solution to the contiguous cracks problem
 - Need to use a strong downward force on the player for vertical moving rectangles
 - Need new game title
 - Better menu

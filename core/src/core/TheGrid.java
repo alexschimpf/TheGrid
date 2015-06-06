@@ -33,6 +33,8 @@ public final class TheGrid implements IUpdate, IDraw {
 	public TheGrid() {
 		world = new World(new Vector2(0, DEFAULT_GRAVITY), true);
 		world.setContactListener(new CollisionListener());
+		
+		World.setVelocityThreshold(0.5f);
 	}
 	
 	public static Vector2 getRoomGridPosition(float x, float y) {

@@ -13,8 +13,10 @@ import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.sun.deploy.uitoolkit.impl.fx.Utils;
 
 import core.Room;
+import core.TheGrid;
 import entity.Entity;
 import entity.RectangleEntity;
 
@@ -114,6 +116,13 @@ public final class Player extends RectangleEntity {
 	
 	public void jump() {
 		if(!isJumping() && TimeUtils.timeSinceMillis(lastJumpTime) > JUMP_COOLDOWN) {
+			// Terrible hack to fix jumping on vertically moving blocks.
+			if(vertRideDir == 0) {
+				body.applyForce(0, -TheGrid.DEFAULT_GRAVITY * 175, getCenterX(), getCenterY(), true);
+			} else if(vertRideDir == 1){
+				body.applyForce(0, -TheGrid.DEFAULT_GRAVITY * 100, getCenterX(), getCenterY(), true);
+			}
+			
 			jumpAnimation.play();
 			lastJumpTime = TimeUtils.millis();
 			SOUNDS.playSound("jump");
@@ -121,6 +130,15 @@ public final class Player extends RectangleEntity {
 			float y = body.getWorldCenter().y;
 			body.applyLinearImpulse(0, JUMP_IMPULSE, x, y, true);
 		}
+	}
+	
+	protected int vertRideDir = -1;
+	public void setOnVertRide(Boolean down) {
+		if(down == null) {
+			vertRideDir = -1;
+		} else {
+			vertRideDir = down ? 0 : 1;
+		}	
 	}
 	
 	public void stopMove() {
@@ -176,13 +194,9 @@ public final class Player extends RectangleEntity {
 		return jumping;
 	}
 	
-	public void setJumping(boolean jumping) {
-		this.jumping = jumping;
-	}
-	
 	public void incrementFootContacts() {
 		numFootContacts++;	
-		setJumping(numFootContacts < 1);
+		jumping = numFootContacts < 1;
 	}
 	
 	public void decrementFootContacts() {
@@ -191,7 +205,7 @@ public final class Player extends RectangleEntity {
 			numFootContacts = 0;
 		}
 		
-		setJumping(numFootContacts < 1);
+		jumping = numFootContacts < 1;
 	}
 	
 	public void setFootContacts(int numFootContacts) {
@@ -222,9 +236,22 @@ public final class Player extends RectangleEntity {
 	protected FixtureDef createFixtureDef() {
 		PolygonShape shape = new PolygonShape();
 		
-		float width = (getWidth() / 2) * 0.90f;
-		float height = (getHeight() / 2) * 0.90f;
-		shape.setAsBox(width, height);
+//		float width = (getWidth() / 2) * 0.90f;
+//		float height = (getHeight() / 2) * 0.90f;
+//		shape.setAsBox(width, height);
+		
+		// This a hack to avoid getting stuck between close bodies.
+		Vector2[] vertices = new Vector2[8];
+		vertices[0] = new Vector2(1.2f, -1.69f);
+		vertices[1] = new Vector2(1.19f, -1.7f);
+		vertices[2] = new Vector2(-1.19f, -1.7f);
+		vertices[3] = new Vector2(-1.2f, -1.69f);
+		vertices[4] = new Vector2(-1.2f, 1.69f);
+		vertices[5] = new Vector2(-1.19f, 1.7f);		
+		vertices[6] = new Vector2(1.19f, 1.7f);
+		vertices[7] = new Vector2(1.2f, 1.69f);
+		
+		shape.set(vertices);
 		
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
@@ -242,11 +269,11 @@ public final class Player extends RectangleEntity {
 
 		float radius = getWidth() / 6f;
 		shape.setRadius(radius);
-		shape.setPosition(new Vector2(0.5f, 1.6f));
+		shape.setPosition(new Vector2(0.65f, 1.6f));
 		Fixture fixture1 = body.createFixture(shape, 0);
 		fixture1.setSensor(true);
 		
-		shape.setPosition(new Vector2(-0.5f, 1.6f));
+		shape.setPosition(new Vector2(-0.65f, 1.6f));
 		Fixture fixture2 = body.createFixture(shape, 0);
 		fixture2.setSensor(true);
 		

@@ -5,10 +5,13 @@ import misc.IBlockChainDone;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.XmlReader.Element;
 
 import core.Room;
+import core.TheGrid;
+import entity.special.Player;
 
 public class MovingRectangleEntity extends RectangleEntity implements IBlockChainDone {
 
@@ -20,6 +23,8 @@ public class MovingRectangleEntity extends RectangleEntity implements IBlockChai
 	protected Vector2 endVelocity;
 	protected boolean fromStart = true;
 	protected boolean started = false;
+	protected boolean isMovingVertically = false;
+	protected boolean isPlayerTouching = false;
 	
 	protected MovingRectangleEntity(Room room, String textureKey, EntityBodyDef bodyDef, Vector2 startPos, 
                                     Vector2 endPos, Vector2 startVelocity, Vector2 endVelocity) {
@@ -29,6 +34,10 @@ public class MovingRectangleEntity extends RectangleEntity implements IBlockChai
         this.endPos = endPos;
         this.startVelocity = startVelocity;
         this.endVelocity = endVelocity;
+        
+        if(endPos.y != startPos.y) {
+        	isMovingVertically = true;
+        }
     }
 	
 	public static Entity build(String id, Room room, Vector2 pos, Element elem) {
@@ -80,6 +89,22 @@ public class MovingRectangleEntity extends RectangleEntity implements IBlockChai
 		
 		checkPosition();
 		
+		// Terrible hack to fix jumping on vertically moving blocks.
+		Player player = Entity.getPlayer();
+		if(isMovingVertically && !player.isJumping() && isPlayerTouching && 
+		   player.getBottom() + 0.1f >= getTop() && ((player.getLeft() < getRight() && player.getRight() > getRight()) || 
+				                                     (player.getRight() > getLeft() && player.getLeft() < getLeft()) ||
+				                                     (player.getLeft() >= getLeft() && player.getRight() <= getRight()))) {
+			float fy = TheGrid.DEFAULT_GRAVITY * 150;
+			if(getLinearVelocity().y > 0) {
+				fy = TheGrid.DEFAULT_GRAVITY * 115;
+			}
+			
+			player.setOnVertRide(getLinearVelocity().y > 0);
+			
+			player.getBody().applyForce(0, fy, getCenterX(), getCenterY(), true);
+		}
+		
 		return super.update();
 	}
 	
@@ -91,6 +116,21 @@ public class MovingRectangleEntity extends RectangleEntity implements IBlockChai
 	@Override
 	public boolean hasRandomColor() {
 		return true;
+	}
+	
+	@Override
+	public void onBeginContact(Entity entity) {
+		if(isPlayer(entity)) {	
+			isPlayerTouching = true;
+		}
+	}
+	
+	@Override
+	public void onEndContact(Entity entity) {
+		if(isPlayer(entity)) {
+			isPlayerTouching = false;
+			((Player)entity).setOnVertRide(null);
+		}
 	}
 
 	@Override

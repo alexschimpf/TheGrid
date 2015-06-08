@@ -16,11 +16,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader.Parameters;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -56,9 +63,11 @@ public final class GameScreen implements Screen {
 	private Button shootButton;
 	private Integer movePointer;
 	private Array<ParticleEffect> particleEffects = new Array<ParticleEffect>();
-	
 	private TheGame game;
 	private SpriteBatch batch;
+	
+	private TiledMap tiledMap;
+	private OrthogonalTiledMapRenderer tiledMapRenderer;
 	
 	public GameScreen(TheGame game) {
 		this.game = game;
@@ -82,6 +91,10 @@ public final class GameScreen implements Screen {
 		music = Gdx.audio.newMusic(Gdx.files.internal("music/song1.mp3"));	
 		
 		createBackground();
+		
+		Parameters p = new Parameters();
+		tiledMap = new TmxMapLoader().load("tiled_map.tmx");
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, Room.SQUARE_SIZE / 16);
 		
 		if(Gdx.app.getType() == ApplicationType.Android) {
 			createUI();
@@ -182,12 +195,20 @@ public final class GameScreen implements Screen {
 	private void draw() {
 		Gdx.gl.glClearColor((201.0f / 255), (238.0f / 255), (255.0f / 255), 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		batch.setProjectionMatrix(GLOBALS.getCamera().combined);
-		batch.enableBlending();
+		
+		OrthographicCamera camera = GLOBALS.getCamera();
+		
+		batch.setProjectionMatrix(camera.combined);
+		
 		batch.begin(); {
-			background.draw(GLOBALS.getCamera(), batch);
-			drawParticleEffects(batch);
+			background.draw(camera, batch);
+			drawParticleEffects(batch);	
+		} batch.end();
+		
+		tiledMapRenderer.setView(camera);
+		tiledMapRenderer.render();
+		
+		batch.begin(); {
 			theGrid.draw(batch);		
 		} batch.end();
 		

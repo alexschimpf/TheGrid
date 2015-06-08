@@ -112,41 +112,41 @@ public class Room implements IUpdate, IDraw {
 	}
 	
 	public void createBorderSprites() {
-		Vector2 gridPos = getGridPosition();
-		
-		boolean edge = gridPos.x == 0 || gridPos.x == THE_GRID.getNumRows() - 1 ||
-				       gridPos.y == 0 || gridPos.y == THE_GRID.getNumCols() - 1;
-		
-		// Left side
-		for(int i = 1; i < TheGrid.ROOM_NUM_SQUARES_WIDE - 1; i++) {
-			Vector2 pos = new Vector2(i, 0);
-			String textureKey = edge && gridPos.y == 0 ? "gev" : "glv";
-			
-			createBorderSprite(textureKey, pos);
-		}
-		
-		// Right side
-		for(int i = 1; i < TheGrid.ROOM_NUM_SQUARES_WIDE - 1; i++) {
-			Vector2 pos = new Vector2(i, TheGrid.ROOM_NUM_SQUARES_WIDE - 1);
-			String textureKey = edge && gridPos.y == THE_GRID.getNumCols() - 1 ? "gev" : "grv";
-			createBorderSprite(textureKey, pos);
-		}
-		
-		// Top side
-		for(int i = 1; i < TheGrid.ROOM_NUM_SQUARES_WIDE - 1; i++) {
-			Vector2 pos = new Vector2(0, i);
-			String textureKey = edge && gridPos.x == 0 ? "geh" : "gth";
-			createBorderSprite(textureKey, pos);
-		}
-		
-		// Bottom side
-		for(int i = 1; i < TheGrid.ROOM_NUM_SQUARES_WIDE - 1; i++) {
-			Vector2 pos = new Vector2(TheGrid.ROOM_NUM_SQUARES_WIDE - 1, i);
-			String textureKey = edge && gridPos.x == THE_GRID.getNumRows() - 1 ? "geh" : "gbh";
-			createBorderSprite(textureKey, pos);
-		}
-		
-		createBorderCorners(gridPos);
+//		Vector2 gridPos = getGridPosition();
+//		
+//		boolean edge = gridPos.x == 0 || gridPos.x == THE_GRID.getNumRows() - 1 ||
+//				       gridPos.y == 0 || gridPos.y == THE_GRID.getNumCols() - 1;
+//		
+//		// Left side
+//		for(int i = 1; i < TheGrid.ROOM_NUM_SQUARES_WIDE - 1; i++) {
+//			Vector2 pos = new Vector2(i, 0);
+//			String textureKey = edge && gridPos.y == 0 ? "gev" : "glv";
+//			
+//			createBorderSprite(textureKey, pos);
+//		}
+//		
+//		// Right side
+//		for(int i = 1; i < TheGrid.ROOM_NUM_SQUARES_WIDE - 1; i++) {
+//			Vector2 pos = new Vector2(i, TheGrid.ROOM_NUM_SQUARES_WIDE - 1);
+//			String textureKey = edge && gridPos.y == THE_GRID.getNumCols() - 1 ? "gev" : "grv";
+//			createBorderSprite(textureKey, pos);
+//		}
+//		
+//		// Top side
+//		for(int i = 1; i < TheGrid.ROOM_NUM_SQUARES_WIDE - 1; i++) {
+//			Vector2 pos = new Vector2(0, i);
+//			String textureKey = edge && gridPos.x == 0 ? "geh" : "gth";
+//			createBorderSprite(textureKey, pos);
+//		}
+//		
+//		// Bottom side
+//		for(int i = 1; i < TheGrid.ROOM_NUM_SQUARES_WIDE - 1; i++) {
+//			Vector2 pos = new Vector2(TheGrid.ROOM_NUM_SQUARES_WIDE - 1, i);
+//			String textureKey = edge && gridPos.x == THE_GRID.getNumRows() - 1 ? "geh" : "gbh";
+//			createBorderSprite(textureKey, pos);
+//		}
+//		
+//		createBorderCorners(gridPos);
 	}
 	
 	public boolean entityExistsInArea(Vector2 leftTop, float width, float height) {
@@ -330,98 +330,98 @@ public class Room implements IUpdate, IDraw {
 		}
 	}
 
-	protected void createBorderCorners(Vector2 gridPos) {
-		Vector2 topLeftPos = new Vector2(0, 0);
-		boolean globalTopLeft = gridPos.x == 0 && gridPos.y == 0;
-		String topLeftTextureKey = globalTopLeft ? "gtl" : "gc";
-		if(!globalTopLeft) {
-			if(gridPos.x == 0) {
-				topLeftTextureKey = "gbh";
-			} else if(gridPos.y == 0) {
-				topLeftTextureKey = "grv";
-			}
-			
-		}
-		createBorderSprite(topLeftTextureKey, topLeftPos);
-		
-		Vector2 topRightPos = new Vector2(0, TheGrid.ROOM_NUM_SQUARES_WIDE - 1);
-		boolean globalTopRight = gridPos.x == 0 && gridPos.y == THE_GRID.getNumCols() - 1;
-		String topRightTextureKey = globalTopRight ? "gtr" : "gc";
-		if(!globalTopRight) {
-			if(gridPos.x == 0) {
-				topRightTextureKey = "gbh";
-			} else if(gridPos.y == THE_GRID.getNumCols() - 1) {
-				topRightTextureKey = "glv";
-			}
-		}
-		createBorderSprite(topRightTextureKey, topRightPos);
-			
-		Vector2 bottomLeftPos = new Vector2(TheGrid.ROOM_NUM_SQUARES_WIDE - 1, 0);
-		boolean globalBottomLeft = gridPos.x == THE_GRID.getNumRows() - 1 && gridPos.y == 0;
-		String bottomLeftTextureKey = globalBottomLeft ? "gbl" : "gc";
-		if(!globalBottomLeft) {
-			if(gridPos.y == 0) {
-				bottomLeftTextureKey = "grv";
-			} else if(gridPos.x == THE_GRID.getNumRows() - 1) {
-				bottomLeftTextureKey = "gth";
-			}
-		}
-		createBorderSprite(bottomLeftTextureKey, bottomLeftPos);	
-		
-		Vector2 bottomRightPos = new Vector2(TheGrid.ROOM_NUM_SQUARES_WIDE - 1, TheGrid.ROOM_NUM_SQUARES_WIDE - 1);
-		boolean globalBottomRight = gridPos.x == THE_GRID.getNumRows() - 1 && gridPos.y == THE_GRID.getNumCols() - 1;
-		String bottomRightTextureKey = globalBottomRight ? "gbr" : "gc";
-		if(!globalBottomRight) {
-			if(gridPos.x == THE_GRID.getNumRows() - 1) {
-				bottomRightTextureKey = "gth";
-			} else if(gridPos.y == THE_GRID.getNumCols() - 1) {
-				bottomRightTextureKey = "glv";
-			}
-		}
-		createBorderSprite(bottomRightTextureKey, bottomRightPos);
-	}
-	
-	protected void createBorderSprite(String textureKey, Vector2 pos) {
-		if(openings.contains(pos, false)) {
-			return;
-		}
-		
-		Vector2 roomGridPos = getGridPosition();
-		Vector2 leftPos = Room.getWorldPosition(this, (int)pos.x, (int)pos.y - 1);
-		Vector2 rightPos = Room.getWorldPosition(this, (int)pos.x, (int)pos.y + 1);
-		Vector2 abovePos = Room.getWorldPosition(this, (int)pos.x - 1, (int)pos.y);
-		Vector2 belowPos = Room.getWorldPosition(this, (int)pos.x + 1, (int)pos.y);
-		if(THE_GRID.isOpeningAt(belowPos)) {
-			textureKey = pos.y == 0 ? "gbr" : "gbl";
-			if(pos.x == 0) {
-				textureKey = roomGridPos.x == 0 ? "geh" : "gth";
-			}
-		} else if(THE_GRID.isOpeningAt(abovePos)) {
-			textureKey = pos.y == 0 ? "gtr" : "gtl";
-			if(pos.x == TheGrid.ROOM_NUM_SQUARES_WIDE - 1) {
-				textureKey = roomGridPos.x == THE_GRID.getNumRows() - 1 ? "geh" : "gbh";
-			}
-		} else if(THE_GRID.isOpeningAt(leftPos)) {
-			textureKey = pos.x == 0 ? "gbl" : "gtl";
-			if(pos.y == TheGrid.ROOM_NUM_SQUARES_WIDE - 1) {
-				textureKey = roomGridPos.y == THE_GRID.getNumCols() - 1 ? "gev" : "grv";
-			}
-		} else if(THE_GRID.isOpeningAt(rightPos)) {
-			textureKey = pos.x == 0 ? "gbr" : "gtr";
-			if(pos.y == 0) {
-				textureKey = roomGridPos.y == 0 ? "gev" : "glv";
-			}
-		}
-		
-		if(borderOverrideTextureMap.containsKey(pos)) {
-			textureKey = borderOverrideTextureMap.get(pos);
-		}
-
-		Vector2 WORLDPos = Room.getWorldPosition(this, (int)pos.x, (int)pos.y);
-		Sprite sprite = Textures.getInstance().getSprite(textureKey);
-		
-		sprite.setPosition(WORLDPos.x, WORLDPos.y);
-		sprite.setSize(Room.SQUARE_SIZE, Room.SQUARE_SIZE);
-		borderSprites.add(sprite);
-	}
+//	protected void createBorderCorners(Vector2 gridPos) {
+//		Vector2 topLeftPos = new Vector2(0, 0);
+//		boolean globalTopLeft = gridPos.x == 0 && gridPos.y == 0;
+//		String topLeftTextureKey = globalTopLeft ? "gtl" : "gc";
+//		if(!globalTopLeft) {
+//			if(gridPos.x == 0) {
+//				topLeftTextureKey = "gbh";
+//			} else if(gridPos.y == 0) {
+//				topLeftTextureKey = "grv";
+//			}
+//			
+//		}
+//		createBorderSprite(topLeftTextureKey, topLeftPos);
+//		
+//		Vector2 topRightPos = new Vector2(0, TheGrid.ROOM_NUM_SQUARES_WIDE - 1);
+//		boolean globalTopRight = gridPos.x == 0 && gridPos.y == THE_GRID.getNumCols() - 1;
+//		String topRightTextureKey = globalTopRight ? "gtr" : "gc";
+//		if(!globalTopRight) {
+//			if(gridPos.x == 0) {
+//				topRightTextureKey = "gbh";
+//			} else if(gridPos.y == THE_GRID.getNumCols() - 1) {
+//				topRightTextureKey = "glv";
+//			}
+//		}
+//		createBorderSprite(topRightTextureKey, topRightPos);
+//			
+//		Vector2 bottomLeftPos = new Vector2(TheGrid.ROOM_NUM_SQUARES_WIDE - 1, 0);
+//		boolean globalBottomLeft = gridPos.x == THE_GRID.getNumRows() - 1 && gridPos.y == 0;
+//		String bottomLeftTextureKey = globalBottomLeft ? "gbl" : "gc";
+//		if(!globalBottomLeft) {
+//			if(gridPos.y == 0) {
+//				bottomLeftTextureKey = "grv";
+//			} else if(gridPos.x == THE_GRID.getNumRows() - 1) {
+//				bottomLeftTextureKey = "gth";
+//			}
+//		}
+//		createBorderSprite(bottomLeftTextureKey, bottomLeftPos);	
+//		
+//		Vector2 bottomRightPos = new Vector2(TheGrid.ROOM_NUM_SQUARES_WIDE - 1, TheGrid.ROOM_NUM_SQUARES_WIDE - 1);
+//		boolean globalBottomRight = gridPos.x == THE_GRID.getNumRows() - 1 && gridPos.y == THE_GRID.getNumCols() - 1;
+//		String bottomRightTextureKey = globalBottomRight ? "gbr" : "gc";
+//		if(!globalBottomRight) {
+//			if(gridPos.x == THE_GRID.getNumRows() - 1) {
+//				bottomRightTextureKey = "gth";
+//			} else if(gridPos.y == THE_GRID.getNumCols() - 1) {
+//				bottomRightTextureKey = "glv";
+//			}
+//		}
+//		createBorderSprite(bottomRightTextureKey, bottomRightPos);
+//	}
+//	
+//	protected void createBorderSprite(String textureKey, Vector2 pos) {
+//		if(openings.contains(pos, false)) {
+//			return;
+//		}
+//		
+//		Vector2 roomGridPos = getGridPosition();
+//		Vector2 leftPos = Room.getWorldPosition(this, (int)pos.x, (int)pos.y - 1);
+//		Vector2 rightPos = Room.getWorldPosition(this, (int)pos.x, (int)pos.y + 1);
+//		Vector2 abovePos = Room.getWorldPosition(this, (int)pos.x - 1, (int)pos.y);
+//		Vector2 belowPos = Room.getWorldPosition(this, (int)pos.x + 1, (int)pos.y);
+//		if(THE_GRID.isOpeningAt(belowPos)) {
+//			textureKey = pos.y == 0 ? "gbr" : "gbl";
+//			if(pos.x == 0) {
+//				textureKey = roomGridPos.x == 0 ? "geh" : "gth";
+//			}
+//		} else if(THE_GRID.isOpeningAt(abovePos)) {
+//			textureKey = pos.y == 0 ? "gtr" : "gtl";
+//			if(pos.x == TheGrid.ROOM_NUM_SQUARES_WIDE - 1) {
+//				textureKey = roomGridPos.x == THE_GRID.getNumRows() - 1 ? "geh" : "gbh";
+//			}
+//		} else if(THE_GRID.isOpeningAt(leftPos)) {
+//			textureKey = pos.x == 0 ? "gbl" : "gtl";
+//			if(pos.y == TheGrid.ROOM_NUM_SQUARES_WIDE - 1) {
+//				textureKey = roomGridPos.y == THE_GRID.getNumCols() - 1 ? "gev" : "grv";
+//			}
+//		} else if(THE_GRID.isOpeningAt(rightPos)) {
+//			textureKey = pos.x == 0 ? "gbr" : "gtr";
+//			if(pos.y == 0) {
+//				textureKey = roomGridPos.y == 0 ? "gev" : "glv";
+//			}
+//		}
+//		
+//		if(borderOverrideTextureMap.containsKey(pos)) {
+//			textureKey = borderOverrideTextureMap.get(pos);
+//		}
+//
+//		Vector2 WORLDPos = Room.getWorldPosition(this, (int)pos.x, (int)pos.y);
+//		Sprite sprite = Textures.getInstance().getSprite(textureKey);
+//		
+//		sprite.setPosition(WORLDPos.x, WORLDPos.y);
+//		sprite.setSize(Room.SQUARE_SIZE, Room.SQUARE_SIZE);
+//		borderSprites.add(sprite);
+//	}
 }

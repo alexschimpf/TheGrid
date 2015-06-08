@@ -19,7 +19,11 @@ public class DesktopLauncher {
 			config.fullscreen = false;
 			Settings settings = new Settings();
 			settings.duplicatePadding = true;
-			TexturePacker.process(settings, "/Users/schimpf1/Desktop/The Grid/textures", "/Users/schimpf1/Desktop/libgdx/TheGrid/android/assets", "game");		
+			TexturePacker.process(settings, "/Users/schimpf1/Desktop/The Grid/textures_v2", "/Users/schimpf1/Desktop/libgdx/TheGrid/android/assets", "game");	
+			
+//			settings.paddingX = 4;
+//			settings.paddingY = 4;
+//			TexturePacker.process(settings, "/Users/schimpf1/Desktop/The Grid/border_textures", "/Users/schimpf1/Desktop/libgdx/TheGrid/android/assets", "tiles");
 		}
 		
 		new LwjglApplication(new TheGame(), config);

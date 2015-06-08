@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Array;
 
 public final class Textures {
 
-	private static final Color[] SCHEME_COLORS = new Color[4];
+	private static final Color[] SCHEME_COLORS = new Color[2];
 	
 	private static Textures instance;
 	
@@ -172,10 +172,10 @@ public final class Textures {
 	}
 	
 	private void initSchemeColors() {
-		SCHEME_COLORS[0] = new Color(230 / 255.0f, 230 / 255.0f, 230 / 255.0f, 1);
-		SCHEME_COLORS[1] = new Color(197 / 255.0f, 224 / 255.0f, 246 / 255.0f, 1);
-		SCHEME_COLORS[2] = new Color(255 / 255.0f, 217 / 255.0f, 200 / 255.0f, 1);
-		SCHEME_COLORS[3] = new Color(255 / 255.0f, 242 / 255.0f, 200 / 255.0f, 1);
+//		SCHEME_COLORS[0] = new Color(230 / 255.0f, 230 / 255.0f, 230 / 255.0f, 1);
+		SCHEME_COLORS[0] = new Color(255 / 255.0f, 205 / 255.0f, 242 / 255.0f, 1);
+		SCHEME_COLORS[1] = new Color(205 / 255.0f, 255 / 255.0f, 200 / 240.0f, 1);
+//		SCHEME_COLORS[2] = new Color(205 / 255.0f, 229 / 255.0f, 255 / 255.0f, 1);
 	}
 	
 //	private TextureRegion createColorTextureRegion(float r, float g, float b, float a, String key) {

@@ -5,6 +5,7 @@ import screen.GameScreen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.box2d.World;
 
+import core.Room;
 import core.TheGrid;
 import entity.special.Player;
 

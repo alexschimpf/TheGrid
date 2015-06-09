@@ -34,7 +34,8 @@ public final class Textures {
 		createTextureRegion("ball", "ball"); 		
 		createTextureRegion("block_chain_start", "block_chain_start");	
 		createTextureRegion("inactive_block", "inactive_block");
-		createTextureRegion("up_arrow_block", "up_arrow_block");	
+		createTextureRegion("up_arrow_block", "up_arrow_block");
+		createTextureRegion("active_on_bump", "active_on_bump");	
 		createTextureRegion("programmable_block", "programmable_block");
 		createTextureRegion("programmable_block1", "programmable_block_1");
 		createTextureRegion("programmable_block2", "programmable_block_2");
@@ -62,6 +63,7 @@ public final class Textures {
 		createTextureRegions("disappearing_block", "disappearing_block");
 		createTextureRegions("filling_block", "filling_block");
 		createTextureRegions("question_mark_block", "question_mark_block");
+		createTextureRegions("trigger", "trigger");
 		createTextureRegions("portal", "portal");
 		createTextureRegions("cloud", "cloud");
 		createTextureRegions("grid_corner", "gc");

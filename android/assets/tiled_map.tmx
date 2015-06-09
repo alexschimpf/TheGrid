@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="48" height="48" tilewidth="16" tileheight="16" nextobjectid="1">
+ <tileset firstgid="1" name="working_tile_map" tilewidth="16" tileheight="16" spacing="1" margin="1">
+  <image source="../../../../working_tile_map.png" trans="ff00ff" width="160" height="144"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="48" height="48">
+  <data encoding="base64" compression="zlib">
+   eJztmUtrAjEUhbPwUd+vdlTQtgq6sNAuWqgLBV20//8neQQHgrRyj+YmGcmFs/ty5zIMk4+kaoxpFjQVpGvkVUcaBM8W27+DjAl+gDwSfAtpK/YfIXOCnyDTiPgZ8kbwC2QZEb8yaf6Q/D3M/0Xw78hHRPwnsiX4ElIm+G9krchvkF+CZ2uH7BX5H6Rq/O752enZQwe9jv5QQ5495uU0/6uDXg9G13+0eW3/0eaT/4Tl72H/TfOH41n/Yf0hNv9hK/nP5frPf1hHyaye13hNvt6V/7COkvPMmr/WJ/+5XMl/3PLJf8Lyaf6wvPb5j7Yvsf7D+glb2v6zM5yfsMX2t/3H5bmMz/uj3H9cnsv4Cus/t1RHwEj8Z3bWk/Ef9j7L5kcCXuI/9nvw6T+SfUbS334PPv1H8pyY99+izy/5TmOeX/KfY/3B5/2X5D/H+pK2/2j7krb/sDxbR//pI08FTQ85AGNkSTM=
+  </data>
+ </layer>
+</map>

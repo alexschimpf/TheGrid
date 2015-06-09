@@ -45,7 +45,7 @@ public class ActiveOnBumpEntity extends RectangleEntity {
 	
 	@Override
 	public boolean hasRandomColor() {
-		return true;
+		return false;
 	}
 	
 	@Override

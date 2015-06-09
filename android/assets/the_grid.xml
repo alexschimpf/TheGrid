@@ -29,13 +29,10 @@
                 <opening row="2" col="11" />
                 <opening row="10" col="0" />
             </openings>
-            <border_overrides>
-                <border_override row="11" col="2" texture_key="gc" />
-            </border_overrides>
             <entities>
                 <entity type="rectangle">
                     <custom>
-                        <texture_key>gev</texture_key>
+                        <texture_key>null</texture_key>
                     </custom>
                     <locations>
                         <location row="4" col="2" />
@@ -45,12 +42,8 @@
                         <location row="8" col="2" />
                         <location row="9" col="2" />
                         <location row="10" col="2" />
+                        <location row="3" col="2" />
                     </locations>
-                </entity>
-                <entity type="rectangle" row="3" col="2">
-                    <custom>
-                        <texture_key>gtround</texture_key>
-                    </custom>
                 </entity>
                 <entity type="rectangle" row="1" col="5">
                     <custom>
@@ -80,6 +73,7 @@
                 </entity>
                 <entity type="disappearing_rectangle_trigger" row="1" col="4">
                     <custom>
+                        <facing_up>false</facing_up>
                         <target_id>0,2-1</target_id>
                     </custom>
                 </entity>
@@ -96,7 +90,7 @@
             <entities>
                 <entity type="active_on_bump">
                     <custom>
-                        <texture_key>block</texture_key>
+                        <texture_key>active_on_bump</texture_key>
                         <start_active>false</start_active>
                     </custom>
                     <locations>
@@ -118,7 +112,7 @@
                 </entity>
                 <entity type="rectangle">
                     <custom>
-                        <texture_key>test</texture_key>
+                        <texture_key>null</texture_key>
                     </custom>
                     <locations>
                         <location row="10" col="8" />
@@ -136,13 +130,6 @@
 		        <opening row="11" col="6" />
 		        <opening row="0" col="3" />
 		    </openings>
-		    <border_overrides>
-		        <border_override row="11" col="9" texture_key="gc" />
-		        <border_override row="10" col="10" texture_key="gc" />
-		        <border_override row="9" col="11" texture_key="gc" />
-		        <border_override row="11" col="10" texture_key="gc" />
-		        <border_override row="10" col="11" texture_key="gc" />
-		    </border_overrides>
 		    <entities>
 		       <entity type="rectangle" row="9" col="10">
 		           <custom>
@@ -226,12 +213,6 @@
 		        <opening row="2" col="0" />
 		        <opening row="11" col="10" />
 		    </openings>
-<!-- 		    <chain_pads>
-		        <chain_pad start_row="1" end_row="9" start_col="2" end_col="2" friction="false" correct="true" />
-		        <chain_pad start_row="1" end_row="9" start_col="3" end_col="3" friction="false" />
-		        <chain_pad start_row="3" end_row="10" start_col="9" end_col="10" friction="false" correct="true" /> 
-		        <chain_pad start_row="3" end_row="12" start_col="10" end_col="10" friction="false" />
-		    </chain_pads> -->
 		    <entities>
 		        <entity type="visible_touched">
 		           <custom>
@@ -287,16 +268,6 @@
 		        <opening row="1" col="11" />
 		        <opening row="2" col="11" />
 		    </openings>
-		    <border_overrides>
-		        <border_override row="0" col="7" texture_key="grv" />
-		        <border_override row="5" col="0" texture_key="grv" />
-		        <border_override row="7" col="0" texture_key="grv" />
-		    </border_overrides>
-<!-- 		    <chain_pads>
-		        <chain_pad start_row="0" end_row="3" start_col="7" end_col="7" friction="false" correct="true" />
-		        <chain_pad start_row="0" end_row="3" start_col="8" end_col="8" friction="false" />
-		        <chain_pad start_row="3" end_row="3" start_col="7" end_col="9" friction="false" />
-		    </chain_pads> -->
 		    <entities>
 		        <entity type="player_drop" row="6" col="1" />
 		        <entity type="rectangle">
@@ -347,10 +318,6 @@
 		        <opening row="1" col="0" />
 		        <opening row="2" col="0" />
 		    </openings>
-<!-- 		    <chain_pads>
-		        <chain_pad start_row="10" end_row="10" start_col="1" end_col="4" />
-		        <chain_pad start_row="10" end_row="10" start_col="7" end_col="8" />
-		    </chain_pads> -->
 		    <entities>
 		        <entity type="block_chain" id="0" row="7" col="1">
 		            <custom>
@@ -457,14 +424,6 @@
 		        <opening row="0" col="10" />
 		        <opening row="11" col="5" />
 		    </openings>
-		    <border_overrides>
-		        <border_override row="0" col="9" texture_key="glv" />
-		        <border_override row="0" col="1" texture_key="gc" />
-		        <border_override row="0" col="4" texture_key="gc" />
-		        <border_override row="0" col="6" texture_key="gc" />
-		        <border_override row="1" col="0" texture_key="gc" />
-		        <border_override row="3" col="0" texture_key="gc" />
-		    </border_overrides>
 		    <entities>
  		        <entity type="programmable_movement" row="8" col="4" />
 		        <entity type="programmable_movement" row="3" col="6" />
@@ -599,10 +558,6 @@
 		        <opening row="10" col="11" />
 		        <opening row="1" col="0" />
 		    </openings>
-		    <border_overrides>
-		        <border_override row="0" col="3" texture_key="gc" />
-		        <border_override row="2" col="0" texture_key="gbh" />
-		    </border_overrides>
 		    <scripts>
 		        <script type="show_message" id="2,1-s1" />
 		    </scripts>
@@ -674,17 +629,6 @@
 		        <opening row="0" col="5" />
 		        <opening row="10" col="0" />
 		    </openings>
-		    <border_overrides>
-		        <border_override row="0" col="4" texture_key="glv" />
-		    </border_overrides>
-<!-- 		    <chain_pads>
- 		        <chain_pad start_row="3" end_row="3" start_col="5" end_col="9" friction="false" />
-		        <chain_pad start_row="4" end_row="4" start_col="5" end_col="9" friction="false" />
-		        <chain_pad start_row="6" end_row="6" start_col="2" end_col="10" friction="false" />
-		        <chain_pad start_row="7" end_row="7" start_col="2" end_col="10" friction="false" />
-		        <chain_pad start_row="9" end_row="9" start_col="1" end_col="9" friction="false" />
-		        <chain_pad start_row="10" end_row="10" start_col="1" end_col="9" friction="false" />
-		    </chain_pads> -->
 		    <entities>
 		        <entity type="rectangle">
 		            <custom>
